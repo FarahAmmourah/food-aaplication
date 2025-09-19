@@ -1,0 +1,15 @@
+<resources>
+    <color name="primary">#28a745</color>
+    <color name="green_app">#28a745</color> <!-- هاد ضفناه -->
+    <color name="primaryForeground">#FFFFFF</color>
+    <color name="secondary">#F8F9FA</color>
+    <color name="secondaryForeground">#343A40</color>
+    <color name="muted">#ECECF0</color>
+    <color name="mutedForeground">#717182</color>
+    <color name="accent">#F8F9FA</color>
+    <color name="accentForeground">#343A40</color>
+    <color name="destructive">#D4183D</color>
+    <color name="destructiveForeground">#FFFFFF</color>
+    <color name="background">#FFFFFF</color>
+    <color name="foreground">#343A40</color>
+</resources>
