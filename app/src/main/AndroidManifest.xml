@@ -13,7 +13,6 @@
         android:theme="@style/Theme.FoodApp"
         tools:targetApi="31">
 
-        <!-- Main entry point -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -23,7 +22,6 @@
             </intent-filter>
         </activity>
 
-        <!-- باقي الصفحات -->
         <activity android:name=".LoginActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".CartActivity" />
@@ -31,6 +29,7 @@
         <activity android:name=".OrdersActivity" />
         <activity android:name=".ReelsActivity" />
         <activity android:name=".ProfileActivity" />
+
 
 
 

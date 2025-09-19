@@ -1,15 +1,24 @@
 <resources>
-    <color name="primary">#28a745</color>
-    <color name="green_app">#28a745</color> <!-- هاد ضفناه -->
-    <color name="primaryForeground">#FFFFFF</color>
-    <color name="secondary">#F8F9FA</color>
-    <color name="secondaryForeground">#343A40</color>
-    <color name="muted">#ECECF0</color>
-    <color name="mutedForeground">#717182</color>
-    <color name="accent">#F8F9FA</color>
-    <color name="accentForeground">#343A40</color>
-    <color name="destructive">#D4183D</color>
+    <!-- الألوان الأساسية -->
+    <color name="primary">#FF7A00</color> <!-- برتقالي أساسي -->
+    <color name="orange_app">#FF7A00</color> <!-- اسم إضافي -->
+    <color name="primaryForeground">#FFFFFF</color> <!-- النص فوق البرتقالي -->
+
+    <!-- ألوان ثانوية -->
+    <color name="secondary">#FFE0B2</color> <!-- برتقالي فاتح جدا -->
+    <color name="secondaryForeground">#4E342E</color>
+
+    <!-- ألوان محايدة -->
+    <color name="muted">#FFF3E0</color>
+    <color name="mutedForeground">#6D4C41</color>
+    <color name="accent">#FFD180</color>
+    <color name="accentForeground">#5D4037</color>
+
+    <!-- ألوان خاصة -->
+    <color name="destructive">#D84315</color> <!-- أحمر برتقالي -->
     <color name="destructiveForeground">#FFFFFF</color>
+
+    <!-- خلفية وتكست -->
     <color name="background">#FFFFFF</color>
-    <color name="foreground">#343A40</color>
+    <color name="foreground">#212121</color>
 </resources>
