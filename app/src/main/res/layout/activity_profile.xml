@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#F5F5F5">
 
-    <!-- زر Back اللي عملوه صحباتك -->
+    <!-- زر Back -->
     <ImageView
         android:id="@+id/backButton"
         android:layout_width="40dp"
@@ -16,11 +16,12 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"/>
 
-    <!-- ScrollView عشان نضيف تصميمك الجديد -->
+    <!-- ScrollView -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/backButton"
+        android:layout_above="@id/bottom_navigation"
         android:fillViewport="true">
 
         <LinearLayout
@@ -252,8 +253,16 @@
                         android:textSize="16sp"
                         android:textColor="#000000"/>
                 </LinearLayout>
-
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/bottom_nav_menu" />
+
 </RelativeLayout>
