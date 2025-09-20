@@ -3,6 +3,7 @@ package com.farah.foodapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         logo.startAnimation(zoomIn);
 
         new Handler().postDelayed(() -> {
-            appName.setVisibility(TextView.VISIBLE);
+            appName.setVisibility(View.VISIBLE);
             Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
             Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
             appName.startAnimation(slideUp);
