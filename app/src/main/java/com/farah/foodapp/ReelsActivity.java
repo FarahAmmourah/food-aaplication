@@ -1,81 +1,58 @@
 package com.farah.foodapp;
 
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
-import android.widget.Button;
-import android.widget.VideoView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReelsActivity extends AppCompatActivity {
 
-    private VideoView videoView;
-    private int currentIndex = 0;
-    private int[] videos = {
-            R.raw.reel1,
-            R.raw.reel2,
-            R.raw.reel3
-    };
+    private ViewPager2 viewPagerReels;
+    private ReelsAdapter reelsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reels);
 
-        videoView = findViewById(R.id.videoView);
-        Button btnBack = findViewById(R.id.btnBack);
+        viewPagerReels = findViewById(R.id.viewPagerReels);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        playVideo(currentIndex);
+        // عرّف قائمة الريلز
+        List<ReelItem> reelList = new ArrayList<>();
+        reelList.add(new ReelItem(R.raw.r1, "Pizza Margherita", "@Mario's Pizzeria"));
+        reelList.add(new ReelItem(R.raw.r2, "Chicken Burger", "@Burger House"));
+        reelList.add(new ReelItem(R.raw.r3, "Pasta Carbonara", "@Italian Corner"));
 
-        GestureDetector gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
-            private static final int SWIPE_THRESHOLD = 100;
-            private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+        reelsAdapter = new ReelsAdapter(this, reelList);
+        viewPagerReels.setAdapter(reelsAdapter);
 
-            @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                float diffY = e2.getY() - e1.getY();
-                if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
-                    if (diffY < 0) {
-                        nextVideo();
-                    } else {
-                        previousVideo();
-                    }
-                    return true;
-                }
-                return false;
+        // خلي Reels selected
+        bottomNavigationView.setSelectedItemId(R.id.nav_reels);
+
+        // التنقل
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+
+            if (id == R.id.nav_menu) {
+                startActivity(new Intent(this, MenuActivity.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (id == R.id.nav_cart) {
+                startActivity(new Intent(this, CartActivity.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (id == R.id.nav_profile) {
+                startActivity(new Intent(this, ProfileActivity.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (id == R.id.nav_reels) {
+                return true;
             }
+            return false;
         });
-
-        videoView.setOnTouchListener((v, event) -> gestureDetector.onTouchEvent(event));
-
-        btnBack.setOnClickListener(v -> finish());
-    }
-
-    private void playVideo(int index) {
-        if (index >= 0 && index < videos.length) {
-            Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + videos[index]);
-            videoView.setVideoURI(uri);
-            videoView.setOnPreparedListener(mp -> mp.setLooping(true));
-            videoView.start();
-        }
-    }
-
-    private void nextVideo() {
-        currentIndex++;
-        if (currentIndex >= videos.length) {
-            currentIndex = 0;
-        }
-        playVideo(currentIndex);
-    }
-
-    private void previousVideo() {
-        currentIndex--;
-        if (currentIndex < 0) {
-            currentIndex = videos.length - 1;
-        }
-        playVideo(currentIndex);
     }
 }

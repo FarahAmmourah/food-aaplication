@@ -4,6 +4,7 @@
     <color name="primaryForeground">#FFFFFF</color>
     <color name="secondary">#FFE0B2</color>
     <color name="secondaryForeground">#4E342E</color>
+    <color name="red">#FF0000</color>
 
     <color name="muted">#FFF3E0</color>
     <color name="mutedForeground">#6D4C41</color>
