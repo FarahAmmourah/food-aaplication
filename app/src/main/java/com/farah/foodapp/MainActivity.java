@@ -3,17 +3,43 @@ package com.farah.foodapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final int SPLASH_TIME = 3000; // 3 ثواني
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ImageView logo = findViewById(R.id.appLogo);
+        TextView appName = findViewById(R.id.appName);
+
+        // تشغيل أنيميشن على اللوجو
+        Animation zoomIn = AnimationUtils.loadAnimation(this, R.anim.zoom_in);
+        logo.startAnimation(zoomIn);
+
+        // تشغيل أنيميشن على اسم التطبيق بعد تأخير بسيط
         new Handler().postDelayed(() -> {
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            appName.setVisibility(TextView.VISIBLE);
+            Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+            Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+            appName.startAnimation(slideUp);
+            appName.startAnimation(fadeIn);
+        }, 1000);
+
+        // الانتقال إلى شاشة تسجيل الدخول بعد 3 ثواني
+        new Handler().postDelayed(() -> {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
             finish();
-        }, 3000);
+        }, SPLASH_TIME);
     }
 }
