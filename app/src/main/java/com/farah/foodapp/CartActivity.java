@@ -15,14 +15,12 @@ public class CartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        // زر الرجوع
         Button btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v -> {
             startActivity(new Intent(CartActivity.this, HomeActivity.class));
             finish();
         });
 
-        // البار السفلي
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.nav_cart);
 

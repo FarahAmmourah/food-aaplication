@@ -30,7 +30,6 @@ public class ReelsActivity extends AppCompatActivity {
 
         playVideo(currentIndex);
 
-        // سوايب بين الفيديوهات
         GestureDetector gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             private static final int SWIPE_THRESHOLD = 100;
             private static final int SWIPE_VELOCITY_THRESHOLD = 100;
@@ -40,10 +39,8 @@ public class ReelsActivity extends AppCompatActivity {
                 float diffY = e2.getY() - e1.getY();
                 if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
                     if (diffY < 0) {
-                        // Swipe up
                         nextVideo();
                     } else {
-                        // Swipe down
                         previousVideo();
                     }
                     return true;

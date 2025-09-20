@@ -17,7 +17,6 @@ public class HomeActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        // خلي الهوم الافتراضي
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
 
         bottomNavigationView.setOnItemSelectedListener(item -> {

@@ -1,24 +1,17 @@
 <resources>
-    <!-- الألوان الأساسية -->
-    <color name="primary">#FF7A00</color> <!-- برتقالي أساسي -->
-    <color name="orange_app">#FF7A00</color> <!-- اسم إضافي -->
-    <color name="primaryForeground">#FFFFFF</color> <!-- النص فوق البرتقالي -->
-
-    <!-- ألوان ثانوية -->
-    <color name="secondary">#FFE0B2</color> <!-- برتقالي فاتح جدا -->
+    <color name="primary">#FF7A00</color>
+    <color name="orange_app">#FF7A00</color>
+    <color name="primaryForeground">#FFFFFF</color>
+    <color name="secondary">#FFE0B2</color>
     <color name="secondaryForeground">#4E342E</color>
 
-    <!-- ألوان محايدة -->
     <color name="muted">#FFF3E0</color>
     <color name="mutedForeground">#6D4C41</color>
     <color name="accent">#FFD180</color>
     <color name="accentForeground">#5D4037</color>
 
-    <!-- ألوان خاصة -->
-    <color name="destructive">#D84315</color> <!-- أحمر برتقالي -->
+    <color name="destructive">#D84315</color>
     <color name="destructiveForeground">#FFFFFF</color>
-
-    <!-- خلفية وتكست -->
     <color name="background">#FFFFFF</color>
     <color name="foreground">#212121</color>
 </resources>

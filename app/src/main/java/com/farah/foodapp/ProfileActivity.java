@@ -15,14 +15,12 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        // زر الرجوع
         Button btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v -> {
             startActivity(new Intent(ProfileActivity.this, HomeActivity.class));
             finish();
         });
 
-        // البار السفلي
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.nav_profile);
 

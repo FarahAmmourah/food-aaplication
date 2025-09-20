@@ -11,7 +11,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Splash لمدة 3 ثواني
         new Handler().postDelayed(() -> {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();

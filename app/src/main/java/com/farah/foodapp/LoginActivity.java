@@ -20,7 +20,6 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
 
         btnLogin.setOnClickListener(v -> {
-            // بعد تسجيل الدخول يروح للهوم مع البار
             startActivity(new Intent(LoginActivity.this, HomeActivity.class));
             finish();
         });
