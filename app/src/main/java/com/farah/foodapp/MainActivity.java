@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int SPLASH_TIME = 3000; // 3 ثواني
+    private static final int SPLASH_TIME = 3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,11 +22,9 @@ public class MainActivity extends AppCompatActivity {
         ImageView logo = findViewById(R.id.appLogo);
         TextView appName = findViewById(R.id.appName);
 
-        // تشغيل أنيميشن على اللوجو
         Animation zoomIn = AnimationUtils.loadAnimation(this, R.anim.zoom_in);
         logo.startAnimation(zoomIn);
 
-        // تشغيل أنيميشن على اسم التطبيق بعد تأخير بسيط
         new Handler().postDelayed(() -> {
             appName.setVisibility(TextView.VISIBLE);
             Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
@@ -35,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
             appName.startAnimation(fadeIn);
         }, 1000);
 
-        // الانتقال إلى شاشة تسجيل الدخول بعد 3 ثواني
         new Handler().postDelayed(() -> {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
