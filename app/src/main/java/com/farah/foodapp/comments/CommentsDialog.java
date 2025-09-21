@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.farah.foodapp.R;
-import com.farah.foodapp.ReelItem;
-import com.farah.foodapp.ReelsActivity;
+import com.farah.foodapp.reel.ReelItem;
+import com.farah.foodapp.reel.ReelsActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.List;
@@ -39,19 +39,17 @@ public class CommentsDialog extends BottomSheetDialog {
         EditText etComment = view.findViewById(R.id.etComment);
         Button btnSend = view.findViewById(R.id.btnSend);
 
-        // إعداد الـ RecyclerView
         adapter = new CommentAdapter(comments);
         recyclerComments.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerComments.setAdapter(adapter);
 
-        // زر الإرسال
         btnSend.setOnClickListener(v -> {
             String newComment = etComment.getText().toString().trim();
             if (!newComment.isEmpty()) {
-                comments.add(newComment); // أضف الكومنت لليستة
-                adapter.notifyItemInserted(comments.size() - 1); // تحديث الـ RecyclerView
-                recyclerComments.scrollToPosition(comments.size() - 1); // نزول لآخر كومنت
-                etComment.setText(""); // مسح النص
+                comments.add(newComment);
+                adapter.notifyItemInserted(comments.size() - 1);
+                recyclerComments.scrollToPosition(comments.size() - 1);
+                etComment.setText("");
             }
         });
     }

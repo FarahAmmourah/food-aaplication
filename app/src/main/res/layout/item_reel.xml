@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- الفيديو فل سكرين -->
     <com.google.android.exoplayer2.ui.StyledPlayerView
         android:id="@+id/playerView"
         android:layout_width="match_parent"
@@ -13,7 +12,6 @@
         app:resize_mode="fill"
         app:use_controller="false" />
 
-    <!-- أيقونات التفاعل يمين تحت -->
     <LinearLayout
         android:orientation="vertical"
         android:gravity="center"
@@ -23,7 +21,6 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="100dp">
 
-        <!-- Like -->
         <ImageButton
             android:id="@+id/btnLike"
             android:layout_width="48dp"
@@ -41,9 +38,8 @@
             android:textColor="@android:color/white"
             android:textSize="12sp"
             android:gravity="center"
-            android:layout_marginBottom="40dp"/> <!-- 🔹 مسافة أكبر -->
+            android:layout_marginBottom="40dp"/>
 
-        <!-- Comment -->
         <ImageButton
             android:id="@+id/btnComment"
             android:layout_width="48dp"
@@ -61,9 +57,8 @@
             android:textColor="@android:color/white"
             android:textSize="12sp"
             android:gravity="center"
-            android:layout_marginBottom="40dp"/> <!-- 🔹 مسافة أكبر -->
+            android:layout_marginBottom="40dp"/>
 
-        <!-- Share -->
         <ImageButton
             android:id="@+id/btnShare"
             android:layout_width="48dp"
@@ -83,7 +78,6 @@
             android:gravity="center"/>
     </LinearLayout>
 
-    <!-- النصوص + زر الأوردر -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -93,7 +87,6 @@
         android:background="@android:color/transparent"
         android:layout_marginBottom="72dp">
 
-        <!-- العنوان والمطعم -->
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
@@ -110,7 +103,6 @@
             android:text="Mario's Pizzeria"
             android:textColor="@android:color/white" />
 
-        <!-- زر الأوردر تحت النصوص -->
         <Button
             android:id="@+id/btnOrder"
             android:layout_width="wrap_content"

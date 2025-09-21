@@ -4,14 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- ViewPager للريلز -->
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPagerReels"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" />
 
-    <!-- الناف بار -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"

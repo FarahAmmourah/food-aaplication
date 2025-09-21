@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.farah.foodapp.reel.ReelsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ProfileActivity extends AppCompatActivity {

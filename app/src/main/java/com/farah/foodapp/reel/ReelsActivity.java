@@ -1,4 +1,4 @@
-package com.farah.foodapp;
+package com.farah.foodapp.reel;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.farah.foodapp.CartActivity;
+import com.farah.foodapp.MenuActivity;
+import com.farah.foodapp.ProfileActivity;
+import com.farah.foodapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -28,7 +32,6 @@ public class ReelsActivity extends AppCompatActivity {
         viewPagerReels = findViewById(R.id.viewPagerReels);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        // ✅ بيانات الريلز مع أرقام عشوائية للكومنت واللايك
         List<ReelItem> reelList = new ArrayList<>();
         Random random = new Random();
 
@@ -74,10 +77,8 @@ public class ReelsActivity extends AppCompatActivity {
         reelsAdapter = new ReelsAdapter(this, reelList);
         viewPagerReels.setAdapter(reelsAdapter);
 
-        // أول ما يفتح يكون على Reels
         bottomNavigationView.setSelectedItemId(R.id.nav_reels);
 
-        // التنقل بين الصفحات
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.nav_menu) {
@@ -98,7 +99,6 @@ public class ReelsActivity extends AppCompatActivity {
             return false;
         });
 
-        // ✅ التحكم بالفيديوهات عند السوايب
         viewPagerReels.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -115,11 +115,11 @@ public class ReelsActivity extends AppCompatActivity {
                         ReelsAdapter.ReelViewHolder reelHolder = (ReelsAdapter.ReelViewHolder) holder;
                         if (reelHolder.getBindingAdapterPosition() == position) {
                             if (reelHolder.playerView.getPlayer() != null) {
-                                reelHolder.playerView.getPlayer().play();  // تشغيل الحالي
+                                reelHolder.playerView.getPlayer().play();
                             }
                         } else {
                             if (reelHolder.playerView.getPlayer() != null) {
-                                reelHolder.playerView.getPlayer().pause(); // إيقاف غيره
+                                reelHolder.playerView.getPlayer().pause();
                             }
                         }
                     }

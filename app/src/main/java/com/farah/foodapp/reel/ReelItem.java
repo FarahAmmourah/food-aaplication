@@ -1,4 +1,4 @@
-package com.farah.foodapp;
+package com.farah.foodapp.reel;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ public class ReelItem {
     private int likesCount;
     private int commentsCount;
     private List<String> comments;
-    private boolean liked = false; // ✅ حالة اللايك
+    private boolean liked = false;
 
     public ReelItem(int videoResId, String title, String restaurant,
                     int likesCount, int commentsCount, List<String> comments) {
@@ -29,8 +29,6 @@ public class ReelItem {
     public int getCommentsCount() { return commentsCount; }
     public void setCommentsCount(int commentsCount) { this.commentsCount = commentsCount; }
     public List<String> getComments() { return comments; }
-
-    // ✅ Getters/Setters للايك
     public boolean isLiked() { return liked; }
     public void setLiked(boolean liked) { this.liked = liked; }
 }

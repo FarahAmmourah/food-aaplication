@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="#F5F5F5">
 
-    <!-- ScrollView لكل المحتوى -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,7 +16,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- الهيدر (الشريط البرتقالي) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
@@ -56,7 +54,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- الكاردات (Orders + Favorite) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -114,14 +111,12 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- القوائم -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="12dp">
 
-                <!-- Order History -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
@@ -135,8 +130,8 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_history"
-                        android:tint="#FF9800"
-                        android:layout_marginEnd="12dp"/>
+                        android:layout_marginEnd="12dp"
+                        app:tint="#FF9800" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -164,10 +159,9 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/arrow_forward"
-                        android:tint="#888888"/>
+                        app:tint="#888888" />
                 </LinearLayout>
 
-                <!-- Favorites -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
@@ -181,10 +175,9 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_favorite"
-                        android:tint="#FF9800"
-                        android:layout_marginEnd="12dp"/>
+                        android:layout_marginEnd="12dp"
+                        app:tint="#FF9800" />
 
-                    <!-- النص داخل LinearLayout وزنه 1 -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -199,16 +192,14 @@
                             android:textColor="#000000"/>
                     </LinearLayout>
 
-                    <!-- السهم آخر اليمين -->
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/arrow_forward"
-                        android:tint="#888888"/>
+                         app:tint="#888888" />
                 </LinearLayout>
 
 
-                <!-- Addresses -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
@@ -222,10 +213,9 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_address"
-                        android:tint="#FF9800"
-                        android:layout_marginEnd="12dp"/>
+                        android:layout_marginEnd="12dp"
+                        app:tint="#FF9800" />
 
-                    <!-- النص داخل LinearLayout بوزن 1 -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -240,16 +230,13 @@
                             android:textColor="#000000"/>
                     </LinearLayout>
 
-                    <!-- السهم آخر اليمين -->
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/arrow_forward"
-                        android:tint="#888888"/>
+                         app:tint="#888888" />
                 </LinearLayout>
 
-
-                <!-- Settings -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
@@ -263,10 +250,9 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_settings"
-                        android:tint="#FF9800"
-                        android:layout_marginEnd="12dp"/>
+                        android:layout_marginEnd="12dp"
+                        app:tint="#FF9800" />
 
-                    <!-- النص داخل LinearLayout بوزن 1 -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -281,19 +267,17 @@
                             android:textColor="#000000"/>
                     </LinearLayout>
 
-                    <!-- السهم آخر اليمين -->
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/arrow_forward"
-                        android:tint="#888888"/>
+                        app:tint="#888888" />
                 </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
-    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"

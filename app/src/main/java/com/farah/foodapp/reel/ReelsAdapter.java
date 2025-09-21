@@ -1,4 +1,4 @@
-package com.farah.foodapp;
+package com.farah.foodapp.reel;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.farah.foodapp.R;
 import com.farah.foodapp.comments.CommentsDialog;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
@@ -59,7 +60,6 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
         holder.tvLikeCount.setText(String.valueOf(reel.getLikesCount()));
         holder.tvCommentCount.setText(String.valueOf(reel.getCommentsCount()));
 
-        // لايك
         holder.btnLike.setOnClickListener(v -> {
             if (reel.isLiked()) {
                 holder.btnLike.setColorFilter(Color.WHITE);
@@ -73,7 +73,6 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
             holder.tvLikeCount.setText(String.valueOf(reel.getLikesCount()));
         });
 
-        // فتح الكومنتات
         holder.btnComment.setOnClickListener(v -> {
             CommentsDialog dialog = new CommentsDialog(context, reel.getComments(), reel, (ReelsActivity) context);
             dialog.show();

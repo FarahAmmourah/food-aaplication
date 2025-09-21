@@ -7,6 +7,8 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.farah.foodapp.reel.ReelsActivity;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText etEmail, etPassword;
@@ -22,7 +24,6 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
 
         btnLogin.setOnClickListener(v -> {
-            // يدخل مباشرة بدون أي تحقق
             Intent intent = new Intent(LoginActivity.this, ReelsActivity.class);
             startActivity(intent);
             finish();
