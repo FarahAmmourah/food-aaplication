@@ -5,22 +5,10 @@
     android:layout_height="match_parent"
     android:background="#F5F5F5">
 
-    <!-- زر Back -->
-    <ImageView
-        android:id="@+id/backButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_back"
-        android:contentDescription="Back"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"/>
-
-    <!-- ScrollView -->
+    <!-- ScrollView لكل المحتوى -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/backButton"
         android:layout_above="@id/bottom_navigation"
         android:fillViewport="true">
 
@@ -29,7 +17,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- الهيدر -->
+            <!-- الهيدر (الشريط البرتقالي) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
@@ -68,7 +56,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- الكاردات -->
+            <!-- الكاردات (Orders + Favorite) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -126,7 +114,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- باقي القوائم -->
+            <!-- القوائم -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -196,13 +184,29 @@
                         android:tint="#FF9800"
                         android:layout_marginEnd="12dp"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- النص داخل LinearLayout وزنه 1 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Favorites"
-                        android:textSize="16sp"
-                        android:textColor="#000000"/>
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Favorites"
+                            android:textSize="16sp"
+                            android:textColor="#000000"/>
+                    </LinearLayout>
+
+                    <!-- السهم آخر اليمين -->
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/arrow_forward"
+                        android:tint="#888888"/>
                 </LinearLayout>
+
 
                 <!-- Addresses -->
                 <LinearLayout
@@ -221,13 +225,29 @@
                         android:tint="#FF9800"
                         android:layout_marginEnd="12dp"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- النص داخل LinearLayout بوزن 1 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Addresses"
-                        android:textSize="16sp"
-                        android:textColor="#000000"/>
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Addresses"
+                            android:textSize="16sp"
+                            android:textColor="#000000"/>
+                    </LinearLayout>
+
+                    <!-- السهم آخر اليمين -->
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/arrow_forward"
+                        android:tint="#888888"/>
                 </LinearLayout>
+
 
                 <!-- Settings -->
                 <LinearLayout
@@ -246,13 +266,29 @@
                         android:tint="#FF9800"
                         android:layout_marginEnd="12dp"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- النص داخل LinearLayout بوزن 1 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Settings"
-                        android:textSize="16sp"
-                        android:textColor="#000000"/>
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Settings"
+                            android:textSize="16sp"
+                            android:textColor="#000000"/>
+                    </LinearLayout>
+
+                    <!-- السهم آخر اليمين -->
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/arrow_forward"
+                        android:tint="#888888"/>
                 </LinearLayout>
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
