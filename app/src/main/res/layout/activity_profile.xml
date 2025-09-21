@@ -16,7 +16,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- الهيدر -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
@@ -55,7 +54,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- الكروت -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -113,14 +111,12 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- الخيارات -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="12dp">
 
-                <!-- Order History -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
@@ -166,7 +162,6 @@
                         app:tint="@color/mutedForeground" />
                 </LinearLayout>
 
-                <!-- Favorites -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
@@ -186,12 +181,11 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Favorites"
+                        android:text="Likes"
                         android:textSize="16sp"
                         android:textColor="@color/foreground"/>
                 </LinearLayout>
 
-                <!-- Addresses -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
@@ -216,7 +210,6 @@
                         android:textColor="@color/foreground"/>
                 </LinearLayout>
 
-                <!-- Settings -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
