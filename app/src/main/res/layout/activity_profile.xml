@@ -29,7 +29,7 @@
                 <ImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@mipmap/ic_launcher_round"
+                    android:src="@drawable/logo_app"
                     android:background="@drawable/circle_bg"
                     android:padding="10dp" />
 

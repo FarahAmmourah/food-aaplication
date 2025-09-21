@@ -1,16 +1,21 @@
 package com.farah.foodapp;
 
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.VideoView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
+import com.google.android.exoplayer2.ui.StyledPlayerView;
+
 import java.util.List;
 
 public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHolder> {
@@ -34,47 +39,55 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
     public void onBindViewHolder(@NonNull ReelViewHolder holder, int position) {
         ReelItem reel = reelList.get(position);
 
+        ExoPlayer player = new ExoPlayer.Builder(context).build();
+        holder.playerView.setPlayer(player);
+
         Uri videoUri = Uri.parse("android.resource://" + context.getPackageName() + "/" + reel.getVideoResId());
-        holder.videoView.setVideoURI(videoUri);
-        holder.videoView.setOnPreparedListener(mp -> {
-            mp.setLooping(true);
-            holder.videoView.start();
-            mp.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
-        });
+        MediaItem mediaItem = MediaItem.fromUri(videoUri);
+        player.setMediaItem(mediaItem);
+        player.setRepeatMode(ExoPlayer.REPEAT_MODE_ONE);
+        player.prepare();
+        player.pause(); // نوقفه، ReelsActivity مسؤول يشغله عند الحاجة
+
+        holder.playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_ZOOM);
 
         holder.tvTitle.setText(reel.getTitle());
         holder.tvRestaurant.setText(reel.getRestaurant());
 
-        // نستخدم متغير داخلي لتتبع حالة اللايك
         final boolean[] isLiked = {false};
-
         holder.btnLike.setOnClickListener(v -> {
             if (isLiked[0]) {
-                // إذا كان متفعّل → رجعه أبيض
                 holder.btnLike.setColorFilter(android.graphics.Color.WHITE);
                 isLiked[0] = false;
             } else {
-                // إذا مش متفعّل → خليه أحمر
                 holder.btnLike.setColorFilter(android.graphics.Color.RED);
                 isLiked[0] = true;
             }
         });
     }
 
-
     @Override
     public int getItemCount() {
         return reelList.size();
     }
 
+    @Override
+    public void onViewRecycled(@NonNull ReelViewHolder holder) {
+        super.onViewRecycled(holder);
+        if (holder.playerView.getPlayer() != null) {
+            holder.playerView.getPlayer().release();
+            holder.playerView.setPlayer(null);
+        }
+    }
+
     public static class ReelViewHolder extends RecyclerView.ViewHolder {
-        VideoView videoView;
+        StyledPlayerView playerView;
         TextView tvTitle, tvRestaurant;
         ImageButton btnLike, btnComment, btnShare;
 
         public ReelViewHolder(@NonNull View itemView) {
             super(itemView);
-            videoView = itemView.findViewById(R.id.videoView);
+            playerView = itemView.findViewById(R.id.playerView);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvRestaurant = itemView.findViewById(R.id.tvRestaurant);
             btnLike = itemView.findViewById(R.id.btnLike);
