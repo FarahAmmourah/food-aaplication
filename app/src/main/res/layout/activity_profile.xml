@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="@color/background">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- الهيدر -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
@@ -42,7 +43,7 @@
                         android:layout_height="wrap_content"
                         android:text="foodie_user"
                         android:textSize="18sp"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/primaryForeground"
                         android:textStyle="bold"/>
 
                     <TextView
@@ -50,10 +51,11 @@
                         android:layout_height="wrap_content"
                         android:text="user@foodreels.com"
                         android:textSize="14sp"
-                        android:textColor="@android:color/white"/>
+                        android:textColor="@color/primaryForeground"/>
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- الكروت -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,7 +76,7 @@
                         android:layout_height="wrap_content"
                         android:text="24"
                         android:textSize="22sp"
-                        android:textColor="#FF5722"
+                        android:textColor="@color/primary"
                         android:textStyle="bold"/>
 
                     <TextView
@@ -82,7 +84,7 @@
                         android:layout_height="wrap_content"
                         android:text="Total Orders"
                         android:textSize="14sp"
-                        android:textColor="#000000"/>
+                        android:textColor="@color/foreground"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -99,7 +101,7 @@
                         android:layout_height="wrap_content"
                         android:text="Favorite"
                         android:textSize="16sp"
-                        android:textColor="#FF5722"
+                        android:textColor="@color/primary"
                         android:textStyle="bold"/>
 
                     <TextView
@@ -107,16 +109,18 @@
                         android:layout_height="wrap_content"
                         android:text="Mario's Pizzeria"
                         android:textSize="14sp"
-                        android:textColor="#000000"/>
+                        android:textColor="@color/foreground"/>
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- الخيارات -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="12dp">
 
+                <!-- Order History -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
@@ -131,7 +135,7 @@
                         android:layout_height="24dp"
                         android:src="@drawable/ic_history"
                         android:layout_marginEnd="12dp"
-                        app:tint="#FF9800" />
+                        app:tint="@color/primary" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -144,7 +148,7 @@
                             android:layout_height="wrap_content"
                             android:text="Order History"
                             android:textSize="16sp"
-                            android:textColor="#000000"
+                            android:textColor="@color/foreground"
                             android:textStyle="bold"/>
 
                         <TextView
@@ -152,16 +156,17 @@
                             android:layout_height="wrap_content"
                             android:text="24 orders"
                             android:textSize="12sp"
-                            android:textColor="#888888"/>
+                            android:textColor="@color/mutedForeground"/>
                     </LinearLayout>
 
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:src="@drawable/arrow_forward"
-                        app:tint="#888888" />
+                        app:tint="@color/mutedForeground" />
                 </LinearLayout>
 
+                <!-- Favorites -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
@@ -176,30 +181,17 @@
                         android:layout_height="24dp"
                         android:src="@drawable/ic_favorite"
                         android:layout_marginEnd="12dp"
-                        app:tint="#FF9800" />
+                        app:tint="@color/primary" />
 
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Favorites"
-                            android:textSize="16sp"
-                            android:textColor="#000000"/>
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/arrow_forward"
-                         app:tint="#888888" />
+                        android:text="Favorites"
+                        android:textSize="16sp"
+                        android:textColor="@color/foreground"/>
                 </LinearLayout>
 
-
+                <!-- Addresses -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
@@ -214,29 +206,17 @@
                         android:layout_height="24dp"
                         android:src="@drawable/ic_address"
                         android:layout_marginEnd="12dp"
-                        app:tint="#FF9800" />
+                        app:tint="@color/primary" />
 
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Addresses"
-                            android:textSize="16sp"
-                            android:textColor="#000000"/>
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/arrow_forward"
-                         app:tint="#888888" />
+                        android:text="Addresses"
+                        android:textSize="16sp"
+                        android:textColor="@color/foreground"/>
                 </LinearLayout>
 
+                <!-- Settings -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
@@ -251,27 +231,14 @@
                         android:layout_height="24dp"
                         android:src="@drawable/ic_settings"
                         android:layout_marginEnd="12dp"
-                        app:tint="#FF9800" />
+                        app:tint="@color/primary" />
 
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Settings"
-                            android:textSize="16sp"
-                            android:textColor="#000000"/>
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/arrow_forward"
-                        app:tint="#888888" />
+                        android:text="Settings"
+                        android:textSize="16sp"
+                        android:textColor="@color/foreground"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -283,6 +250,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_nav_menu" />
+        app:menu="@menu/bottom_nav_menu"
+        android:background="@color/background" />
 
 </RelativeLayout>
