@@ -11,7 +11,9 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class ReelsActivity extends AppCompatActivity {
 
@@ -26,11 +28,48 @@ public class ReelsActivity extends AppCompatActivity {
         viewPagerReels = findViewById(R.id.viewPagerReels);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        // بيانات الريلز
+        // ✅ بيانات الريلز مع أرقام عشوائية للكومنت واللايك
         List<ReelItem> reelList = new ArrayList<>();
-        reelList.add(new ReelItem(R.raw.r1, "Chicken Burger", "@Burger House"));
-        reelList.add(new ReelItem(R.raw.r2, "Pasta Carbonara", "@Italian Corner"));
-        reelList.add(new ReelItem(R.raw.r3, "Pizza Margherita", "@Mario's Pizzeria"));
+        Random random = new Random();
+
+        reelList.add(new ReelItem(
+                R.raw.r1,
+                "Chicken Burger",
+                "@Burger House",
+                1000 + random.nextInt(5000), // likes
+                50 + random.nextInt(200),    // comments
+                Arrays.asList(
+                        "The burger is delicious 🔥",
+                        "Really tasty 😍",
+                        "One of the best I’ve had 👌"
+                )
+        ));
+
+        reelList.add(new ReelItem(
+                R.raw.r2,
+                "Pasta Carbonara",
+                "@Italian Corner",
+                1000 + random.nextInt(5000),
+                50 + random.nextInt(200),
+                Arrays.asList(
+                        "The pasta is amazing 🍝",
+                        "Great flavor 😋",
+                        "Highly recommended 🤩"
+                )
+        ));
+
+        reelList.add(new ReelItem(
+                R.raw.r3,
+                "Pizza Margherita",
+                "@Mario's Pizzeria",
+                1000 + random.nextInt(5000),
+                50 + random.nextInt(200),
+                Arrays.asList(
+                        "Best pizza ever 🔥",
+                        "So delicious 😍",
+                        "I always order this 👌"
+                )
+        ));
 
         reelsAdapter = new ReelsAdapter(this, reelList);
         viewPagerReels.setAdapter(reelsAdapter);
@@ -59,7 +98,7 @@ public class ReelsActivity extends AppCompatActivity {
             return false;
         });
 
-        // ✅ تحكم بتشغيل الفيديو عند السوايب
+        // ✅ التحكم بالفيديوهات عند السوايب
         viewPagerReels.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -80,7 +119,7 @@ public class ReelsActivity extends AppCompatActivity {
                             }
                         } else {
                             if (reelHolder.playerView.getPlayer() != null) {
-                                reelHolder.playerView.getPlayer().pause(); // إيقاف الباقي
+                                reelHolder.playerView.getPlayer().pause(); // إيقاف غيره
                             }
                         }
                     }
