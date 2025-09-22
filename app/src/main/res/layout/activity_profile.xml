@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background">
@@ -16,6 +17,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- Header -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
@@ -24,7 +26,7 @@
                 android:padding="20dp"
                 android:background="@drawable/bg_header">
 
-                <!-- Avatar بحرف أول من اسم المستخدم -->
+                <!-- Avatar -->
                 <TextView
                     android:id="@+id/tv_avatar"
                     android:layout_width="70dp"
@@ -33,7 +35,7 @@
                     android:text="F"
                     android:textSize="24sp"
                     android:textStyle="bold"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/primaryForeground"
                     android:background="@drawable/circle_avatar"/>
 
                 <LinearLayout
@@ -47,24 +49,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="foodie_user"
-
-
                         android:textSize="20sp"
-                        android:textColor="@android:color/white"
-
+                        android:textColor="@color/primaryForeground"
                         android:textStyle="bold"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="user@foodreels.com"
-
                         android:textSize="16sp"
-                        android:textColor="@android:color/white"/>
+                        android:textColor="@color/primaryForeground"/>
 
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- Stats Row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -84,19 +83,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="24"
-
                         android:textSize="24sp"
-                        android:textColor="#FF5722"
-
+                        android:textColor="@color/primary"
                         android:textStyle="bold"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Total Orders"
-
                         android:textSize="16sp"
-                        android:textColor="#000000"/>
+                        android:textColor="@color/foreground"/>
 
                 </LinearLayout>
 
@@ -113,29 +109,28 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Favorite"
-
                         android:textSize="18sp"
-                        android:textColor="#FF5722"
-
+                        android:textColor="@color/primary"
                         android:textStyle="bold"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Mario's Pizzeria"
-
                         android:textSize="16sp"
-                        android:textColor="#000000"/>
+                        android:textColor="@color/foreground"/>
 
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- Options -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="16dp">
 
+                <!-- Order History -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
@@ -149,10 +144,9 @@
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:src="@drawable/ic_history"
-
-                        android:tint="#FF9800"
-                        android:layout_marginEnd="16dp"/>
-
+                        android:tint="@color/primary"
+                        android:layout_marginEnd="16dp"
+                        tools:ignore="UseAppTint" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -164,20 +158,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Order History"
-
-
                             android:textSize="18sp"
-                            android:textColor="#000000"
-
+                            android:textColor="@color/foreground"
                             android:textStyle="bold"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="24 orders"
-
                             android:textSize="14sp"
-                            android:textColor="#888888"/>
+                            android:textColor="@color/mutedForeground"/>
 
                     </LinearLayout>
 
@@ -185,9 +175,11 @@
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         android:src="@drawable/arrow_forward"
-                        app:tint="@color/mutedForeground" />
+                        android:tint="@color/mutedForeground"
+                        tools:ignore="UseAppTint" />
                 </LinearLayout>
 
+                <!-- Favorites -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
@@ -201,33 +193,27 @@
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:src="@drawable/ic_favorite"
+                        android:tint="@color/primary"
+                        android:layout_marginEnd="16dp"
+                        tools:ignore="UseAppTint" />
 
-                        android:tint="#FF9800"
-                        android:layout_marginEnd="16dp"/>
-
-                    <LinearLayout
+                    <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Favorites"
-                            android:textSize="18sp"
-                            android:textColor="#000000"/>
-                    </LinearLayout>
+                        android:layout_weight="1"
+                        android:text="Favorites"
+                        android:textSize="18sp"
+                        android:textColor="@color/foreground"/>
 
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         android:src="@drawable/arrow_forward"
-                        android:tint="#888888"/>
+                        android:tint="@color/mutedForeground"
+                        tools:ignore="UseAppTint" />
                 </LinearLayout>
 
                 <!-- Addresses -->
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
@@ -241,33 +227,27 @@
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:src="@drawable/ic_address"
+                        android:tint="@color/primary"
+                        android:layout_marginEnd="16dp"
+                        tools:ignore="UseAppTint" />
 
-                        android:tint="#FF9800"
-                        android:layout_marginEnd="16dp"/>
-
-                    <LinearLayout
+                    <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Addresses"
-                            android:textSize="18sp"
-                            android:textColor="#000000"/>
-                    </LinearLayout>
+                        android:layout_weight="1"
+                        android:text="Addresses"
+                        android:textSize="18sp"
+                        android:textColor="@color/foreground"/>
 
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         android:src="@drawable/arrow_forward"
-                        android:tint="#888888"/>
+                        android:tint="@color/mutedForeground"
+                        tools:ignore="UseAppTint" />
                 </LinearLayout>
 
                 <!-- Settings -->
-
                 <LinearLayout
                     android:id="@+id/layout_settings"
                     android:layout_width="match_parent"
@@ -284,30 +264,24 @@
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:src="@drawable/ic_settings"
+                        android:tint="@color/primary"
+                        android:layout_marginEnd="16dp"
+                        tools:ignore="UseAppTint" />
 
-                        android:tint="#FF9800"
-                        android:layout_marginEnd="16dp"/>
-
-                    <LinearLayout
+                    <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Settings"
-                            android:textSize="18sp"
-                            android:textColor="#000000"/>
-                    </LinearLayout>
+                        android:layout_weight="1"
+                        android:text="Settings"
+                        android:textSize="18sp"
+                        android:textColor="@color/foreground"/>
 
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         android:src="@drawable/arrow_forward"
-                        android:tint="#888888"/>
-
+                        android:tint="@color/mutedForeground"
+                        tools:ignore="UseAppTint" />
                 </LinearLayout>
 
             </LinearLayout>
