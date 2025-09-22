@@ -2,6 +2,8 @@ package com.farah.foodapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,13 +13,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class ProfileActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
+    LinearLayout layoutSettings; // تعريف تبويبة الإعدادات
+    TextView tvAvatar, tvUsername; // تعريف الواجهة الجديدة
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-
+        // Bottom Navigation
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.nav_profile);
 
@@ -41,5 +45,27 @@ public class ProfileActivity extends AppCompatActivity {
             }
             return false;
         });
+
+        // Settings Click Listener (ينقل لصفحة تغيير كلمة المرور)
+        layoutSettings = findViewById(R.id.layout_settings);
+        if (layoutSettings != null) {
+            layoutSettings.setOnClickListener(v -> {
+                Intent intent = new Intent(ProfileActivity.this, ChangePasswordActivity.class);
+                startActivity(intent);
+            });
+        }
+
+        // -------- Avatar بحرف أول من اسم المستخدم --------
+        tvAvatar = findViewById(R.id.tv_avatar);
+        tvUsername = findViewById(R.id.tv_username);
+
+        // هنا بتجيب اسم المستخدم (ممكن يكون من قاعدة بيانات أو SharedPreferences)
+        String username = "foodie_user"; // مثال
+
+        // عرض أول حرف في الدائرة
+        if (username != null && username.length() > 0) {
+            tvAvatar.setText(username.substring(0, 1).toUpperCase());
+            tvUsername.setText(username); // يعرض الاسم كامل بجنب الحرف
+        }
     }
 }

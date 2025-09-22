@@ -30,6 +30,8 @@
         <activity android:name=".OrdersActivity" />
         <activity android:name=".reel.ReelsActivity" />
         <activity android:name=".ProfileActivity" />
+        <activity android:name=".ChangePasswordActivity" />
+
 
 
 
