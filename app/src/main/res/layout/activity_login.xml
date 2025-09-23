@@ -77,3 +77,112 @@
         android:layout_height="wrap_content" />
 
 </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+    <!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent"-->
+    <!--    android:background="@color/background"-->
+    <!--    android:fillViewport="true">-->
+
+    <!--    <LinearLayout-->
+    <!--        android:orientation="vertical"-->
+    <!--        android:gravity="center"-->
+    <!--        android:padding="24dp"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content">-->
+
+    <!--        <ImageView-->
+    <!--            android:id="@+id/logo"-->
+    <!--            android:src="@drawable/logo_app"-->
+    <!--            android:layout_width="80dp"-->
+    <!--            android:layout_height="80dp"-->
+    <!--            android:layout_marginBottom="24dp"-->
+    <!--            android:contentDescription="App Logo" />-->
+
+    <!--        &lt;!&ndash; عنوان &ndash;&gt;-->
+    <!--        <TextView-->
+    <!--            android:id="@+id/tvTitle"-->
+    <!--            android:text="Welcome Back"-->
+    <!--            android:textSize="22sp"-->
+    <!--            android:textStyle="bold"-->
+    <!--            android:textColor="@color/foreground"-->
+    <!--            android:layout_marginBottom="16dp"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content" />-->
+
+    <!--        &lt;!&ndash; Email &ndash;&gt;-->
+    <!--        <EditText-->
+    <!--            android:id="@+id/etEmail"-->
+    <!--            android:hint="Enter your email"-->
+    <!--            android:inputType="textEmailAddress"-->
+    <!--            android:padding="12dp"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginBottom="12dp"-->
+    <!--            android:background="@android:drawable/edit_text" />-->
+
+    <!--        &lt;!&ndash; Password &ndash;&gt;-->
+    <!--        <EditText-->
+    <!--            android:id="@+id/etPassword"-->
+    <!--            android:hint="Enter your password"-->
+    <!--            android:inputType="textPassword"-->
+    <!--            android:padding="12dp"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginBottom="12dp"-->
+    <!--            android:background="@android:drawable/edit_text" />-->
+
+    <!--        &lt;!&ndash; Name (يظهر فقط بحالة Register) &ndash;&gt;-->
+    <!--        <EditText-->
+    <!--            android:id="@+id/etName"-->
+    <!--            android:hint="Enter your name"-->
+    <!--            android:padding="12dp"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginBottom="12dp"-->
+    <!--            android:background="@android:drawable/edit_text"-->
+    <!--            android:visibility="gone" />-->
+
+    <!--        &lt;!&ndash; زر أساسي (يتغير نصه حسب الحالة) &ndash;&gt;-->
+    <!--        <Button-->
+    <!--            android:id="@+id/btnAction"-->
+    <!--            android:text="Login"-->
+    <!--            android:backgroundTint="@color/primary"-->
+    <!--            android:textColor="@color/primaryForeground"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content" />-->
+
+    <!--        &lt;!&ndash; روابط &ndash;&gt;-->
+    <!--        <TextView-->
+    <!--            android:id="@+id/tvForgot"-->
+    <!--            android:text="Forgot password?"-->
+    <!--            android:textColor="@color/destructive"-->
+    <!--            android:textSize="14sp"-->
+    <!--            android:layout_marginTop="12dp"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content" />-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/tvSwitchMode"-->
+    <!--            android:text="Don’t have an account? Register"-->
+    <!--            android:textColor="@color/primary"-->
+    <!--            android:textSize="14sp"-->
+    <!--            android:layout_marginTop="8dp"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content" />-->
+
+    <!--    </LinearLayout>-->
+    <!--</ScrollView>-->
