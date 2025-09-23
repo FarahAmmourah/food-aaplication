@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.farah.foodapp.CartActivity;
+import com.farah.foodapp.cart.CartActivity;
 import com.farah.foodapp.MenuActivity;
 import com.farah.foodapp.ProfileActivity;
 import com.farah.foodapp.R;
@@ -36,7 +36,7 @@ public class ReelsActivity extends AppCompatActivity {
         Random random = new Random();
 
         reelList.add(new ReelItem(
-                R.raw.r1,
+                R.raw.burger,
                 "Chicken Burger",
                 "@Burger House",
                 1000 + random.nextInt(5000), // likes
@@ -49,7 +49,7 @@ public class ReelsActivity extends AppCompatActivity {
         ));
 
         reelList.add(new ReelItem(
-                R.raw.r2,
+                R.raw.pasta,
                 "Pasta Carbonara",
                 "@Italian Corner",
                 1000 + random.nextInt(5000),
@@ -62,7 +62,7 @@ public class ReelsActivity extends AppCompatActivity {
         ));
 
         reelList.add(new ReelItem(
-                R.raw.r3,
+                R.raw.pizza,
                 "Pizza Margherita",
                 "@Mario's Pizzeria",
                 1000 + random.nextInt(5000),

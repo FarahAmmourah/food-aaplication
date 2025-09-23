@@ -25,7 +25,7 @@
 
         <activity android:name=".LoginActivity" />
         <activity android:name=".MenuActivity" />
-        <activity android:name=".CartActivity" />
+        <activity android:name=".cart.CartActivity" />
         <activity android:name=".CheckoutActivity" />
         <activity android:name=".OrdersActivity" />
         <activity android:name=".reel.ReelsActivity" />

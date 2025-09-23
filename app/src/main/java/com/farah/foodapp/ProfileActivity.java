@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.farah.foodapp.cart.CartActivity;
 import com.farah.foodapp.reel.ReelsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

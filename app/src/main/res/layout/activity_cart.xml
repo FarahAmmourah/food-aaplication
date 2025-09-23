@@ -1,30 +1,130 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background">
 
+    <!-- Back Button -->
     <Button
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="← Back"
+        android:textColor="@color/primaryForeground"
+        android:backgroundTint="@color/primary"
         android:layout_margin="8dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
+    <!-- Title -->
     <TextView
         android:id="@+id/tvCart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cart Page"
+        android:text="My Cart"
         android:textSize="22sp"
-        android:layout_centerInParent="true" />
+        android:textStyle="bold"
+        android:textColor="@color/foreground"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/btnBack" />
 
+    <!-- Empty Cart Layout -->
+    <LinearLayout
+        android:id="@+id/layoutEmptyCart"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_cart_empty"
+            android:layout_marginBottom="12dp"/>
+
+        <TextView
+            android:id="@+id/tvEmptyCart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your cart is empty"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/foreground"
+            android:layout_marginBottom="6dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add some delicious items from restaurants to get started"
+            android:textSize="14sp"
+            android:textColor="@color/mutedForeground"/>
+
+    </LinearLayout>
+
+    <!-- Cart Actions -->
+    <LinearLayout
+        android:id="@+id/layoutCartActions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/background"
+        android:elevation="4dp"
+        android:visibility="gone">
+
+        <!-- Total Price -->
+        <TextView
+            android:id="@+id/tvTotalPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total: 0.00 JD"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/foreground"
+            android:gravity="end"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/btnCancelCart"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cancel Cart"
+                android:backgroundTint="@color/destructive"
+                android:textColor="@color/destructiveForeground"
+                android:layout_marginEnd="8dp"/>
+
+            <Button
+                android:id="@+id/btnOrderNow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Order Now"
+                android:backgroundTint="@color/primary"
+                android:textColor="@color/primaryForeground"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_nav_menu" />
+        app:menu="@menu/bottom_nav_menu"
+        android:background="@color/primary"
+        app:itemIconTint="@color/primaryForeground"
+        app:itemTextColor="@color/primaryForeground" />
 
 </RelativeLayout>

@@ -294,6 +294,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:menu="@menu/bottom_nav_menu"
-        android:background="@color/background" />
+        android:background="@color/primary"
+        app:itemIconTint="@color/primaryForeground"
+        app:itemTextColor="@color/primaryForeground" />
+
+
 
 </RelativeLayout>
