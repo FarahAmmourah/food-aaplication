@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class ChangePasswordActivity extends AppCompatActivity {
 
     EditText etOldPassword, etNewPassword, etConfirmPassword;
-    Button btnChangePassword, btnChangeLanguage, btnLogout; // أضفنا زر اللوغ اوت
+    Button btnChangePassword, btnChangeLanguage, btnLogout, btnBack; // أضفنا زر Back
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +25,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
         etConfirmPassword = findViewById(R.id.et_confirm_password);
         btnChangePassword = findViewById(R.id.btn_change_password);
         btnChangeLanguage = findViewById(R.id.btn_change_language);
-        btnLogout = findViewById(R.id.btn_logout); // زر اللوغ اوت
+        btnLogout = findViewById(R.id.btn_logout);
+        btnBack = findViewById(R.id.btn_back);
+
+        // زر Back يرجع لصفحة البروفايل
+        btnBack.setOnClickListener(v -> finish());
 
         // زر تغيير كلمة المرور
         btnChangePassword.setOnClickListener(v -> {
@@ -64,9 +68,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
         // زر اللوغ اوت
         btnLogout.setOnClickListener(v -> {
-            // ترجيع المستخدم لصفحة تسجيل الدخول
             Intent intent = new Intent(ChangePasswordActivity.this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // يمنع الرجوع للخلف
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
         });

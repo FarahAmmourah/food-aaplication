@@ -18,13 +18,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class CartActivity extends AppCompatActivity {
 
     private LinearLayout layoutEmptyCart;
-    private LinearLayout layoutCartActions;
     private TextView tvTotalPrice;
-    private Button btnCancelCart, btnOrderNow, btnBack;
+    private Button btnCancelCart, btnOrderNow;
     private BottomNavigationView bottomNavigationView;
 
-    // بدل CartManager: متغير بسيط للتجربة
-    private double fakeTotalPrice = 0.0; // جرّب تخليها 10.5 مثلاً لتشوف الواجهة الثانية
+    // مبدئياً السلة فاضية
+    private double totalPrice = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +31,7 @@ public class CartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cart);
 
         // Bind Views
-        btnBack = findViewById(R.id.btnBack);
         layoutEmptyCart = findViewById(R.id.layoutEmptyCart);
-        layoutCartActions = findViewById(R.id.layoutCartActions);
         tvTotalPrice = findViewById(R.id.tvTotalPrice);
         btnCancelCart = findViewById(R.id.btnCancelCart);
         btnOrderNow = findViewById(R.id.btnOrderNow);
@@ -43,30 +40,24 @@ public class CartActivity extends AppCompatActivity {
         // Set navbar selected item
         bottomNavigationView.setSelectedItemId(R.id.nav_cart);
 
-        // Handle back button
-        btnBack.setOnClickListener(v -> finish());
-
-        // Show empty or with total
-        if (fakeTotalPrice > 0) {
-            layoutEmptyCart.setVisibility(LinearLayout.GONE);
-            layoutCartActions.setVisibility(LinearLayout.VISIBLE);
-            tvTotalPrice.setText("Total: " + fakeTotalPrice + " JD");
-        } else {
-            layoutEmptyCart.setVisibility(LinearLayout.VISIBLE);
-            layoutCartActions.setVisibility(LinearLayout.GONE);
-        }
+        // تحديث العرض أول مرة
+        updateCartUI();
 
         // Cancel cart
         btnCancelCart.setOnClickListener(v -> {
-            fakeTotalPrice = 0; // نفرغ السلة
-            layoutEmptyCart.setVisibility(LinearLayout.VISIBLE);
-            layoutCartActions.setVisibility(LinearLayout.GONE);
+            totalPrice = 0.0; // نفرغ السلة
+            updateCartUI();
             Toast.makeText(this, "Cart cleared", Toast.LENGTH_SHORT).show();
         });
 
-        // Order now
+        // Checkout / Order now
         btnOrderNow.setOnClickListener(v -> {
-            Toast.makeText(this, "Order placed successfully!", Toast.LENGTH_SHORT).show();
+            if (totalPrice > 0) {
+                Toast.makeText(this, "Proceeding to checkout...", Toast.LENGTH_SHORT).show();
+                // startActivity(new Intent(this, CheckoutActivity.class));
+            } else {
+                Toast.makeText(this, "Cart is empty!", Toast.LENGTH_SHORT).show();
+            }
         });
 
         // Bottom navigation actions
@@ -90,5 +81,16 @@ public class CartActivity extends AppCompatActivity {
             }
             return false;
         });
+    }
+
+    private void updateCartUI() {
+        // دايمًا اعرض التوتال
+        tvTotalPrice.setText("Total: " + totalPrice + " JD");
+
+        if (totalPrice == 0) {
+            layoutEmptyCart.setVisibility(LinearLayout.VISIBLE);
+        } else {
+            layoutEmptyCart.setVisibility(LinearLayout.GONE);
+        }
     }
 }
