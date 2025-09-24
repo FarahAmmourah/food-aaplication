@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.farah.foodapp" />
+                  <option name="mobileSdkAppId" value="1:26617880897:android:7109580dd3118c0b85c1c0" />
+                  <option name="projectId" value="food-app-f640d" />
+                  <option name="projectNumber" value="26617880897" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.farah.foodapp.login.LoginActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final int SPLASH_TIME = 3000;

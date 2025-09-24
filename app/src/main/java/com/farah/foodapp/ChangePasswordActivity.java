@@ -9,6 +9,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.farah.foodapp.login.LoginActivity;
+
 public class ChangePasswordActivity extends AppCompatActivity {
 
     EditText etOldPassword, etNewPassword, etConfirmPassword;

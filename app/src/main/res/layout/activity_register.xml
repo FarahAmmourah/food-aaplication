@@ -16,7 +16,7 @@
         android:contentDescription="App Logo" />
 
     <TextView
-        android:text="Welcome Back"
+        android:text="Create Account"
         android:textSize="22sp"
         android:textStyle="bold"
         android:textColor="@color/foreground"
@@ -25,12 +25,31 @@
         android:layout_height="wrap_content" />
 
     <TextView
-        android:text="Sign in to continue"
+        android:text="Sign up to get started"
         android:textSize="14sp"
         android:textColor="@color/mutedForeground"
         android:layout_marginBottom="24dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/etName"
+        android:hint="Enter your full name"
+        android:padding="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:background="@android:drawable/edit_text" />
+
+    <EditText
+        android:id="@+id/etPhone"
+        android:hint="Enter your phone number"
+        android:inputType="phone"
+        android:padding="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:background="@android:drawable/edit_text" />
 
     <EditText
         android:id="@+id/etEmail"
@@ -49,46 +68,34 @@
         android:padding="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:background="@android:drawable/edit_text" />
+
+    <EditText
+        android:id="@+id/etConfirmPassword"
+        android:hint="Confirm your password"
+        android:inputType="textPassword"
+        android:padding="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:background="@android:drawable/edit_text" />
 
     <Button
-        android:id="@+id/btnLogin"
-        android:text="Login"
+        android:id="@+id/btnRegister"
+        android:text="Register"
         android:backgroundTint="@color/primary"
         android:textColor="@color/primaryForeground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-
-
     <TextView
-        android:id="@+id/tvForgot"
-        android:text="Forgot password?"
-        android:textColor="@color/destructive"
+        android:id="@+id/tvAlreadyAccount"
+        android:text="Already have an account? Login"
+        android:textColor="@color/primary"
         android:textSize="14sp"
         android:layout_marginTop="12dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/tvRegister"
-        android:text="Don’t have an account? Register"
-        android:textColor="@color/primary"
-        android:textSize="14sp"
-        android:layout_marginTop="8dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <!-- زر Google Sign-In -->
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/btnGoogle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:padding="12dp"
-        android:scaleX="1.2"
-        android:scaleY="1.2" />
-
 
 </LinearLayout>

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "26617880897",
+    "project_id": "food-app-f640d",
+    "storage_bucket": "food-app-f640d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:26617880897:android:7109580dd3118c0b85c1c0",
+        "android_client_info": {
+          "package_name": "com.farah.foodapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "26617880897-bc1s90gq58bq9r08d8e0jlprf0b8jueu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.farah.foodapp",
+            "certificate_hash": "5c88f95f9c96f00b95ffbd3435b4a50436cf8fe1"
+          }
+        },
+        {
+          "client_id": "26617880897-b4i8hd5skigptil3tkq87nqkb2akuk0i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVU-V24d5-YohxjrjHFc1418q3h_HP5p4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "26617880897-b4i8hd5skigptil3tkq87nqkb2akuk0i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
