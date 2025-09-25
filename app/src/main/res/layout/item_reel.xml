@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.exoplayer2.ui.StyledPlayerView
+    <!-- 🎥 الفيديو -->
+    <androidx.media3.ui.PlayerView
         android:id="@+id/playerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:resize_mode="fill"
-        app:use_controller="false" />
+        app:use_controller="false"
+        android:background="@android:color/black" />
 
+    <!-- ❤️ أزرار التفاعل -->
     <LinearLayout
         android:orientation="vertical"
         android:gravity="center"
@@ -27,8 +29,7 @@
             android:layout_height="48dp"
             android:src="@drawable/ic_heart"
             android:background="@android:color/transparent"
-            android:tint="@android:color/white"
-            tools:ignore="UseAppTint" />
+            android:tint="@android:color/white" />
 
         <TextView
             android:id="@+id/tvLikeCount"
@@ -38,7 +39,7 @@
             android:textColor="@android:color/white"
             android:textSize="12sp"
             android:gravity="center"
-            android:layout_marginBottom="40dp"/>
+            android:layout_marginBottom="40dp" />
 
         <ImageButton
             android:id="@+id/btnComment"
@@ -46,8 +47,7 @@
             android:layout_height="48dp"
             android:src="@drawable/ic_comment"
             android:background="@android:color/transparent"
-            android:tint="@android:color/white"
-            tools:ignore="UseAppTint" />
+            android:tint="@android:color/white" />
 
         <TextView
             android:id="@+id/tvCommentCount"
@@ -57,7 +57,7 @@
             android:textColor="@android:color/white"
             android:textSize="12sp"
             android:gravity="center"
-            android:layout_marginBottom="40dp"/>
+            android:layout_marginBottom="40dp" />
 
         <ImageButton
             android:id="@+id/btnShare"
@@ -65,8 +65,7 @@
             android:layout_height="48dp"
             android:src="@drawable/ic_share"
             android:background="@android:color/transparent"
-            android:tint="@android:color/white"
-            tools:ignore="UseAppTint" />
+            android:tint="@android:color/white" />
 
         <TextView
             android:id="@+id/tvShareLabel"
@@ -75,9 +74,10 @@
             android:text="Share"
             android:textColor="@android:color/white"
             android:textSize="12sp"
-            android:gravity="center"/>
+            android:gravity="center" />
     </LinearLayout>
 
+    <!-- ℹ️ معلومات الأكلة -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"

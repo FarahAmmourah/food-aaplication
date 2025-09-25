@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -14,10 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.farah.foodapp.R;
 import com.farah.foodapp.comments.CommentsDialog;
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.MediaItem;
-import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
-import com.google.android.exoplayer2.ui.StyledPlayerView;
+
+import androidx.media3.common.MediaItem;
+import androidx.media3.exoplayer.ExoPlayer;
+import androidx.media3.ui.PlayerView;
 
 import java.util.List;
 
@@ -45,18 +46,15 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
         ExoPlayer player = new ExoPlayer.Builder(context).build();
         holder.playerView.setPlayer(player);
 
-        Uri videoUri = Uri.parse("android.resource://" + context.getPackageName() + "/" + reel.getVideoResId());
-        MediaItem mediaItem = MediaItem.fromUri(videoUri);
+        MediaItem mediaItem = MediaItem.fromUri(Uri.parse(reel.getVideoUrl()));
         player.setMediaItem(mediaItem);
         player.setRepeatMode(ExoPlayer.REPEAT_MODE_ONE);
         player.prepare();
         player.pause();
 
-        holder.playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_ZOOM);
-
         holder.tvTitle.setText(reel.getTitle());
         holder.tvRestaurant.setText(reel.getRestaurant());
-
+        holder.btnOrder.setText("ORDER NOW - $" + reel.getPrice());
         holder.tvLikeCount.setText(String.valueOf(reel.getLikesCount()));
         holder.tvCommentCount.setText(String.valueOf(reel.getCommentsCount()));
 
@@ -94,20 +92,22 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
     }
 
     public static class ReelViewHolder extends RecyclerView.ViewHolder {
-        StyledPlayerView playerView;
+        PlayerView playerView;
         TextView tvTitle, tvRestaurant, tvLikeCount, tvCommentCount;
         ImageButton btnLike, btnComment, btnShare;
+        Button btnOrder;
 
         public ReelViewHolder(@NonNull View itemView) {
             super(itemView);
             playerView = itemView.findViewById(R.id.playerView);
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvRestaurant = itemView.findViewById(R.id.tvRestaurant);
+            tvLikeCount = itemView.findViewById(R.id.tvLikeCount);
+            tvCommentCount = itemView.findViewById(R.id.tvCommentCount);
             btnLike = itemView.findViewById(R.id.btnLike);
             btnComment = itemView.findViewById(R.id.btnComment);
             btnShare = itemView.findViewById(R.id.btnShare);
-            tvLikeCount = itemView.findViewById(R.id.tvLikeCount);
-            tvCommentCount = itemView.findViewById(R.id.tvCommentCount);
+            btnOrder = itemView.findViewById(R.id.btnOrder);
         }
     }
 }
