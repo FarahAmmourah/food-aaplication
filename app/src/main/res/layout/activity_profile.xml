@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="@color/background"
+    tools:context=".profile.ProfileActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -34,7 +35,7 @@
                     android:textSize="24sp"
                     android:textStyle="bold"
                     android:textColor="@color/primaryForeground"
-                    android:background="@drawable/circle_avatar"/>
+                    android:background="@drawable/circle_avatar" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -49,15 +50,23 @@
                         android:text="foodie_user"
                         android:textSize="20sp"
                         android:textColor="@color/primaryForeground"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tv_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="user@foodreels.com"
                         android:textSize="16sp"
-                        android:textColor="@color/primaryForeground"/>
+                        android:textColor="@color/primaryForeground" />
 
+                    <TextView
+                        android:id="@+id/tv_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0790000000"
+                        android:textSize="16sp"
+                        android:textColor="@color/primaryForeground" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -82,15 +91,14 @@
                         android:text="24"
                         android:textSize="24sp"
                         android:textColor="@color/primary"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Total Orders"
                         android:textSize="16sp"
-                        android:textColor="@color/foreground"/>
-
+                        android:textColor="@color/foreground" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -108,15 +116,14 @@
                         android:text="Favorite"
                         android:textSize="18sp"
                         android:textColor="@color/primary"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Mario's Pizzeria"
                         android:textSize="16sp"
-                        android:textColor="@color/foreground"/>
-
+                        android:textColor="@color/foreground" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -155,15 +162,14 @@
                             android:text="Order History"
                             android:textSize="18sp"
                             android:textColor="@color/foreground"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="24 orders"
                             android:textSize="14sp"
-                            android:textColor="@color/mutedForeground"/>
-
+                            android:textColor="@color/mutedForeground" />
                     </LinearLayout>
 
                     <ImageView
@@ -197,7 +203,7 @@
                         android:layout_weight="1"
                         android:text="Favorites"
                         android:textSize="18sp"
-                        android:textColor="@color/foreground"/>
+                        android:textColor="@color/foreground" />
 
                     <ImageView
                         android:layout_width="22dp"
@@ -230,7 +236,7 @@
                         android:layout_weight="1"
                         android:text="Addresses"
                         android:textSize="18sp"
-                        android:textColor="@color/foreground"/>
+                        android:textColor="@color/foreground" />
 
                     <ImageView
                         android:layout_width="22dp"
@@ -266,7 +272,7 @@
                         android:layout_weight="1"
                         android:text="Settings"
                         android:textSize="18sp"
-                        android:textColor="@color/foreground"/>
+                        android:textColor="@color/foreground" />
 
                     <ImageView
                         android:layout_width="22dp"
@@ -275,8 +281,10 @@
                         android:tint="@color/mutedForeground"
                         tools:ignore="UseAppTint" />
                 </LinearLayout>
-
             </LinearLayout>
+
+
+
         </LinearLayout>
     </ScrollView>
 
@@ -289,7 +297,4 @@
         android:background="@color/primary"
         app:itemIconTint="@color/primaryForeground"
         app:itemTextColor="@color/primaryForeground" />
-
-
-
 </RelativeLayout>

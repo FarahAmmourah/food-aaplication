@@ -12,19 +12,21 @@ import com.farah.foodapp.cart.CartActivity;
 import com.farah.foodapp.menu.MenuActivity;
 import com.farah.foodapp.reel.ReelsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ProfileActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
     LinearLayout layoutSettings;
-    TextView tvAvatar, tvUsername;
+    TextView tvAvatar, tvUsername, tvEmail, tvPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        // Bottom Navigation
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.nav_profile);
 
@@ -59,12 +61,31 @@ public class ProfileActivity extends AppCompatActivity {
 
         tvAvatar = findViewById(R.id.tv_avatar);
         tvUsername = findViewById(R.id.tv_username);
+        tvEmail = findViewById(R.id.tv_email);
+        tvPhone = findViewById(R.id.tv_phone);
 
-        String username = "foodie_user";
+        loadUserProfile();
+    }
 
-        if (username != null && username.length() > 0) {
-            tvAvatar.setText(username.substring(0, 1).toUpperCase());
-            tvUsername.setText(username);
-        }
+    private void loadUserProfile() {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("users").document(uid).get()
+                .addOnSuccessListener(document -> {
+                    if (document.exists()) {
+                        String name = document.getString("name");
+                        String email = document.getString("email");
+                        String phone = document.getString("phone");
+
+                        tvUsername.setText(name != null ? name : "");
+                        tvEmail.setText(email != null ? email : "");
+                        tvPhone.setText(phone != null ? phone : "");
+
+                        if (name != null && !name.isEmpty()) {
+                            tvAvatar.setText(String.valueOf(name.charAt(0)).toUpperCase());
+                        }
+                    }
+                });
     }
 }

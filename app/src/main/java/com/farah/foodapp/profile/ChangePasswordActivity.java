@@ -11,11 +11,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.farah.foodapp.R;
 import com.farah.foodapp.login.LoginActivity;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
     EditText etOldPassword, etNewPassword, etConfirmPassword;
-    Button btnChangePassword, btnChangeLanguage, btnLogout, btnBack; // أضفنا زر Back
+    Button btnChangePassword, btnChangeLanguage, btnLogout, btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,22 +37,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
         btnBack.setOnClickListener(v -> finish());
 
-        btnChangePassword.setOnClickListener(v -> {
-            String oldPass = etOldPassword.getText().toString().trim();
-            String newPass = etNewPassword.getText().toString().trim();
-            String confirmPass = etConfirmPassword.getText().toString().trim();
-
-            if (oldPass.isEmpty() || newPass.isEmpty() || confirmPass.isEmpty()) {
-                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
-            } else if (!newPass.equals(confirmPass)) {
-                Toast.makeText(this, "New passwords do not match", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Password changed successfully!", Toast.LENGTH_SHORT).show();
-                etOldPassword.setText("");
-                etNewPassword.setText("");
-                etConfirmPassword.setText("");
-            }
-        });
+        btnChangePassword.setOnClickListener(v -> changePassword());
 
         btnChangeLanguage.setOnClickListener(v -> {
             final String[] languages = {"English", "عربي"};
@@ -65,10 +55,62 @@ public class ChangePasswordActivity extends AppCompatActivity {
         });
 
         btnLogout.setOnClickListener(v -> {
-            Intent intent = new Intent(ChangePasswordActivity.this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
+            new AlertDialog.Builder(this)
+                    .setTitle("Logout")
+                    .setMessage("Are you sure you want to log out?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        FirebaseAuth.getInstance().signOut();
+                        Intent intent = new Intent(ChangePasswordActivity.this, LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        });
+
+    }
+
+    private void changePassword() {
+        String oldPass = etOldPassword.getText().toString().trim();
+        String newPass = etNewPassword.getText().toString().trim();
+        String confirmPass = etConfirmPassword.getText().toString().trim();
+
+        if (oldPass.isEmpty() || newPass.isEmpty() || confirmPass.isEmpty()) {
+            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!newPass.equals(confirmPass)) {
+            Toast.makeText(this, "New passwords do not match", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) return;
+
+        AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), oldPass);
+
+        user.reauthenticate(credential).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                user.updatePassword(newPass).addOnCompleteListener(updateTask -> {
+                    if (updateTask.isSuccessful()) {
+                        FirebaseFirestore.getInstance()
+                                .collection("users")
+                                .document(user.getUid())
+                                .update("password", newPass);
+
+                        Toast.makeText(this, "Password Updated", Toast.LENGTH_SHORT).show();
+                        etOldPassword.setText("");
+                        etNewPassword.setText("");
+                        etConfirmPassword.setText("");
+                    } else {
+                        Toast.makeText(this, "Update Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                Toast.makeText(this, "Re-authentication Failed", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }
