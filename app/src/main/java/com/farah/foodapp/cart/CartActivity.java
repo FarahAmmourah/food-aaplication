@@ -22,7 +22,6 @@ public class CartActivity extends AppCompatActivity {
     private Button btnCancelCart, btnOrderNow;
     private BottomNavigationView bottomNavigationView;
 
-    // مبدئياً السلة فاضية
     private double totalPrice = 0.0;
 
     @Override
@@ -30,37 +29,30 @@ public class CartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        // Bind Views
         layoutEmptyCart = findViewById(R.id.layoutEmptyCart);
         tvTotalPrice = findViewById(R.id.tvTotalPrice);
         btnCancelCart = findViewById(R.id.btnCancelCart);
         btnOrderNow = findViewById(R.id.btnOrderNow);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        // Set navbar selected item
         bottomNavigationView.setSelectedItemId(R.id.nav_cart);
 
-        // تحديث العرض أول مرة
         updateCartUI();
 
-        // Cancel cart
         btnCancelCart.setOnClickListener(v -> {
-            totalPrice = 0.0; // نفرغ السلة
+            totalPrice = 0.0;
             updateCartUI();
             Toast.makeText(this, "Cart cleared", Toast.LENGTH_SHORT).show();
         });
 
-        // Checkout / Order now
         btnOrderNow.setOnClickListener(v -> {
             if (totalPrice > 0) {
                 Toast.makeText(this, "Proceeding to checkout...", Toast.LENGTH_SHORT).show();
-                // startActivity(new Intent(this, CheckoutActivity.class));
             } else {
                 Toast.makeText(this, "Cart is empty!", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Bottom navigation actions
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
 
@@ -84,7 +76,6 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void updateCartUI() {
-        // دايمًا اعرض التوتال
         tvTotalPrice.setText("Total: " + totalPrice + " JD");
 
         if (totalPrice == 0) {

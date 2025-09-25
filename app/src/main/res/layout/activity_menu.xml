@@ -13,7 +13,6 @@
         android:padding="16dp"
         android:layout_above="@id/bottom_navigation">
 
-        <!-- Title -->
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
@@ -24,7 +23,6 @@
             android:textColor="#000000"
             android:paddingBottom="12dp" />
 
-        <!-- Search Bar -->
         <EditText
             android:id="@+id/etSearch"
             android:layout_width="match_parent"
@@ -38,7 +36,6 @@
             android:textColor="#000000"
             android:textColorHint="#888888" />
 
-        <!-- RecyclerView for menu items -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerMenu"
             android:layout_width="match_parent"
@@ -48,7 +45,6 @@
             android:clipToPadding="false" />
     </LinearLayout>
 
-    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"

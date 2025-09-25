@@ -12,7 +12,7 @@ public class ReelItem {
     private boolean liked = false;
     private double price;
 
-    public ReelItem() {} // لازم للفirebase
+    public ReelItem() {}
 
     public ReelItem(String videoUrl, String title, String restaurant,
                     int likesCount, int commentsCount, List<String> comments, double price) {

@@ -81,7 +81,6 @@
         android:layout_marginBottom="16dp"
         android:background="@android:drawable/edit_text" />
 
-    <!-- ✨ تبويبات اختيار الدور -->
     <RadioGroup
         android:id="@+id/rgRole"
         android:layout_width="match_parent"

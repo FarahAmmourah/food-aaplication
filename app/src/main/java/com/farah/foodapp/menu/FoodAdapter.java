@@ -49,11 +49,9 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         holder.tvRating.setText("★ " + item.getRating());
         holder.imgFood.setImageResource(item.getImageResId());
 
-        // ضبط النصوص لأسعار Small / Large
         holder.tvSmall.setText("Small  $" + item.getSmallPrice());
         holder.tvLarge.setText("Large  $" + item.getLargePrice());
 
-        // مثال لإضافة Click Listener على زر Small
         holder.btnSmall.setOnClickListener(v -> {
             // TODO: ضيف الكود لإضافة الحجم الصغير للكارت
         });
@@ -68,7 +66,6 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         return foodList.size();
     }
 
-    // فلترة البحث
     @Override
     public Filter getFilter() {
         return foodFilter;
@@ -118,15 +115,12 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
             tvRestaurant = itemView.findViewById(R.id.tvRestaurant);
             tvRating = itemView.findViewById(R.id.tvRating);
 
-            // أزرار الأحجام
             btnSmall = itemView.findViewById(R.id.btnSmall);
             btnLarge = itemView.findViewById(R.id.btnLarge);
 
-            // النصوص داخل الأزرار
             tvSmall = btnSmall.findViewById(R.id.tvSmall);
             tvLarge = btnLarge.findViewById(R.id.tvLarge);
 
-            // أيقونات +
             iconAddSmall = btnSmall.findViewById(R.id.iconAddSmall);
             iconAddLarge = btnLarge.findViewById(R.id.iconAddLarge);
 

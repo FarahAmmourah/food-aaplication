@@ -15,8 +15,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class ProfileActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
-    LinearLayout layoutSettings; // تعريف تبويبة الإعدادات
-    TextView tvAvatar, tvUsername; // تعريف الواجهة الجديدة
+    LinearLayout layoutSettings;
+    TextView tvAvatar, tvUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,6 @@ public class ProfileActivity extends AppCompatActivity {
             return false;
         });
 
-        // Settings Click Listener (ينقل لصفحة تغيير كلمة المرور)
         layoutSettings = findViewById(R.id.layout_settings);
         if (layoutSettings != null) {
             layoutSettings.setOnClickListener(v -> {
@@ -57,17 +56,14 @@ public class ProfileActivity extends AppCompatActivity {
             });
         }
 
-        // -------- Avatar بحرف أول من اسم المستخدم --------
         tvAvatar = findViewById(R.id.tv_avatar);
         tvUsername = findViewById(R.id.tv_username);
 
-        // هنا بتجيب اسم المستخدم (ممكن يكون من قاعدة بيانات أو SharedPreferences)
-        String username = "foodie_user"; // مثال
+        String username = "foodie_user";
 
-        // عرض أول حرف في الدائرة
         if (username != null && username.length() > 0) {
             tvAvatar.setText(username.substring(0, 1).toUpperCase());
-            tvUsername.setText(username); // يعرض الاسم كامل بجنب الحرف
+            tvUsername.setText(username);
         }
     }
 }

@@ -37,7 +37,6 @@ public class MenuActivity extends AppCompatActivity {
 
         etSearch = findViewById(R.id.etSearch);
 
-        // بيانات تجريبية
         foodList = new ArrayList<>();
         foodList.add(new FoodItem("Margherita Pizza","Fresh mozzarella, tomato sauce, basil","@Mario's Pizzeria",10.99,14.99,4.8f,R.drawable.pizza));
         foodList.add(new FoodItem("Cheeseburger","Beef patty, cheddar cheese, lettuce, tomato","@Burger House",8.50,11.99,4.5f,R.drawable.burger));
@@ -46,7 +45,6 @@ public class MenuActivity extends AppCompatActivity {
         adapter = new FoodAdapter(this, foodList);
         recyclerMenu.setAdapter(adapter);
 
-        // البحث
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -60,7 +58,6 @@ public class MenuActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) { }
         });
 
-        // ------- Bottom Navigation -------
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.nav_menu);
 
@@ -72,7 +69,7 @@ public class MenuActivity extends AppCompatActivity {
                 overridePendingTransition(0, 0);
                 return true;
             } else if (id == R.id.nav_menu) {
-                return true; // إحنا أصلاً بالمنيو
+                return true;
             } else if (id == R.id.nav_cart) {
                 startActivity(new Intent(this, CartActivity.class));
                 overridePendingTransition(0, 0);

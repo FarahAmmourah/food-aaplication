@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- 🎥 الفيديو -->
     <androidx.media3.ui.PlayerView
         android:id="@+id/playerView"
         android:layout_width="match_parent"
@@ -13,7 +12,6 @@
         app:use_controller="false"
         android:background="@android:color/black" />
 
-    <!-- ❤️ أزرار التفاعل -->
     <LinearLayout
         android:orientation="vertical"
         android:gravity="center"
@@ -29,7 +27,7 @@
             android:layout_height="48dp"
             android:src="@drawable/ic_heart"
             android:background="@android:color/transparent"
-            android:tint="@android:color/white" />
+            app:tint="@android:color/white" />
 
         <TextView
             android:id="@+id/tvLikeCount"
@@ -47,7 +45,7 @@
             android:layout_height="48dp"
             android:src="@drawable/ic_comment"
             android:background="@android:color/transparent"
-            android:tint="@android:color/white" />
+            app:tint="@android:color/white" />
 
         <TextView
             android:id="@+id/tvCommentCount"
@@ -65,7 +63,7 @@
             android:layout_height="48dp"
             android:src="@drawable/ic_share"
             android:background="@android:color/transparent"
-            android:tint="@android:color/white" />
+            app:tint="@android:color/white" />
 
         <TextView
             android:id="@+id/tvShareLabel"
@@ -77,7 +75,6 @@
             android:gravity="center" />
     </LinearLayout>
 
-    <!-- ℹ️ معلومات الأكلة -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"

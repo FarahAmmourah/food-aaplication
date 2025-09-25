@@ -68,7 +68,6 @@ public class LoginActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        // Google Sign-In Options
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -76,7 +75,6 @@ public class LoginActivity extends AppCompatActivity {
 
         googleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        // ✅ تعديل ديزاين زر Google
         for (int i = 0; i < btnGoogle.getChildCount(); i++) {
             View v = btnGoogle.getChildAt(i);
             if (v instanceof TextView) {
@@ -93,7 +91,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
 
-        // Email Login
         btnLogin.setOnClickListener(v -> {
             String email = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
@@ -109,10 +106,8 @@ public class LoginActivity extends AppCompatActivity {
                             int selectedId = rgRole.getCheckedRadioButtonId();
 
                             if (selectedId == R.id.rbAdmin) {
-                                // 👑 لو أدمن → Dashboard الأدمن
                                 startActivity(new Intent(this, AdminDashboardActivity.class));
                             } else {
-                                // 👤 لو كستومر → Reels
                                 startActivity(new Intent(this, ReelsActivity.class));
                             }
                             finish();
@@ -122,17 +117,14 @@ public class LoginActivity extends AppCompatActivity {
                     });
         });
 
-        // Forgot Password
         tvForgot.setOnClickListener(v -> {
             startActivity(new Intent(this, ForgotPasswordActivity.class));
         });
 
-        // Register
         tvRegister.setOnClickListener(v -> {
             startActivity(new Intent(this, RegisterActivity.class));
         });
 
-        // Google Sign-In
         btnGoogle.setOnClickListener(v -> {
             Intent signInIntent = googleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -166,7 +158,6 @@ public class LoginActivity extends AppCompatActivity {
                             String name = user.getDisplayName();
                             String email = user.getEmail();
 
-                            // ✅ تخزين بالـ Firestore
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
                             Map<String, Object> userData = new HashMap<>();
                             userData.put("name", name);
@@ -176,7 +167,6 @@ public class LoginActivity extends AppCompatActivity {
 
                             Toast.makeText(this, "Welcome " + name, Toast.LENGTH_SHORT).show();
 
-                            // Google Sign-In → اعتبره دايمًا Customer
                             startActivity(new Intent(this, ReelsActivity.class));
                             finish();
                         }

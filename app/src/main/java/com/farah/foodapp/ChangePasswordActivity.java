@@ -21,7 +21,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
 
-        // ربط عناصر الواجهة
         etOldPassword = findViewById(R.id.et_old_password);
         etNewPassword = findViewById(R.id.et_new_password);
         etConfirmPassword = findViewById(R.id.et_confirm_password);
@@ -30,10 +29,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
         btnLogout = findViewById(R.id.btn_logout);
         btnBack = findViewById(R.id.btn_back);
 
-        // زر Back يرجع لصفحة البروفايل
         btnBack.setOnClickListener(v -> finish());
 
-        // زر تغيير كلمة المرور
         btnChangePassword.setOnClickListener(v -> {
             String oldPass = etOldPassword.getText().toString().trim();
             String newPass = etNewPassword.getText().toString().trim();
@@ -44,7 +41,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
             } else if (!newPass.equals(confirmPass)) {
                 Toast.makeText(this, "New passwords do not match", Toast.LENGTH_SHORT).show();
             } else {
-                // هون بتحطي منطق الحفظ (SharedPreferences أو API)
                 Toast.makeText(this, "Password changed successfully!", Toast.LENGTH_SHORT).show();
                 etOldPassword.setText("");
                 etNewPassword.setText("");
@@ -52,7 +48,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
             }
         });
 
-        // زر تغيير اللغة
         btnChangeLanguage.setOnClickListener(v -> {
             final String[] languages = {"English", "عربي"};
 
@@ -68,7 +63,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
             builder.create().show();
         });
 
-        // زر اللوغ اوت
         btnLogout.setOnClickListener(v -> {
             Intent intent = new Intent(ChangePasswordActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

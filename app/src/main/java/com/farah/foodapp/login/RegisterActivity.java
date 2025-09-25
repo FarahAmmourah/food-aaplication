@@ -63,16 +63,13 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }
 
-            // نحدد الدور
             String role = rbAdmin.isChecked() ? "admin" : "customer";
 
-            // تسجيل باستخدام FirebaseAuth
             auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             String uid = auth.getCurrentUser().getUid();
 
-                            // تخزين بيانات إضافية في Firestore
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
                             Map<String, Object> userData = new HashMap<>();
                             userData.put("name", name);
@@ -91,7 +88,6 @@ public class RegisterActivity extends AppCompatActivity {
                                     });
 
                         } else {
-                            // ✨ اظهار الخطأ الحقيقي بدل "Registration failed"
                             String errorMsg = task.getException() != null
                                     ? task.getException().getMessage()
                                     : "Unknown error";
@@ -100,7 +96,6 @@ public class RegisterActivity extends AppCompatActivity {
                     });
         });
 
-        // ✅ يرجع على صفحة اللوج إن
         tvAlreadyAccount.setOnClickListener(v -> {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
