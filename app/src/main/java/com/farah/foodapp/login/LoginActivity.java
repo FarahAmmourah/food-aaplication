@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.farah.foodapp.R;
 import com.farah.foodapp.reel.ReelsActivity;
+import com.farah.foodapp.admin.AdminDashboardActivity; // ✨ لازم تعمل Activity للأدمن
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -39,6 +42,9 @@ public class LoginActivity extends AppCompatActivity {
     private TextView tvForgot, tvRegister;
     private SignInButton btnGoogle;
 
+    private RadioGroup rgRole;
+    private RadioButton rbCustomer, rbAdmin;
+
     private FirebaseAuth auth;
     private GoogleSignInClient googleSignInClient;
 
@@ -56,6 +62,10 @@ public class LoginActivity extends AppCompatActivity {
         tvRegister = findViewById(R.id.tvRegister);
         btnGoogle = findViewById(R.id.btnGoogle);
 
+        rgRole = findViewById(R.id.rgRole);
+        rbCustomer = findViewById(R.id.rbCustomer);
+        rbAdmin = findViewById(R.id.rbAdmin);
+
         auth = FirebaseAuth.getInstance();
 
         // Google Sign-In Options
@@ -66,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
 
         googleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        // ✅ تعديل ديزاين زر Google (نص + أيقونة)
+        // ✅ تعديل ديزاين زر Google
         for (int i = 0; i < btnGoogle.getChildCount(); i++) {
             View v = btnGoogle.getChildAt(i);
             if (v instanceof TextView) {
@@ -96,7 +106,15 @@ public class LoginActivity extends AppCompatActivity {
             auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            startActivity(new Intent(this, ReelsActivity.class));
+                            int selectedId = rgRole.getCheckedRadioButtonId();
+
+                            if (selectedId == R.id.rbAdmin) {
+                                // 👑 لو أدمن → Dashboard الأدمن
+                                startActivity(new Intent(this, AdminDashboardActivity.class));
+                            } else {
+                                // 👤 لو كستومر → Reels
+                                startActivity(new Intent(this, ReelsActivity.class));
+                            }
                             finish();
                         } else {
                             Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show();
@@ -157,6 +175,8 @@ public class LoginActivity extends AppCompatActivity {
                             db.collection("users").document(user.getUid()).set(userData);
 
                             Toast.makeText(this, "Welcome " + name, Toast.LENGTH_SHORT).show();
+
+                            // Google Sign-In → اعتبره دايمًا Customer
                             startActivity(new Intent(this, ReelsActivity.class));
                             finish();
                         }

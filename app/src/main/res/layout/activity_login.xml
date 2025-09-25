@@ -7,17 +7,19 @@
     android:layout_height="match_parent"
     android:background="@color/background">
 
+    <!-- لوجو -->
     <ImageView
         android:id="@+id/logo"
         android:src="@drawable/logo_app"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="16dp"
         android:contentDescription="App Logo" />
 
+    <!-- عنوان التطبيق -->
     <TextView
-        android:text="Welcome Back"
-        android:textSize="22sp"
+        android:text="FoodReels"
+        android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@color/foreground"
         android:layout_marginBottom="4dp"
@@ -25,70 +27,112 @@
         android:layout_height="wrap_content" />
 
     <TextView
-        android:text="Sign in to continue"
+        android:text="Discover amazing food through videos"
         android:textSize="14sp"
         android:textColor="@color/mutedForeground"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <EditText
-        android:id="@+id/etEmail"
-        android:hint="Enter your email"
-        android:inputType="textEmailAddress"
-        android:padding="12dp"
+    <!-- الكارد الأبيض -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:background="@android:drawable/edit_text" />
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:background="@drawable/card_bg"
+        android:elevation="6dp"
+        android:layout_margin="8dp">
 
-    <EditText
-        android:id="@+id/etPassword"
-        android:hint="Enter your password"
-        android:inputType="textPassword"
-        android:padding="12dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:background="@android:drawable/edit_text" />
+        <!-- التبويبات (Customer / Admin) -->
+        <RadioGroup
+            android:id="@+id/rgRole"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp">
 
-    <Button
-        android:id="@+id/btnLogin"
-        android:text="Login"
-        android:backgroundTint="@color/primary"
-        android:textColor="@color/primaryForeground"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <RadioButton
+                android:id="@+id/rbCustomer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Customer"
+                android:checked="true"
+                android:buttonTint="@color/primary"
+                android:textColor="@color/foreground"
+                android:layout_marginEnd="24dp" />
 
+            <RadioButton
+                android:id="@+id/rbAdmin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Admin"
+                android:buttonTint="@color/primary"
+                android:textColor="@color/foreground" />
+        </RadioGroup>
 
+        <!-- Email -->
+        <EditText
+            android:id="@+id/etEmail"
+            android:hint="Enter your email"
+            android:inputType="textEmailAddress"
+            android:padding="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:background="@android:drawable/edit_text"
+            />
 
-    <TextView
-        android:id="@+id/tvForgot"
-        android:text="Forgot password?"
-        android:textColor="@color/destructive"
-        android:textSize="14sp"
-        android:layout_marginTop="12dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <!-- Password -->
+        <EditText
+            android:id="@+id/etPassword"
+            android:hint="Enter your password"
+            android:inputType="textPassword"
+            android:padding="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@android:drawable/edit_text"
+            />
 
-    <TextView
-        android:id="@+id/tvRegister"
-        android:text="Don’t have an account? Register"
-        android:textColor="@color/primary"
-        android:textSize="14sp"
-        android:layout_marginTop="8dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <!-- Login -->
+        <Button
+            android:id="@+id/btnLogin"
+            android:text="Sign In"
+            android:backgroundTint="@color/primary"
+            android:textColor="@color/primaryForeground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Register -->
+        <TextView
+            android:id="@+id/tvRegister"
+            android:text="Don’t have an account? Register"
+            android:textColor="@color/primary"
+            android:textSize="14sp"
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- Forgot Password -->
+        <TextView
+            android:id="@+id/tvForgot"
+            android:text="Forgot password?"
+            android:textColor="@color/destructive"
+            android:textSize="14sp"
+            android:layout_marginTop="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
     <!-- زر Google Sign-In -->
     <com.google.android.gms.common.SignInButton
         android:id="@+id/btnGoogle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:padding="12dp"
-        android:scaleX="1.2"
-        android:scaleY="1.2" />
-
+        android:layout_marginTop="20dp"
+        android:padding="12dp" />
 
 </LinearLayout>

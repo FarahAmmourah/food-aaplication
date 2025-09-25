@@ -81,6 +81,30 @@
         android:layout_marginBottom="16dp"
         android:background="@android:drawable/edit_text" />
 
+    <!-- ✨ تبويبات اختيار الدور -->
+    <RadioGroup
+        android:id="@+id/rgRole"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="16dp">
+
+        <RadioButton
+            android:id="@+id/rbCustomer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Customer"
+            android:checked="true"
+            android:layout_marginEnd="24dp"/>
+
+        <RadioButton
+            android:id="@+id/rbAdmin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Admin"/>
+    </RadioGroup>
+
     <Button
         android:id="@+id/btnRegister"
         android:text="Register"
