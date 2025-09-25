@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.farah.foodapp.ProfileActivity;
+import com.farah.foodapp.profile.ProfileActivity;
 import com.farah.foodapp.R;
 import com.farah.foodapp.cart.CartActivity;
 import com.farah.foodapp.reel.ReelsActivity;

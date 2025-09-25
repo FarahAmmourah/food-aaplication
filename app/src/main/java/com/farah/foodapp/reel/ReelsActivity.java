@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.farah.foodapp.menu.MenuActivity;
-import com.farah.foodapp.ProfileActivity;
+import com.farah.foodapp.profile.ProfileActivity;
 import com.farah.foodapp.R;
 import com.farah.foodapp.cart.CartActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;

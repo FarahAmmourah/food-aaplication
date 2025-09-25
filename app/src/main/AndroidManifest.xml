@@ -17,7 +17,6 @@
         android:theme="@style/Theme.FoodApp"
         tools:targetApi="31">
 
-        <!-- ✅ Login as Launcher -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -27,22 +26,18 @@
             </intent-filter>
         </activity>
 
-        <!-- ✅ Register & Forgot Password -->
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".login.RegisterActivity" />
         <activity android:name=".login.ForgotPasswordActivity" />
 
-        <!-- ✅ باقي الصفحات -->
         <activity android:name=".menu.MenuActivity" />
         <activity android:name=".cart.CartActivity" />
         <activity android:name=".CheckoutActivity" />
         <activity android:name=".OrdersActivity" />
         <activity android:name=".reel.ReelsActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".ChangePasswordActivity" />
+        <activity android:name=".profile.ProfileActivity" />
+        <activity android:name=".profile.ChangePasswordActivity" />
         <activity android:name=".admin.AdminDashboardActivity" />
-
-
 
 
     </application>

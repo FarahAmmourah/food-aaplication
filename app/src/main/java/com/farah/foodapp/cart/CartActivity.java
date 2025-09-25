@@ -10,7 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.farah.foodapp.menu.MenuActivity;
-import com.farah.foodapp.ProfileActivity;
+import com.farah.foodapp.profile.ProfileActivity;
 import com.farah.foodapp.R;
 import com.farah.foodapp.reel.ReelsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;

@@ -1,4 +1,4 @@
-package com.farah.foodapp;
+package com.farah.foodapp.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.farah.foodapp.R;
 import com.farah.foodapp.cart.CartActivity;
 import com.farah.foodapp.menu.MenuActivity;
 import com.farah.foodapp.reel.ReelsActivity;
