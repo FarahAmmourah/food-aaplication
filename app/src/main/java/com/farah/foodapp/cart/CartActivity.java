@@ -58,7 +58,8 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
 
         btnOrderNow.setOnClickListener(v -> {
             if (CartManager.getSubtotal() > 0) {
-                Toast.makeText(this, "Proceeding to checkout...", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, com.farah.foodapp.CheckoutActivity.class);
+                startActivity(intent);
             } else {
                 Toast.makeText(this, "Cart is empty!", Toast.LENGTH_SHORT).show();
             }

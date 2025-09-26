@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.farah.foodapp.R;
@@ -17,13 +18,13 @@ import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
 
-    private Context context;
-    private List<CartItem> cartItems;
-    private OnCartChangedListener listener;
-
     public interface OnCartChangedListener {
         void onCartUpdated();
     }
+
+    private Context context;
+    private List<CartItem> cartItems;
+    private OnCartChangedListener listener;
 
     public CartAdapter(Context context, List<CartItem> cartItems, OnCartChangedListener listener) {
         this.context = context;
@@ -42,22 +43,22 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     public void onBindViewHolder(@NonNull CartViewHolder holder, int position) {
         CartItem item = cartItems.get(position);
 
-        holder.tvName.setText(item.getName() + " (" + item.getSize() + ")");
-        holder.tvRestaurant.setText(item.getRestaurant());
-        holder.tvQuantity.setText(String.valueOf(item.getQuantity()));
-        holder.tvPrice.setText(String.format("$%.2f", item.getPrice() * item.getQuantity()));
+        holder.tvCartName.setText(item.getName() + " (" + item.getSize() + ")");
+        holder.tvCartRestaurant.setText(item.getRestaurant());
+        holder.tvCartQuantity.setText(String.valueOf(item.getQuantity()));
+        holder.tvCartPrice.setText("JOD " + String.format("%.2f", item.getPrice() * item.getQuantity()));
         holder.imgCartFood.setImageResource(item.getImageResId());
-
-        holder.btnIncrease.setOnClickListener(v -> {
-            CartManager.increaseItem(item);
-            notifyDataSetChanged();
-            listener.onCartUpdated();
-        });
 
         holder.btnDecrease.setOnClickListener(v -> {
             CartManager.decreaseItem(item);
             notifyDataSetChanged();
-            listener.onCartUpdated();
+            if (listener != null) listener.onCartUpdated();
+        });
+
+        holder.btnIncrease.setOnClickListener(v -> {
+            CartManager.increaseItem(item);
+            notifyDataSetChanged();
+            if (listener != null) listener.onCartUpdated();
         });
     }
 
@@ -68,18 +69,20 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
     public static class CartViewHolder extends RecyclerView.ViewHolder {
         ImageView imgCartFood;
-        TextView tvName, tvRestaurant, tvQuantity, tvPrice;
-        ImageButton btnIncrease, btnDecrease;
+        TextView tvCartName, tvCartRestaurant, tvCartQuantity, tvCartPrice;
+        ImageButton btnDecrease, btnIncrease;
+        CardView cardView;
 
         public CartViewHolder(@NonNull View itemView) {
             super(itemView);
             imgCartFood = itemView.findViewById(R.id.imgCartFood);
-            tvName = itemView.findViewById(R.id.tvCartName);
-            tvRestaurant = itemView.findViewById(R.id.tvCartRestaurant);
-            tvQuantity = itemView.findViewById(R.id.tvCartQuantity);
-            tvPrice = itemView.findViewById(R.id.tvCartPrice);
-            btnIncrease = itemView.findViewById(R.id.btnIncrease);
+            tvCartName = itemView.findViewById(R.id.tvCartName);
+            tvCartRestaurant = itemView.findViewById(R.id.tvCartRestaurant);
+            tvCartQuantity = itemView.findViewById(R.id.tvCartQuantity);
+            tvCartPrice = itemView.findViewById(R.id.tvCartPrice);
             btnDecrease = itemView.findViewById(R.id.btnDecrease);
+            btnIncrease = itemView.findViewById(R.id.btnIncrease);
+            cardView = (CardView) itemView;
         }
     }
 }

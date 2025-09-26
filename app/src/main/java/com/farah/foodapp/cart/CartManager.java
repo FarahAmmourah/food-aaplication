@@ -17,17 +17,6 @@ public class CartManager {
         cartItems.add(new CartItem(name, restaurant, size, price, imageResId));
     }
 
-    public static void increaseItem(CartItem item) {
-        item.increaseQuantity();
-    }
-
-    public static void decreaseItem(CartItem item) {
-        item.decreaseQuantity();
-        if (item.getQuantity() == 0) {
-            cartItems.remove(item);
-        }
-    }
-
     public static List<CartItem> getCartItems() {
         return cartItems;
     }
@@ -54,6 +43,17 @@ public class CartManager {
             total += item.getQuantity();
         }
         return total;
+    }
+
+    public static void increaseItem(CartItem item) {
+        item.increaseQuantity();
+    }
+
+    public static void decreaseItem(CartItem item) {
+        item.decreaseQuantity();
+        if (item.getQuantity() == 0) {
+            cartItems.remove(item);
+        }
     }
 
     public static void clearCart() {
