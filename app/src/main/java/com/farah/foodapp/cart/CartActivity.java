@@ -8,6 +8,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.farah.foodapp.menu.MenuActivity;
 import com.farah.foodapp.profile.ProfileActivity;
@@ -15,14 +17,14 @@ import com.farah.foodapp.R;
 import com.farah.foodapp.reel.ReelsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class CartActivity extends AppCompatActivity {
+public class CartActivity extends AppCompatActivity implements CartAdapter.OnCartChangedListener {
 
     private LinearLayout layoutEmptyCart;
-    private TextView tvTotalPrice;
+    private TextView tvSubtotal, tvDelivery, tvTotalPrice;
     private Button btnCancelCart, btnOrderNow;
     private BottomNavigationView bottomNavigationView;
-
-    private double totalPrice = 0.0;
+    private RecyclerView recyclerCart;
+    private CartAdapter cartAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,23 +32,32 @@ public class CartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cart);
 
         layoutEmptyCart = findViewById(R.id.layoutEmptyCart);
+        tvSubtotal = findViewById(R.id.tvSubtotal);
+        tvDelivery = findViewById(R.id.tvDelivery);
         tvTotalPrice = findViewById(R.id.tvTotalPrice);
         btnCancelCart = findViewById(R.id.btnCancelCart);
         btnOrderNow = findViewById(R.id.btnOrderNow);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        recyclerCart = findViewById(R.id.recyclerCart);
 
         bottomNavigationView.setSelectedItemId(R.id.nav_cart);
+        updateCartBadge();
+
+        recyclerCart.setLayoutManager(new LinearLayoutManager(this));
+        cartAdapter = new CartAdapter(this, CartManager.getCartItems(), this);
+        recyclerCart.setAdapter(cartAdapter);
 
         updateCartUI();
 
         btnCancelCart.setOnClickListener(v -> {
-            totalPrice = 0.0;
+            CartManager.clearCart();
             updateCartUI();
+            updateCartBadge();
             Toast.makeText(this, "Cart cleared", Toast.LENGTH_SHORT).show();
         });
 
         btnOrderNow.setOnClickListener(v -> {
-            if (totalPrice > 0) {
+            if (CartManager.getSubtotal() > 0) {
                 Toast.makeText(this, "Proceeding to checkout...", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Cart is empty!", Toast.LENGTH_SHORT).show();
@@ -76,12 +87,36 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void updateCartUI() {
-        tvTotalPrice.setText("Total: " + totalPrice + " JD");
+        String subtotal = String.format("%.2f", CartManager.getSubtotal());
+        String delivery = String.format("%.2f", CartManager.getDeliveryFee());
+        String total = String.format("%.2f", CartManager.getTotalPrice());
 
-        if (totalPrice == 0) {
+        tvSubtotal.setText("Subtotal: " + subtotal + " JD");
+        tvDelivery.setText("Delivery: " + delivery + " JD");
+        tvTotalPrice.setText("Total: " + total + " JD");
+
+        if (CartManager.getCartItems().isEmpty()) {
             layoutEmptyCart.setVisibility(LinearLayout.VISIBLE);
+            recyclerCart.setVisibility(RecyclerView.GONE);
         } else {
             layoutEmptyCart.setVisibility(LinearLayout.GONE);
+            recyclerCart.setVisibility(RecyclerView.VISIBLE);
+            cartAdapter.notifyDataSetChanged();
         }
+    }
+
+    private void updateCartBadge() {
+        int count = CartManager.getTotalQuantity();
+        if (count > 0) {
+            bottomNavigationView.getOrCreateBadge(R.id.nav_cart).setNumber(count);
+        } else {
+            bottomNavigationView.removeBadge(R.id.nav_cart);
+        }
+    }
+
+    @Override
+    public void onCartUpdated() {
+        updateCartUI();
+        updateCartBadge();
     }
 }

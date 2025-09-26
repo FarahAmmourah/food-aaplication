@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -23,6 +24,15 @@
         android:background="@color/mutedForeground"
         android:layout_below="@id/tvCart"
         android:layout_marginTop="8dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerCart"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/divider"
+        android:layout_above="@id/layoutCartActions"
+        android:clipToPadding="false"
+        android:padding="12dp" />
 
     <LinearLayout
         android:id="@+id/layoutEmptyCart"
@@ -55,7 +65,6 @@
             android:text="Add some delicious items from restaurants to get started"
             android:textSize="14sp"
             android:textColor="@color/mutedForeground"/>
-
     </LinearLayout>
 
     <LinearLayout
@@ -67,6 +76,32 @@
         android:layout_above="@id/bottomNavigationView"
         android:background="@color/background"
         android:elevation="4dp">
+
+        <TextView
+            android:id="@+id/tvSubtotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Subtotal: 0.00 JD"
+            android:textSize="16sp"
+            android:textColor="@color/foreground"
+            android:gravity="end"
+            android:layout_marginBottom="6dp"/>
+
+        <TextView
+            android:id="@+id/tvDelivery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delivery: 3.00 JD"
+            android:textSize="16sp"
+            android:textColor="@color/foreground"
+            android:gravity="end"
+            android:layout_marginBottom="6dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/mutedForeground"
+            android:layout_marginBottom="6dp"/>
 
         <TextView
             android:id="@+id/tvTotalPrice"
@@ -111,9 +146,7 @@
                 app:cornerRadius="12dp"
                 app:rippleColor="@color/mutedForeground"
                 android:backgroundTint="@color/primary" />
-
         </LinearLayout>
-
     </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -125,5 +158,4 @@
         android:background="@color/primary"
         app:itemIconTint="@color/primaryForeground"
         app:itemTextColor="@color/primaryForeground" />
-
 </RelativeLayout>

@@ -95,12 +95,14 @@
             android:layout_height="wrap_content"
             android:text="Customer"
             android:checked="true"
+            android:buttonTint="@color/primary"
             android:layout_marginEnd="24dp"/>
 
         <RadioButton
             android:id="@+id/rbAdmin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:buttonTint="@color/primary"
             android:text="Admin"/>
     </RadioGroup>
 

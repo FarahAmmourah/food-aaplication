@@ -15,6 +15,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.farah.foodapp.R;
+import com.farah.foodapp.cart.CartManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,11 +54,13 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         holder.tvLarge.setText("Large  $" + item.getLargePrice());
 
         holder.btnSmall.setOnClickListener(v -> {
-            // TODO: ضيف الكود لإضافة الحجم الصغير للكارت
+            CartManager.addItem(item.getName(), item.getRestaurant(), "Small", item.getSmallPrice(), item.getImageResId());
+            notifyCartBadge();
         });
 
         holder.btnLarge.setOnClickListener(v -> {
-            // TODO: ضيف الكود لإضافة الحجم الكبير للكارت
+            CartManager.addItem(item.getName(), item.getRestaurant(), "Large", item.getLargePrice(), item.getImageResId());
+            notifyCartBadge();
         });
     }
 
@@ -100,6 +103,12 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
             notifyDataSetChanged();
         }
     };
+
+    private void notifyCartBadge() {
+        if (context instanceof MenuActivity) {
+            ((MenuActivity) context).updateCartBadge();
+        }
+    }
 
     public static class FoodViewHolder extends RecyclerView.ViewHolder {
         ImageView imgFood, iconAddSmall, iconAddLarge;

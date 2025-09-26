@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.farah.foodapp.profile.ProfileActivity;
 import com.farah.foodapp.R;
 import com.farah.foodapp.cart.CartActivity;
+import com.farah.foodapp.cart.CartManager;
 import com.farah.foodapp.reel.ReelsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -61,6 +62,8 @@ public class MenuActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.nav_menu);
 
+        updateCartBadge();
+
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
 
@@ -81,5 +84,14 @@ public class MenuActivity extends AppCompatActivity {
             }
             return false;
         });
+    }
+
+    public void updateCartBadge() {
+        int count = CartManager.getTotalQuantity();
+        if (count > 0) {
+            bottomNavigationView.getOrCreateBadge(R.id.nav_cart).setNumber(count);
+        } else {
+            bottomNavigationView.removeBadge(R.id.nav_cart);
+        }
     }
 }
