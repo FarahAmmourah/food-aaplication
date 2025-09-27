@@ -1,6 +1,7 @@
 package com.farah.foodapp.reel;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.farah.foodapp.R;
 import com.farah.foodapp.comments.CommentsDialog;
+import com.farah.foodapp.menu.RestaurantDetailsActivity;
 
 import androidx.media3.common.MediaItem;
 import androidx.media3.exoplayer.ExoPlayer;
@@ -43,6 +45,7 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
     public void onBindViewHolder(@NonNull ReelViewHolder holder, int position) {
         ReelItem reel = reelList.get(position);
 
+        // 🎥 تشغيل الفيديو
         ExoPlayer player = new ExoPlayer.Builder(context).build();
         holder.playerView.setPlayer(player);
 
@@ -52,12 +55,21 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
         player.prepare();
         player.pause();
 
+        // 📝 بيانات الريل
         holder.tvTitle.setText(reel.getTitle());
         holder.tvRestaurant.setText(reel.getRestaurant());
         holder.btnOrder.setText("ORDER NOW - $" + reel.getPrice());
         holder.tvLikeCount.setText(String.valueOf(reel.getLikesCount()));
         holder.tvCommentCount.setText(String.valueOf(reel.getCommentsCount()));
 
+        // 🟠 فتح شاشة المنيو عند الضغط على اسم المطعم
+        holder.tvRestaurant.setOnClickListener(v -> {
+            Intent intent = new Intent(context, RestaurantDetailsActivity.class);
+            intent.putExtra("restaurantId", reel.getRestaurantId()); // تمرير ID
+            context.startActivity(intent);
+        });
+
+        // ❤️ زر اللايك
         holder.btnLike.setOnClickListener(v -> {
             if (reel.isLiked()) {
                 holder.btnLike.setColorFilter(Color.WHITE);
@@ -71,9 +83,18 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
             holder.tvLikeCount.setText(String.valueOf(reel.getLikesCount()));
         });
 
+        // 💬 زر الكومنت
         holder.btnComment.setOnClickListener(v -> {
             CommentsDialog dialog = new CommentsDialog(context, reel.getComments(), reel, (ReelsActivity) context);
             dialog.show();
+        });
+
+        // 📤 زر الشير (placeholder – ممكن تربطه بانتنت لاحقاً)
+        holder.btnShare.setOnClickListener(v -> {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "Check this out: " + reel.getVideoUrl());
+            context.startActivity(Intent.createChooser(shareIntent, "Share Reel via"));
         });
     }
 

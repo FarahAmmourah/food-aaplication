@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">food app</string>
     <string name="default_web_client_id">26617880897-b4i8hd5skigptil3tkq87nqkb2akuk0i.apps.googleusercontent.com</string>
+    <string name="reel_title">Reel Title</string>
+    <string name="restaurant_name">Restaurant Name</string>
 
 </resources>

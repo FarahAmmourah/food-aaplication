@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- Video -->
     <androidx.media3.ui.PlayerView
         android:id="@+id/playerView"
         android:layout_width="match_parent"
@@ -12,6 +13,7 @@
         app:use_controller="false"
         android:background="@android:color/black" />
 
+    <!-- Buttons (Right side) -->
     <LinearLayout
         android:orientation="vertical"
         android:gravity="center"
@@ -21,6 +23,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="100dp">
 
+        <!-- Like -->
         <ImageButton
             android:id="@+id/btnLike"
             android:layout_width="48dp"
@@ -39,6 +42,7 @@
             android:gravity="center"
             android:layout_marginBottom="40dp" />
 
+        <!-- Comment -->
         <ImageButton
             android:id="@+id/btnComment"
             android:layout_width="48dp"
@@ -57,6 +61,7 @@
             android:gravity="center"
             android:layout_marginBottom="40dp" />
 
+        <!-- Share -->
         <ImageButton
             android:id="@+id/btnShare"
             android:layout_width="48dp"
@@ -65,16 +70,9 @@
             android:background="@android:color/transparent"
             app:tint="@android:color/white" />
 
-        <TextView
-            android:id="@+id/tvShareLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Share"
-            android:textColor="@android:color/white"
-            android:textSize="12sp"
-            android:gravity="center" />
     </LinearLayout>
 
+    <!-- Info (Bottom Left) -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -98,7 +96,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Mario's Pizzeria"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:layout_marginTop="2dp" />
 
         <Button
             android:id="@+id/btnOrder"

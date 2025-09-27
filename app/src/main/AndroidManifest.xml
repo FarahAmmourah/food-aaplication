@@ -38,6 +38,8 @@
         <activity android:name=".profile.ProfileActivity" />
         <activity android:name=".profile.ChangePasswordActivity" />
         <activity android:name=".admin.AdminDashboardActivity" />
+        <activity android:name=".menu.RestaurantDetailsActivity" />
+
 
 
     </application>

@@ -1,0 +1,17 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="#999999">
+
+    <!-- دائرة خلفية -->
+    <path
+        android:fillColor="#DDDDDD"
+        android:pathData="M12,2A10,10 0 1,0 22,12A10,10 0 0,0 12,2Z" />
+
+    <!-- شكل شوكة وسكين كرمز للأكل -->
+    <path
+        android:fillColor="#666666"
+        android:pathData="M8,7V13a1,1 0 0,0 2,0V7a1,1 0 0,0 -2,0zM12,7v10a1,1 0 0,0 2,0V7a1,1 0 0,0 -2,0zM16,7h2v10h-2z" />
+</vector>

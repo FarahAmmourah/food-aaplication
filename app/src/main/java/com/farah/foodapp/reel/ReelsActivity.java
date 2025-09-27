@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,11 +35,14 @@ public class ReelsActivity extends AppCompatActivity {
         viewPagerReels = findViewById(R.id.viewPagerReels);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
+        // ✅ نربط الـ Adapter
         reelsAdapter = new ReelsAdapter(this, reelList);
         viewPagerReels.setAdapter(reelsAdapter);
 
+        // ✅ تحميل الريلز من Firestore
         loadReelsFromFirestore();
 
+        // ✅ Bottom Navigation
         bottomNavigationView.setSelectedItemId(R.id.nav_reels);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
@@ -60,6 +64,7 @@ public class ReelsActivity extends AppCompatActivity {
             return false;
         });
 
+        // ✅ تشغيل/إيقاف الفيديو حسب الصفحة
         viewPagerReels.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -103,7 +108,19 @@ public class ReelsActivity extends AppCompatActivity {
 
                             List<String> comments = (List<String>) doc.get("comments");
 
-                            reelList.add(new ReelItem(videoUrl, title, restaurant, likes, commentsCount, comments, price));
+                            // ✅ نجيب restaurantId من Firestore
+                            String restaurantId = doc.getString("restaurantId");
+
+                            reelList.add(new ReelItem(
+                                    videoUrl,
+                                    title,
+                                    restaurant,
+                                    likes,
+                                    commentsCount,
+                                    comments,
+                                    price,
+                                    restaurantId
+                            ));
                         } catch (Exception e) {
                             Log.e("Firestore", "Error parsing document", e);
                         }
