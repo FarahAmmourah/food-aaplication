@@ -26,19 +26,22 @@
             </intent-filter>
         </activity>
 
+        <!-- Login and Auth -->
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".login.RegisterActivity" />
         <activity android:name=".login.ForgotPasswordActivity" />
 
+        <!-- App Main Screens -->
         <activity android:name=".menu.MenuActivity" />
         <activity android:name=".cart.CartActivity" />
         <activity android:name=".CheckoutActivity" />
+        <activity android:name=".AddCardActivity" />
         <activity android:name=".OrdersActivity" />
         <activity android:name=".reel.ReelsActivity" />
         <activity android:name=".profile.ProfileActivity" />
         <activity android:name=".profile.ChangePasswordActivity" />
         <activity android:name=".admin.AdminDashboardActivity" />
 
-
     </application>
+
 </manifest>
