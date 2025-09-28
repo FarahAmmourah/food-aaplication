@@ -11,15 +11,15 @@ import com.farah.foodapp.R;
 import com.farah.foodapp.cart.CartActivity;
 import com.farah.foodapp.menu.MenuActivity;
 import com.farah.foodapp.reel.ReelsActivity;
+import com.farah.foodapp.orders.OrdersActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ProfileActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
-    LinearLayout layoutSettings;
+    LinearLayout layoutSettings, layoutOrderHistory;
     TextView tvAvatar, tvUsername, tvEmail, tvPhone;
 
     @Override
@@ -55,6 +55,15 @@ public class ProfileActivity extends AppCompatActivity {
         if (layoutSettings != null) {
             layoutSettings.setOnClickListener(v -> {
                 Intent intent = new Intent(ProfileActivity.this, ChangePasswordActivity.class);
+                startActivity(intent);
+            });
+        }
+
+        // ✅ Order History click → OrdersActivity
+        layoutOrderHistory = findViewById(R.id.layout_order_history);
+        if (layoutOrderHistory != null) {
+            layoutOrderHistory.setOnClickListener(v -> {
+                Intent intent = new Intent(ProfileActivity.this, OrdersActivity.class);
                 startActivity(intent);
             });
         }
