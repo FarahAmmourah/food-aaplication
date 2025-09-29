@@ -51,11 +51,13 @@
                     android:padding="12dp">
 
                     <ImageView
+                        android:id="@+id/ivMapPlaceholder"
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
                         android:src="@drawable/ic_map_placeholder"
                         android:scaleType="centerCrop"
                         android:background="@color/mutedForeground" />
+
 
                     <TextView
                         android:id="@+id/tvAddress"

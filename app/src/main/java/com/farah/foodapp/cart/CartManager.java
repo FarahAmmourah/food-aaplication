@@ -59,4 +59,17 @@ public class CartManager {
     public static void clearCart() {
         cartItems.clear();
     }
+
+    // ✅ method جديدة لتحويل الـ items لقائمة نصوص
+    public static List<String> getItemsAsList() {
+        List<String> items = new ArrayList<>();
+        for (CartItem item : cartItems) {
+            String entry = item.getName() + " x" + item.getQuantity();
+            if (item.getSize() != null && !item.getSize().isEmpty()) {
+                entry += " (" + item.getSize() + ")";
+            }
+            items.add(entry);
+        }
+        return items;
+    }
 }

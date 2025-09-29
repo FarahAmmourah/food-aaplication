@@ -9,12 +9,18 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.farah.foodapp.cards.AddCardActivity;
+import com.farah.foodapp.cards.CardStorage;
 import com.farah.foodapp.cart.CartManager;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CheckoutActivity extends AppCompatActivity {
 
-    private TextView tvSubtotal, tvDiscount, tvDeliveryFee, tvServiceFee, tvTotal;
+    private TextView tvSubtotal, tvDiscount, tvDeliveryFee, tvServiceFee, tvTotal, tvAddress;
     private RadioGroup rgPaymentMethod;
     private TextView btnAddCard;
 
@@ -23,10 +29,14 @@ public class CheckoutActivity extends AppCompatActivity {
     private static final double DISCOUNT = 1.00;
 
     private ActivityResultLauncher<Intent> addCardLauncher;
+    private ActivityResultLauncher<Intent> pickLocationLauncher;
 
     private String tempCardNumber, tempCardExpiry, tempCardHolder;
-
     private boolean newCardSaved = false;
+
+    // store selected location
+    private double selectedLat = 0;
+    private double selectedLon = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +48,7 @@ public class CheckoutActivity extends AppCompatActivity {
         tvDeliveryFee = findViewById(R.id.tvDeliveryFee);
         tvServiceFee = findViewById(R.id.tvServiceFee);
         tvTotal = findViewById(R.id.tvTotal);
+        tvAddress = findViewById(R.id.tvAddress);
         rgPaymentMethod = findViewById(R.id.rgPaymentMethod);
         btnAddCard = findViewById(R.id.btnAddCard);
 
@@ -62,6 +73,32 @@ public class CheckoutActivity extends AppCompatActivity {
         btnAddCard.setOnClickListener(v -> {
             Intent intent = new Intent(this, AddCardActivity.class);
             addCardLauncher.launch(intent);
+        });
+
+        pickLocationLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        String addr = result.getData().getStringExtra("pickedAddress");
+                        selectedLat = result.getData().getDoubleExtra("pickedLat", 0);
+                        selectedLon = result.getData().getDoubleExtra("pickedLon", 0);
+
+                        if (addr != null && !addr.isEmpty()) {
+                            tvAddress.setText(addr);
+                        } else {
+                            tvAddress.setText(String.format("Lat: %.5f, Lon: %.5f", selectedLat, selectedLon));
+                        }
+                    }
+                }
+        );
+
+        findViewById(R.id.ivMapPlaceholder).setOnClickListener(v -> {
+            Intent intent = new Intent(this, MapPickActivity.class);
+            pickLocationLauncher.launch(intent);
+        });
+        findViewById(R.id.tvChangeLocation).setOnClickListener(v -> {
+            Intent intent = new Intent(this, MapPickActivity.class);
+            pickLocationLauncher.launch(intent);
         });
 
         updateSummary();
@@ -91,21 +128,22 @@ public class CheckoutActivity extends AppCompatActivity {
         rbCash.setText("Cash");
         rbCash.setTextColor(getResources().getColor(R.color.foreground));
         rgPaymentMethod.addView(rbCash);
-        rbCash.setChecked(true);
 
         if (tempCardNumber != null && !tempCardNumber.isEmpty()) {
             RadioButton rbTemp = new RadioButton(this);
             rbTemp.setText("**** " + tempCardNumber.substring(tempCardNumber.length() - 4)
                     + " (" + tempCardHolder + ")");
             rbTemp.setTextColor(getResources().getColor(R.color.foreground));
-            rgPaymentMethod.addView(rbTemp, 0);
+            rgPaymentMethod.addView(rbTemp, 0); // add on top
             rbTemp.setChecked(true);
+        } else {
+            rbCash.setChecked(true);
         }
 
         CardStorage.getCards(this, cards -> {
             for (CardStorage.CardModel card : cards) {
-                LinearLayout cardLayout = new LinearLayout(this);
-                cardLayout.setOrientation(LinearLayout.HORIZONTAL);
+                LinearLayout wrapper = new LinearLayout(this);
+                wrapper.setOrientation(LinearLayout.HORIZONTAL);
 
                 RadioButton rb = new RadioButton(this);
                 rb.setText("**** " + card.getCardNumber() + " (" + card.getHolderName() + ")");
@@ -131,10 +169,10 @@ public class CheckoutActivity extends AppCompatActivity {
                             .show();
                 });
 
-                cardLayout.addView(rb);
-                cardLayout.addView(btnRemove);
+                wrapper.addView(rb);
+                wrapper.addView(btnRemove);
 
-                rgPaymentMethod.addView(cardLayout, 0);
+                rgPaymentMethod.addView(wrapper, 0);
 
                 if (newCardSaved && cards.get(cards.size() - 1).getId().equals(card.getId())) {
                     rb.setChecked(true);
@@ -148,20 +186,72 @@ public class CheckoutActivity extends AppCompatActivity {
         RadioButton selected = findViewById(selectedId);
 
         if (selected != null) {
-            Toast.makeText(this, "Order placed using: " + selected.getText(), Toast.LENGTH_SHORT).show();
+            String paymentMethod = selected.getText().toString();
 
-            CartManager.clearCart();
+            if (CartManager.getCartItems().isEmpty()) {
+                Toast.makeText(this, "Your cart is empty!", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-            tempCardNumber = null;
-            tempCardExpiry = null;
-            tempCardHolder = null;
-            newCardSaved = false;
+            String userId = FirebaseAuth.getInstance().getCurrentUser() != null
+                    ? FirebaseAuth.getInstance().getCurrentUser().getUid()
+                    : "guest";
 
-            Intent resultIntent = new Intent();
-            resultIntent.putExtra("orderPlaced", true);
-            setResult(RESULT_OK, resultIntent);
+            double subtotal = CartManager.getSubtotal();
+            double total = subtotal - DISCOUNT + DELIVERY_FEE + SERVICE_FEE;
 
-            finish();
+            String restaurantName = "";
+            if (!CartManager.getCartItems().isEmpty()) {
+                restaurantName = CartManager.getCartItems().get(0).getRestaurant();
+            }
+
+            ArrayList<String> itemsList = new ArrayList<>();
+            for (com.farah.foodapp.cart.CartItem item : CartManager.getCartItems()) {
+                String desc = item.getQuantity() + "x " + item.getName()
+                        + (item.getSize() != null ? " (" + item.getSize() + ")" : "")
+                        + " - " + String.format("%.2f JOD", item.getPrice() * item.getQuantity());
+                itemsList.add(desc);
+            }
+
+            long createdAt = System.currentTimeMillis();
+
+            HashMap<String, Object> orderData = new HashMap<>();
+            orderData.put("userId", userId);
+            orderData.put("restaurantName", restaurantName);
+            orderData.put("paymentMethod", paymentMethod);
+            orderData.put("total", total);
+            orderData.put("status", "Preparing");
+            orderData.put("address", tvAddress.getText().toString());
+            orderData.put("lat", selectedLat);
+            orderData.put("lon", selectedLon);
+            orderData.put("createdAt", createdAt);
+            orderData.put("items", itemsList);
+            orderData.put("eta", "30-40 min");
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("orders")
+                    .add(orderData)
+                    .addOnSuccessListener(doc -> {
+                        db.collection("orders").document(doc.getId())
+                                .update("id", doc.getId());
+
+                        Toast.makeText(this, "Order placed using: " + paymentMethod, Toast.LENGTH_SHORT).show();
+                        CartManager.clearCart();
+
+                        tempCardNumber = null;
+                        tempCardExpiry = null;
+                        tempCardHolder = null;
+                        newCardSaved = false;
+
+                        Intent resultIntent = new Intent();
+                        resultIntent.putExtra("orderPlaced", true);
+                        setResult(RESULT_OK, resultIntent);
+                        finish();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+
         } else {
             Toast.makeText(this, "Please select payment method", Toast.LENGTH_SHORT).show();
         }

@@ -1,4 +1,4 @@
-package com.farah.foodapp;
+package com.farah.foodapp.cards;
 
 import android.content.Context;
 import android.widget.Toast;
