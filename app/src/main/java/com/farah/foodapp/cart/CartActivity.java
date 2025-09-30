@@ -7,13 +7,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.farah.foodapp.CheckoutActivity;
+import com.farah.foodapp.R;
 import com.farah.foodapp.menu.MenuActivity;
 import com.farah.foodapp.profile.ProfileActivity;
-import com.farah.foodapp.R;
 import com.farah.foodapp.reel.ReelsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -25,6 +28,8 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
     private BottomNavigationView bottomNavigationView;
     private RecyclerView recyclerCart;
     private CartAdapter cartAdapter;
+
+    private ActivityResultLauncher<Intent> checkoutLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +61,24 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
             Toast.makeText(this, "Cart cleared", Toast.LENGTH_SHORT).show();
         });
 
+        checkoutLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        boolean orderPlaced = result.getData().getBooleanExtra("orderPlaced", false);
+                        if (orderPlaced) {
+                            updateCartUI();
+                            updateCartBadge();
+                            Toast.makeText(this, "Order placed successfully!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+        );
+
         btnOrderNow.setOnClickListener(v -> {
             if (CartManager.getSubtotal() > 0) {
-                Intent intent = new Intent(this, com.farah.foodapp.CheckoutActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent(this, CheckoutActivity.class);
+                checkoutLauncher.launch(intent);
             } else {
                 Toast.makeText(this, "Cart is empty!", Toast.LENGTH_SHORT).show();
             }

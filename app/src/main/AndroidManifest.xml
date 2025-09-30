@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -16,6 +18,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodApp"
         tools:targetApi="31">
+
+        <activity android:name=".MapPickActivity" />
 
         <activity
             android:name=".MainActivity"
@@ -33,7 +37,8 @@
         <activity android:name=".menu.MenuActivity" />
         <activity android:name=".cart.CartActivity" />
         <activity android:name=".CheckoutActivity" />
-        <activity android:name=".OrdersActivity" />
+        <activity android:name=".cards.AddCardActivity" />
+        <activity android:name=".orders.OrdersActivity" />
         <activity android:name=".reel.ReelsActivity" />
         <activity android:name=".profile.ProfileActivity" />
         <activity android:name=".profile.ChangePasswordActivity" />
@@ -43,6 +48,6 @@
 
 
 
-
     </application>
+
 </manifest>
