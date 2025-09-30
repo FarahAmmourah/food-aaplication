@@ -37,8 +37,10 @@
         <activity android:name=".reel.ReelsActivity" />
         <activity android:name=".profile.ProfileActivity" />
         <activity android:name=".profile.ChangePasswordActivity" />
-        <activity android:name=".admin.AdminDashboardActivity" />
-        <activity android:name=".menu.RestaurantDetailsActivity" />
+        <activity android:name=".admin.AdminReelsActivity" />
+        <activity android:name=".menu.RestaurantDetailsActivity"  />
+        <activity android:name=".admin.AddReelActivity" />
+
 
 
 

@@ -5,16 +5,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.farah.foodapp.menu.MenuActivity;
-import com.farah.foodapp.profile.ProfileActivity;
 import com.farah.foodapp.R;
 import com.farah.foodapp.cart.CartActivity;
+import com.farah.foodapp.menu.MenuActivity;
+import com.farah.foodapp.profile.ProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -107,8 +106,6 @@ public class ReelsActivity extends AppCompatActivity {
                             double price = doc.getDouble("price");
 
                             List<String> comments = (List<String>) doc.get("comments");
-
-                            // ✅ نجيب restaurantId من Firestore
                             String restaurantId = doc.getString("restaurantId");
 
                             reelList.add(new ReelItem(

@@ -1,5 +1,6 @@
 package com.farah.foodapp.menu;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -9,6 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.farah.foodapp.R;
+import com.farah.foodapp.cart.CartActivity;
+import com.farah.foodapp.profile.ProfileActivity;
+import com.farah.foodapp.reel.ReelsActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -33,7 +38,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
         recyclerViewMenu.setLayoutManager(new LinearLayoutManager(this));
         menuList = new ArrayList<>();
-        adapter = new FoodAdapter(this, menuList); // ✅ صححنا
+        adapter = new FoodAdapter(this, menuList);
         recyclerViewMenu.setAdapter(adapter);
 
         db = FirebaseFirestore.getInstance();
@@ -46,6 +51,30 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "No restaurant found!", Toast.LENGTH_SHORT).show();
         }
+
+        // ✅ BottomNavigationView setup
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.nav_menu); // نخلي Menu selected
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_reels) {
+                startActivity(new Intent(this, ReelsActivity.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (id == R.id.nav_cart) {
+                startActivity(new Intent(this, CartActivity.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (id == R.id.nav_profile) {
+                startActivity(new Intent(this, ProfileActivity.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (id == R.id.nav_menu) {
+                return true;
+            }
+            return false;
+        });
     }
 
     private void loadRestaurantDetails(String restaurantId) {
@@ -72,7 +101,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
                         String desc = doc.getString("description");
                         double price = doc.getDouble("price");
 
-                        // ✅ يستعمل الـ constructor البسيط اللي عملناه
                         menuList.add(new FoodItem(name, desc, price));
                     }
                     adapter.notifyDataSetChanged();

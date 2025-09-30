@@ -89,7 +89,7 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
             dialog.show();
         });
 
-        // 📤 زر الشير (placeholder – ممكن تربطه بانتنت لاحقاً)
+        // 📤 زر الشير
         holder.btnShare.setOnClickListener(v -> {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
