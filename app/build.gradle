@@ -56,7 +56,7 @@ dependencies {
 
     implementation libs.volley
     implementation libs.datastore.preferences.core.android
-    implementation libs.recyclerview
+//    implementation libs.recyclerview // بسببها ما بيرضى يعمل سينك
 
     testImplementation 'junit:junit:4.13.2'
 

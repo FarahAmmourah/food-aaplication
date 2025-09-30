@@ -14,11 +14,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.farah.foodapp.R;
+import com.farah.foodapp.admin.AdminDashboardActivity;
 import com.farah.foodapp.profile.ChangePasswordActivity;
 import com.farah.foodapp.reel.ReelsActivity;
 import com.google.android.gms.common.SignInButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -78,12 +80,30 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnSuccessListener(authResult -> {
                     FirebaseUser user = auth.getCurrentUser();
                     if (user != null) {
-                        Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(this, ReelsActivity.class));
-                        finish();
+                        // Get user role from Firestore
+                        FirebaseFirestore.getInstance()
+                                .collection("users")
+                                .document(user.getUid())
+                                .get()
+                                .addOnSuccessListener(documentSnapshot -> {
+                                    if (documentSnapshot.exists()) {
+                                        String role = documentSnapshot.getString("role");
+                                        Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
+
+                                        if ("admin".equals(role)) {
+                                            startActivity(new Intent(this, AdminDashboardActivity.class));
+                                        } else {
+                                            startActivity(new Intent(this, ReelsActivity.class));
+                                        }
+                                        finish();
+                                    }
+                                })
+                                .addOnFailureListener(e ->
+                                        Toast.makeText(this, "Failed to get role: " + e.getMessage(), Toast.LENGTH_SHORT).show());
                     }
                 })
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Login Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
+
 }

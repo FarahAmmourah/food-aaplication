@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">food app</string>
     <string name="default_web_client_id">26617880897-b4i8hd5skigptil3tkq87nqkb2akuk0i.apps.googleusercontent.com</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="active_orders">Active Orders</string>
+    <string name="manage_menu">Manage Menu</string>
+    <string name="my_reels">My Reels</string>
 
 </resources>
