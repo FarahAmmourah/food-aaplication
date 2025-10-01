@@ -7,5 +7,12 @@
     <string name="active_orders">Active Orders</string>
     <string name="manage_menu">Manage Menu</string>
     <string name="my_reels">My Reels</string>
+    <string name="add_item">Add Item</string>
+    <string name="order_id">Order ID</string>
+    <string name="customer_name">Customer Name</string>
+    <string name="status">Status</string>
+    <string name="total_price">Total Price</string>
+    <string name="cancel">Cancel</string>
+    <string name="complete">Complete</string>
 
 </resources>

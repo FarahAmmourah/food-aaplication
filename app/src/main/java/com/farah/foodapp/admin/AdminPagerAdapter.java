@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.farah.foodapp.admin.activeorders.ActiveOrdersFragment;
+import com.farah.foodapp.admin.managemenu.ManageMenuFragment;
+
 public class AdminPagerAdapter extends FragmentStateAdapter {
 
     public AdminPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
