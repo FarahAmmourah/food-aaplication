@@ -91,7 +91,7 @@ public class ActiveOrdersFragment extends Fragment {
                                         }
                                     });
 
-                                    orders.add(order);
+//                                    orders.add(order);
                                 }
                             }
 

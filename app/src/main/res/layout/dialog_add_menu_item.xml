@@ -56,14 +56,13 @@
             android:background="@drawable/edittext_bg"
             android:layout_marginBottom="12dp"/>
 
-        <!-- Generate AI Description -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnGenerateAI"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="✨ Generate Description with AI"
             android:layout_marginBottom="16dp"
-            android:backgroundTint="@color/secondaryForeground"
+            android:backgroundTint="@color/accentForeground"
             android:textColor="@color/cardview_light_background"
             app:cornerRadius="6dp"/>
 
@@ -79,37 +78,8 @@
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Image Preview -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="16dp"
-            android:spacing="8dp">
-
-            <ImageView
-                android:id="@+id/ivPreview"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/outline_add_a_photo_24"
-                android:background="@drawable/edittext_bg"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnPickImage"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Choose Image"
-                android:backgroundTint="@color/destructive"
-                android:textColor="@color/cardview_light_background"
-                app:cornerRadius="6dp"
-                android:layout_marginStart="12dp"/>
-        </LinearLayout>
 
 
-        <!-- Add Item Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAdd"
             android:layout_width="match_parent"

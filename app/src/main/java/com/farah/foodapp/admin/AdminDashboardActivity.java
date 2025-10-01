@@ -21,11 +21,11 @@ public class AdminDashboardActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
 
-        // Set up adapter
+
         AdminPagerAdapter adapter = new AdminPagerAdapter(this);
         viewPager.setAdapter(adapter);
 
-        // Connect TabLayout with ViewPager2
+
         new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> {
                     if (position == 0) tab.setText("Active Orders");
