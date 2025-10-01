@@ -70,66 +70,6 @@
                 android:textSize="13sp"
                 android:textColor="#888888"
                 android:layout_marginTop="2dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="6dp">
-
-                <LinearLayout
-                    android:id="@+id/btnSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/btn_size_bg"
-                    android:padding="6dp"
-                    android:layout_marginEnd="8dp">
-
-                    <TextView
-                        android:id="@+id/tvSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Small  $10.99"
-                        android:textSize="13sp"
-                        android:textColor="#000000"
-                        android:layout_marginEnd="6dp"/>
-
-                    <ImageView
-                        android:id="@+id/iconAddSmall"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@android:drawable/ic_input_add"
-                        app:tint="#000000" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/btnLarge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/btn_size_bg"
-                    android:padding="6dp">
-
-                    <TextView
-                        android:id="@+id/tvLarge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Large  $14.99"
-                        android:textSize="13sp"
-                        android:textColor="#000000"
-                        android:layout_marginEnd="6dp"/>
-
-                    <ImageView
-                        android:id="@+id/iconAddLarge"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:src="@android:drawable/ic_input_add"
-                        app:tint="#000000" />
-                </LinearLayout>
-            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

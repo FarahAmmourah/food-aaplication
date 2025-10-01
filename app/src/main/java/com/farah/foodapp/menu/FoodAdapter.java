@@ -1,14 +1,14 @@
 package com.farah.foodapp.menu;
-
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -50,18 +50,8 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         holder.tvRating.setText("★ " + item.getRating());
         holder.imgFood.setImageResource(item.getImageResId());
 
-        holder.tvSmall.setText("Small  $" + item.getSmallPrice());
-        holder.tvLarge.setText("Large  $" + item.getLargePrice());
-
-        holder.btnSmall.setOnClickListener(v -> {
-            CartManager.addItem(item.getName(), item.getRestaurant(), "Small", item.getSmallPrice(), item.getImageResId());
-            notifyCartBadge();
-        });
-
-        holder.btnLarge.setOnClickListener(v -> {
-            CartManager.addItem(item.getName(), item.getRestaurant(), "Large", item.getLargePrice(), item.getImageResId());
-            notifyCartBadge();
-        });
+        // 📌 لما المستخدم يضغط على الكارد → نفتح Dialog
+        holder.cardView.setOnClickListener(v -> showFoodDialog(item));
     }
 
     @Override
@@ -69,6 +59,45 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         return foodList.size();
     }
 
+    // 📌 دالة عرض الـ Dialog
+    private void showFoodDialog(FoodItem item) {
+        BottomSheetDialog dialog = new BottomSheetDialog(context);
+        dialog.setContentView(R.layout.dialog_food_details);
+
+        ImageView imgMeal = dialog.findViewById(R.id.imgMeal);
+        TextView tvMealName = dialog.findViewById(R.id.tvMealName);
+        TextView tvDescription = dialog.findViewById(R.id.tvDescription);
+        TextView btnSmall = dialog.findViewById(R.id.btnSmall);
+        TextView btnLarge = dialog.findViewById(R.id.btnLarge);
+
+        imgMeal.setImageResource(item.getImageResId());
+        tvMealName.setText(item.getName());
+        tvDescription.setText(item.getDescription());
+        btnSmall.setText("Small - $" + item.getSmallPrice());
+        btnLarge.setText("Large - $" + item.getLargePrice());
+
+        btnSmall.setOnClickListener(v -> {
+            CartManager.addItem(item.getName(), item.getRestaurant(), "Small", item.getSmallPrice(), item.getImageResId());
+            notifyCartBadge();
+            dialog.dismiss();
+        });
+
+        btnLarge.setOnClickListener(v -> {
+            CartManager.addItem(item.getName(), item.getRestaurant(), "Large", item.getLargePrice(), item.getImageResId());
+            notifyCartBadge();
+            dialog.dismiss();
+        });
+
+        dialog.show();
+    }
+
+    private void notifyCartBadge() {
+        if (context instanceof MenuActivity) {
+            ((MenuActivity) context).updateCartBadge();
+        }
+    }
+
+    // ✅ ميزة البحث (Filter)
     @Override
     public Filter getFilter() {
         return foodFilter;
@@ -104,16 +133,9 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         }
     };
 
-    private void notifyCartBadge() {
-        if (context instanceof MenuActivity) {
-            ((MenuActivity) context).updateCartBadge();
-        }
-    }
-
     public static class FoodViewHolder extends RecyclerView.ViewHolder {
-        ImageView imgFood, iconAddSmall, iconAddLarge;
-        TextView tvFoodName, tvFoodDesc, tvRestaurant, tvRating, tvSmall, tvLarge;
-        LinearLayout btnSmall, btnLarge;
+        ImageView imgFood;
+        TextView tvFoodName, tvFoodDesc, tvRestaurant, tvRating;
         CardView cardView;
 
         public FoodViewHolder(@NonNull View itemView) {
@@ -123,17 +145,6 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
             tvFoodDesc = itemView.findViewById(R.id.tvFoodDesc);
             tvRestaurant = itemView.findViewById(R.id.tvRestaurant);
             tvRating = itemView.findViewById(R.id.tvRating);
-
-            btnSmall = itemView.findViewById(R.id.btnSmall);
-            btnLarge = itemView.findViewById(R.id.btnLarge);
-
-            tvSmall = btnSmall.findViewById(R.id.tvSmall);
-            tvLarge = btnLarge.findViewById(R.id.tvLarge);
-
-            iconAddSmall = btnSmall.findViewById(R.id.iconAddSmall);
-            iconAddLarge = btnLarge.findViewById(R.id.iconAddLarge);
-
             cardView = (CardView) itemView;
-        }
-    }
-}
+
+}}}
