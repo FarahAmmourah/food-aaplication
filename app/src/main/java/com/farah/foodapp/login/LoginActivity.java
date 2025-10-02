@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +31,8 @@ public class LoginActivity extends AppCompatActivity {
     private TextView tvRegister, tvForgot;
     private FirebaseAuth auth;
     private SignInButton btnGoogle;
+    private RadioGroup rgRole;
+    private RadioButton rbCustomer, rbAdmin;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +47,11 @@ public class LoginActivity extends AppCompatActivity {
         tvRegister = findViewById(R.id.tvRegister);
         tvForgot = findViewById(R.id.tvForgot);
         btnGoogle = findViewById(R.id.btnGoogle);
+
+        // ربط الراديو بوتون
+        rgRole = findViewById(R.id.rgRole);
+        rbCustomer = findViewById(R.id.rbCustomer);
+        rbAdmin = findViewById(R.id.rbAdmin);
 
         btnLogin.setOnClickListener(v -> loginUser());
 
@@ -76,11 +85,22 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        // اقرأ الدور المختار من الراديو
+        int selectedId = rgRole.getCheckedRadioButtonId();
+        final String selectedRole;  // <-- final عشان نقدر نستخدمه جوة lambda
+
+        if (selectedId == R.id.rbCustomer) {
+            selectedRole = "customer";
+        } else if (selectedId == R.id.rbAdmin) {
+            selectedRole = "admin";
+        } else {
+            selectedRole = ""; // لو ما اختار ولا وحدة
+        }
+
         auth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(authResult -> {
                     FirebaseUser user = auth.getCurrentUser();
                     if (user != null) {
-                        // Get user role from Firestore
                         FirebaseFirestore.getInstance()
                                 .collection("users")
                                 .document(user.getUid())
@@ -88,14 +108,22 @@ public class LoginActivity extends AppCompatActivity {
                                 .addOnSuccessListener(documentSnapshot -> {
                                     if (documentSnapshot.exists()) {
                                         String role = documentSnapshot.getString("role");
-                                        Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
 
-                                        if ("admin".equals(role)) {
-                                            startActivity(new Intent(this, AdminDashboardActivity.class));
+                                        if (role != null && role.equalsIgnoreCase(selectedRole)) {
+                                            Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
+
+                                            if ("admin".equals(role)) {
+                                                startActivity(new Intent(this, AdminDashboardActivity.class));
+                                            } else {
+                                                startActivity(new Intent(this, ReelsActivity.class));
+                                            }
+                                            finish();
                                         } else {
-                                            startActivity(new Intent(this, ReelsActivity.class));
+                                            Toast.makeText(this,
+                                                    "Wrong role selected. Please select the correct role.",
+                                                    Toast.LENGTH_SHORT).show();
+                                            auth.signOut();
                                         }
-                                        finish();
                                     }
                                 })
                                 .addOnFailureListener(e ->
@@ -104,6 +132,4 @@ public class LoginActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Login Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-    }
-
-}
+    }}

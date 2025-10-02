@@ -2,6 +2,7 @@ package com.farah.foodapp.menu;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,12 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_details);
+
+        // ✅ زر الرجوع
+        ImageView btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(v -> {
+            finish(); // يرجع للشاشة السابقة (ReelsActivity)
+        });
 
         tvRestaurantName = findViewById(R.id.tvRestaurantName);
         tvAddress = findViewById(R.id.tvAddress);
