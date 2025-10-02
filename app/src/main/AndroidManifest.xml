@@ -44,6 +44,7 @@
         <activity android:name=".profile.ChangePasswordActivity" />
         <activity android:name=".admin.AdminDashboardActivity" />
         <activity android:name=".menu.RestaurantDetailsActivity"  />
+        <activity android:name=".admin.admin_profile.AdminProfileActivity"/>
 
 
 
