@@ -1,4 +1,7 @@
 package com.farah.foodapp.admin.activeorders;
+
+import java.util.List;
+
 public class OrderAdmin {
     private String id;
     private String userId;
@@ -6,7 +9,12 @@ public class OrderAdmin {
     private double total;
     private String status;
 
+    private Long createdAt;
+
+    private List<String> items;
     private String customerName;
+
+    private String customerAddress;
 
     public OrderAdmin() {}
 
@@ -28,4 +36,27 @@ public class OrderAdmin {
     public String getCustomerName() { return customerName; }
     public void setCustomerName(String customerName) { this.customerName = customerName; }
 
+    public List<String> getItems() {
+        return items;
+    }
+
+    public void setItems(List<String> items) {
+        this.items = items;
+    }
+
+    public Long getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Long createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getCustomerAddress() {
+        return customerAddress;
+    }
+
+    public void setCustomerAddress(String customerAddress) {
+        this.customerAddress = customerAddress;
+    }
 }

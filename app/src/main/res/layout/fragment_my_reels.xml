@@ -1,12 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <TextView
+    <Button
+        android:id="@+id/btnAddVideo"
+        android:layout_width="333dp"
+        android:layout_height="69dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:text="+ Add Your Reel" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvVideos"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="My Reels"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 </LinearLayout>

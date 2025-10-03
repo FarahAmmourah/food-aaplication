@@ -45,7 +45,9 @@
         <activity android:name=".admin.AdminDashboardActivity" />
         <activity android:name=".menu.RestaurantDetailsActivity"  />
         <activity android:name=".admin.admin_profile.AdminProfileActivity"/>
-
+        <activity
+            android:name=".admin.admin_profile.OrderHistoryActivity"
+            android:exported="true" />
 
 
 

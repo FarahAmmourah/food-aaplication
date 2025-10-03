@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.farah.foodapp.R;
 import com.farah.foodapp.admin.AdminDashboardActivity;
+import com.farah.foodapp.admin.admin_profile.OrderHistoryActivity;
 import com.farah.foodapp.profile.ChangePasswordActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,7 +31,6 @@ public class AdminProfileActivity extends AppCompatActivity {
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
-
             if (id == R.id.nav_dashboard) {
                 startActivity(new Intent(AdminProfileActivity.this, AdminDashboardActivity.class));
                 overridePendingTransition(0,0);
@@ -41,19 +41,28 @@ public class AdminProfileActivity extends AppCompatActivity {
             return false;
         });
 
+
         tvAvatar = findViewById(R.id.tv_admin_avatar);
         tvUsername = findViewById(R.id.tv_admin_username);
         tvEmail = findViewById(R.id.tv_admin_email);
         tvPhone = findViewById(R.id.tv_admin_phone);
 
         layoutSettings = findViewById(R.id.layout_settings);
+        layoutOrderHistory = findViewById(R.id.layout_order_history);
+
 
         if (layoutSettings != null) {
             layoutSettings.setOnClickListener(v -> {
-                Intent intent = new Intent(AdminProfileActivity.this, ChangePasswordActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(AdminProfileActivity.this, ChangePasswordActivity.class));
             });
         }
+
+        if (layoutOrderHistory != null) {
+            layoutOrderHistory.setOnClickListener(v -> {
+                startActivity(new Intent(AdminProfileActivity.this, OrderHistoryActivity.class));
+            });
+        }
+
 
         loadAdminProfile();
     }

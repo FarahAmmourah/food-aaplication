@@ -43,15 +43,15 @@ public class ActiveOrdersFragment extends Fragment {
         adapter = new ActiveOrdersAdapter(orders);
         recyclerView.setAdapter(adapter);
 
-
         firestore = FirebaseFirestore.getInstance();
         String restaurantId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         firestore.collection("restaurants")
                 .document(restaurantId)
                 .get()
-                .addOnSuccessListener(doc ->{
+                .addOnSuccessListener(doc -> {
                     if (doc.exists()) {
-                        String restaurantName = doc.getString("name"); // make sure "name" field exists
+                        String restaurantName = doc.getString("name");
                         loadActiveOrders(restaurantName);
                     } else {
                         Toast.makeText(getContext(), "Restaurant not found", Toast.LENGTH_SHORT).show();
@@ -61,12 +61,8 @@ public class ActiveOrdersFragment extends Fragment {
                         Toast.makeText(getContext(), "Failed to fetch restaurant: " + e.getMessage(), Toast.LENGTH_SHORT).show()
                 );
 
-
         return view;
-
     }
-
-
 
     private void loadActiveOrders(String restaurantName) {
         firestore.collection("orders")
@@ -74,34 +70,25 @@ public class ActiveOrdersFragment extends Fragment {
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
                     orders.clear();
+                    List<OrderAdmin> tempOrders = new ArrayList<>();
+
                     for (QueryDocumentSnapshot doc : querySnapshot) {
                         String status = doc.getString("status");
-                        if (status != null && !status.equalsIgnoreCase("completed")) {
+                        if (status != null &&
+                                (status.equalsIgnoreCase("preparing") || status.equalsIgnoreCase("pending"))) {
                             OrderAdmin order = doc.toObject(OrderAdmin.class);
                             order.setId(doc.getId());
-                            orders.add(order);
+                            tempOrders.add(order);
+                        }
+                    }
 
-                            firestore.collection("users")
-                                    .document(order.getUserId())
-                                    .get()
-                                    .addOnSuccessListener(userDoc -> {
-                                        if (userDoc.exists()) {
-                                            order.setCustomerName(userDoc.getString("name"));
-                                            adapter.notifyDataSetChanged();
-                                        }
-                                    });
-
-//                                    orders.add(order);
-                                }
-                            }
-
-                    if (orders.isEmpty()) {
+                    if (tempOrders.isEmpty()) {
                         recyclerView.setVisibility(View.GONE);
                         tvNoOrders.setVisibility(View.VISIBLE);
                     } else {
                         recyclerView.setVisibility(View.VISIBLE);
                         tvNoOrders.setVisibility(View.GONE);
-                        adapter.notifyDataSetChanged();
+                        fetchUserNames(tempOrders);
                     }
                 })
                 .addOnFailureListener(e -> {
@@ -109,5 +96,28 @@ public class ActiveOrdersFragment extends Fragment {
                     tvNoOrders.setText("Failed to load orders: " + e.getMessage());
                     tvNoOrders.setVisibility(View.VISIBLE);
                 });
+    }
+
+    private void fetchUserNames(List<OrderAdmin> tempOrders) {
+        final int[] remaining = {tempOrders.size()};
+
+        for (OrderAdmin order : tempOrders) {
+            firestore.collection("restaurants")
+                    .document(order.getUserId())
+                    .get()
+                    .addOnSuccessListener(userDoc -> {
+                        if (userDoc.exists()) {
+                            order.setCustomerName(userDoc.getString("name"));
+                        }
+                    })
+                    .addOnCompleteListener(task -> {
+                        remaining[0]--;
+                        if (remaining[0] == 0) {
+                            orders.clear();
+                            orders.addAll(tempOrders);
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+        }
     }
 }

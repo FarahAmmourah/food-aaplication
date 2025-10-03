@@ -24,7 +24,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Button btnRegister;
     private TextView tvAlreadyAccount;
     private RadioGroup rgRole;
-    private RadioButton rbCustomer, rbAdmin;
+    private RadioButton rbCustomer, rbRestaurant;
 
     private FirebaseAuth auth;
 
@@ -43,7 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         rgRole = findViewById(R.id.rgRole);
         rbCustomer = findViewById(R.id.rbCustomer);
-        rbAdmin = findViewById(R.id.rbAdmin);
+        rbRestaurant = findViewById(R.id.rbAdmin);
 
         auth = FirebaseAuth.getInstance();
 
@@ -63,7 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }
 
-            String role = rbAdmin.isChecked() ? "admin" : "customer";
+            String role = rbRestaurant.isChecked() ? "restaurant" : "customer";
 
             auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
@@ -77,7 +77,9 @@ public class RegisterActivity extends AppCompatActivity {
                             userData.put("phone", phone);
                             userData.put("role", role);
 
-                            db.collection("users").document(uid).set(userData)
+                            String collection = role.equals("restaurant") ? "restaurants" : "users";
+
+                            db.collection(collection).document(uid).set(userData)
                                     .addOnSuccessListener(aVoid -> {
                                         Toast.makeText(this, "Registered as " + role, Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(this, LoginActivity.class));

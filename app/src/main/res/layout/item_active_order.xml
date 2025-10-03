@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/complete"
-            android:backgroundTint="@color/secondaryForeground"
+            android:backgroundTint="@android:color/tertiary_text_dark"
             android:textColor="@android:color/white" />
 
     </LinearLayout>
