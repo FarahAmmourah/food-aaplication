@@ -62,7 +62,7 @@ public class AdminProfileActivity extends AppCompatActivity {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("user").document(uid).get()
+        db.collection("users").document(uid).get()
                 .addOnSuccessListener(document -> {
                     if (document.exists()) {
                         String name = document.getString("name");
