@@ -34,6 +34,11 @@ public class ReelsActivity extends AppCompatActivity {
         viewPagerReels = findViewById(R.id.viewPagerReels);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
+        // ✅ تعديل ألوان البار لتطابق صفحة البروفايل
+        bottomNavigationView.setBackgroundColor(getResources().getColor(R.color.primary));
+        bottomNavigationView.setItemIconTintList(getResources().getColorStateList(R.color.primaryForeground));
+        bottomNavigationView.setItemTextColor(getResources().getColorStateList(R.color.primaryForeground));
+
         // ✅ نربط الـ Adapter
         reelsAdapter = new ReelsAdapter(this, reelList);
         viewPagerReels.setAdapter(reelsAdapter);
