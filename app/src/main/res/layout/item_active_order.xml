@@ -37,6 +37,7 @@
         android:textSize="14sp" />
 
     <LinearLayout
+        style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -48,17 +49,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cancel"
-            android:backgroundTint="@color/red"
+            android:backgroundTint="@color/red2"
             android:textColor="@android:color/white"
-            android:layout_marginEnd="8dp" />
+            android:layout_marginEnd="8dp"
+            android:elevation="2dp" />
 
         <Button
             android:id="@+id/btnComplete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/complete"
-            android:backgroundTint="@android:color/tertiary_text_dark"
-            android:textColor="@android:color/white" />
+            android:backgroundTint="@color/green"
+            android:textColor="@android:color/white"
+            android:elevation="2dp" />
 
     </LinearLayout>
 
