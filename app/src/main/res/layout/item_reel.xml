@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/black">
 
-    <!-- Video Player -->
+    <!-- 🎥 Video Player -->
     <androidx.media3.ui.PlayerView
         android:id="@+id/playerView"
         android:layout_width="match_parent"
@@ -14,7 +14,7 @@
         app:use_controller="false"
         android:background="@android:color/black" />
 
-    <!-- Right-side buttons -->
+    <!-- ➡️ Right-side buttons -->
     <LinearLayout
         android:orientation="vertical"
         android:gravity="center"
@@ -24,14 +24,15 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="100dp">
 
-        <!-- Like -->
+        <!-- ❤️ Like -->
         <ImageButton
             android:id="@+id/btnLike"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/ic_heart"
             android:background="@android:color/transparent"
-            app:tint="@android:color/white"/>
+            app:tint="@android:color/white" />
+
         <TextView
             android:id="@+id/tvLikeCount"
             android:layout_width="wrap_content"
@@ -42,14 +43,15 @@
             android:gravity="center"
             android:layout_marginBottom="40dp" />
 
-        <!-- Comment -->
+        <!-- 💬 Comment -->
         <ImageButton
             android:id="@+id/btnComment"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/ic_comment"
             android:background="@android:color/transparent"
-            app:tint="@android:color/white"/>
+            app:tint="@android:color/white" />
+
         <TextView
             android:id="@+id/tvCommentCount"
             android:layout_width="wrap_content"
@@ -60,17 +62,17 @@
             android:gravity="center"
             android:layout_marginBottom="40dp" />
 
-        <!-- Share -->
+        <!-- 📤 Share -->
         <ImageButton
             android:id="@+id/btnShare"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/ic_share"
             android:background="@android:color/transparent"
-            app:tint="@android:color/white"/>
+            app:tint="@android:color/white" />
     </LinearLayout>
 
-    <!-- Bottom left info -->
+    <!-- ⬇️ Bottom left info -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -80,6 +82,7 @@
         android:background="@android:color/transparent"
         android:layout_marginBottom="72dp">
 
+        <!-- 🎬 Title -->
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
@@ -87,8 +90,20 @@
             android:text="Video Title"
             android:textColor="@android:color/white"
             android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
+        <!-- 🏪 Restaurant -->
+        <TextView
+            android:id="@+id/tvRestaurant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Restaurant Name"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            android:layout_marginTop="2dp" />
+
+        <!-- ℹ️ Description -->
         <TextView
             android:id="@+id/tvDescription"
             android:layout_width="wrap_content"
@@ -96,8 +111,9 @@
             android:text="Video description"
             android:textColor="@android:color/white"
             android:textSize="14sp"
-            android:layout_marginTop="2dp"/>
+            android:layout_marginTop="2dp" />
 
+        <!-- 🔖 Tags -->
         <TextView
             android:id="@+id/tvTags"
             android:layout_width="wrap_content"
@@ -105,8 +121,9 @@
             android:text="#tag1 #tag2"
             android:textColor="@android:color/white"
             android:textSize="12sp"
-            android:layout_marginTop="2dp"/>
+            android:layout_marginTop="2dp" />
 
+        <!-- 🛒 Order button -->
         <Button
             android:id="@+id/btnOrder"
             android:layout_width="wrap_content"
@@ -121,7 +138,7 @@
             android:paddingLeft="24dp"
             android:paddingRight="24dp"
             android:paddingTop="8dp"
-            android:paddingBottom="8dp"/>
+            android:paddingBottom="8dp" />
     </LinearLayout>
 
 </FrameLayout>
