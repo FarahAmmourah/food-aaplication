@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.farah.foodapp.admin.activeorders.ActiveOrdersFragment;
+import com.farah.foodapp.admin.admin_reels.MyReelsFragment;
 import com.farah.foodapp.admin.managemenu.ManageMenuFragment;
 //import com.farah.foodapp.admin.myreels.MyReelsFragment;
 

@@ -1,7 +1,9 @@
 package com.farah.foodapp.orders;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -10,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.farah.foodapp.R;
+import com.farah.foodapp.profile.ProfileActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -34,6 +37,14 @@ public class OrdersActivity extends AppCompatActivity {
 
         adapter = new OrdersAdapter(orderList);
         recyclerOrders.setAdapter(adapter);
+
+        Button btnBack = findViewById(R.id.btn_back);
+        btnBack.setOnClickListener(v -> {
+            Intent intent = new Intent(OrdersActivity.this, ProfileActivity.class);
+            startActivity(intent);
+            finish();
+        });
+
 
         loadOrders();
         handler.postDelayed(updateRunnable, 60000);

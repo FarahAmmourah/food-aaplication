@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <!-- عنوان الدايالوج -->
+        <TextView
+            android:id="@+id/tvDialogTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add New Reel"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/primary"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- اسم الريل -->
+        <EditText
+            android:id="@+id/inputReelName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Reel Title"
+            android:padding="12dp"
+            android:background="@drawable/edittext_bg"
+            android:layout_marginBottom="12dp"/>
+
+        <EditText
+            android:id="@+id/inputReelDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Description"
+            android:minLines="3"
+            android:padding="12dp"
+            android:background="@drawable/edittext_bg"
+            android:layout_marginBottom="12dp"/>
+
+        <Button
+            android:id="@+id/btnGenerateAI"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="✨ Generate Description with AI"
+            android:backgroundTint="@color/accentForeground"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="16dp"/>
+
+
+        <!-- زر لاختيار فيديو من المعرض (تصميم فقط) -->
+        <Button
+            android:id="@+id/btnUploadVideo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🎥 Pick from Gallery"
+            android:backgroundTint="@color/accent"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- إدخال رابط الفيديو (URL) -->
+        <EditText
+            android:id="@+id/inputVideoUrl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Or paste Video URL"
+            android:padding="12dp"
+            android:background="@drawable/edittext_bg"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- زر إضافة -->
+        <Button
+            android:id="@+id/btnAddReel"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:text="Add Reel"
+            android:backgroundTint="@color/primary"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"/>
+    </LinearLayout>
+</ScrollView>
