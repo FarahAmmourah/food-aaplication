@@ -10,6 +10,7 @@
     <color name="mutedForeground">#6D4C41</color>
     <color name="accent">#FFD180</color>
     <color name="accentForeground">#5D4037</color>
+    <color name="white">#FFFFFF</color>
 
     <color name="destructive">#D84315</color>
     <color name="destructiveForeground">#FFFFFF</color>

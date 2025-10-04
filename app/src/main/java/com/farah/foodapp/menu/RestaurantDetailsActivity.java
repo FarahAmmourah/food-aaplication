@@ -35,9 +35,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
         // ✅ زر الرجوع
         ImageView btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(v -> {
-            finish(); // يرجع للشاشة السابقة (ReelsActivity)
-        });
+        btnBack.setOnClickListener(v -> finish());
 
         tvRestaurantName = findViewById(R.id.tvRestaurantName);
         tvAddress = findViewById(R.id.tvAddress);
@@ -59,9 +57,12 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
             Toast.makeText(this, "No restaurant found!", Toast.LENGTH_SHORT).show();
         }
 
-        // ✅ BottomNavigationView setup
+        // ✅ BottomNavigationView setup (نفس ديزاين البروفايل والريلز)
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setSelectedItemId(R.id.nav_menu); // نخلي Menu selected
+        bottomNavigationView.setBackgroundColor(getResources().getColor(R.color.primary));
+        bottomNavigationView.setItemIconTintList(getResources().getColorStateList(R.color.primaryForeground));
+        bottomNavigationView.setItemTextColor(getResources().getColorStateList(R.color.primaryForeground));
+        bottomNavigationView.setSelectedItemId(R.id.nav_menu);
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
