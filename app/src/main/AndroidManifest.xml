@@ -47,6 +47,9 @@
         <activity android:name=".admin.admin_profile.AdminProfileActivity"/>
         <activity android:name=".admin.admin_reels.ReelDetailActivity"
             android:exported="false" />
+        <activity
+            android:name=".admin.admin_profile.OrderHistoryActivity"
+            android:exported="true" />
 
 
 
