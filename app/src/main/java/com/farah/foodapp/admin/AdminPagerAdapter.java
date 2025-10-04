@@ -21,7 +21,7 @@ public class AdminPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 1: return new ManageMenuFragment();
-//            case 2: return new MyReelsFragment();
+            case 2: return new MyReelsFragment();
             case 0:
             default: return new ActiveOrdersFragment();
         }
