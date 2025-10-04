@@ -75,7 +75,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:background="@android:drawable/edit_text" />
+            android:backgroundTint="@color/accent"
+            android:textColor="@color/foreground" />
 
         <EditText
             android:id="@+id/etPassword"
@@ -85,7 +86,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:background="@android:drawable/edit_text" />
+            android:backgroundTint="@color/accent"
+            android:textColor="@color/foreground" />
 
         <Button
             android:id="@+id/btnLogin"

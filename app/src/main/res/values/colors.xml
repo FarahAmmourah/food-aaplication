@@ -6,7 +6,7 @@
     <color name="secondaryForeground">#4E342E</color>
     <color name="red">#FF0000</color>
 
-    <color name="muted">#FFF3E0</color>
+    <color name="muted">#FFFFFF</color>
     <color name="mutedForeground">#6D4C41</color>
     <color name="accent">#FFD180</color>
     <color name="accentForeground">#5D4037</color>
@@ -21,6 +21,4 @@
     <color name="gray_light">#E0E0E0</color>
     <color name="green">#43A047</color>
     <color name="red2">#E53935</color>
-
-
 </resources>

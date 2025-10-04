@@ -86,12 +86,23 @@
                     android:layout_marginEnd="10dp">
 
                     <TextView
+                        android:id="@+id/tv_total_orders"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="24"
-                        android:textSize="24sp"
+                        android:text="0"
                         android:textColor="@color/primary"
+                        android:textSize="24sp"
                         android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_no_orders"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No orders yet"
+                        android:visibility="gone"
+                        android:textColor="@color/primary"
+                        android:textSize="16sp"/>
+
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -167,12 +178,12 @@
                             android:textColor="@color/foreground"
                             android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="24 orders"
-                            android:textSize="14sp"
-                            android:textColor="@color/mutedForeground" />
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="24 orders"-->
+<!--                            android:textSize="14sp"-->
+<!--                            android:textColor="@color/mutedForeground" />-->
                     </LinearLayout>
 
                     <ImageView

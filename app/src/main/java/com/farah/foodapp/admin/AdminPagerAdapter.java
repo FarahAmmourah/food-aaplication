@@ -8,7 +8,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.farah.foodapp.admin.activeorders.ActiveOrdersFragment;
 import com.farah.foodapp.admin.admin_reels.MyReelsFragment;
 import com.farah.foodapp.admin.managemenu.ManageMenuFragment;
-//import com.farah.foodapp.admin.myreels.MyReelsFragment;
 
 public class AdminPagerAdapter extends FragmentStateAdapter {
 
@@ -21,7 +20,7 @@ public class AdminPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 1: return new ManageMenuFragment();
-//            case 2: return new MyReelsFragment();
+            case 2: return new MyReelsFragment();
             case 0:
             default: return new ActiveOrdersFragment();
         }
