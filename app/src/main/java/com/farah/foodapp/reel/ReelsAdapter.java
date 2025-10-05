@@ -10,11 +10,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.farah.foodapp.R;
+import com.farah.foodapp.cart.CartManager;
 import com.farah.foodapp.comments.CommentsDialog;
 import com.farah.foodapp.menu.RestaurantDetailsActivity;
 
@@ -95,6 +97,19 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_TEXT, "Check this out: " + reel.getVideoUrl());
             context.startActivity(Intent.createChooser(shareIntent, "Share Reel via"));
+        });
+
+        // 🛒 زر الأوردر ناو (الإضافة إلى الكارت)
+        holder.btnOrder.setOnClickListener(v -> {
+            CartManager.addItem(
+                    reel.getTitle(),          // اسم الأكلة
+                    reel.getRestaurant(),     // اسم المطعم
+                    "Regular",                // الحجم الافتراضي
+                    reel.getPrice(),          // السعر
+                    R.drawable.ic_launcher_background // صورة مؤقتة
+            );
+
+            Toast.makeText(context, reel.getTitle() + " added to cart!", Toast.LENGTH_SHORT).show();
         });
     }
 
