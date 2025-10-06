@@ -1,4 +1,5 @@
 package com.farah.foodapp.admin.admin_reels;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -51,7 +52,6 @@ public class MyReelsFragment extends Fragment {
         adapter = new ReelsAdapter(getContext(), reelList);
         recyclerReels.setAdapter(adapter);
 
-        // launcher لاختيار الفيديو من المعرض
         pickVideoLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -63,7 +63,6 @@ public class MyReelsFragment extends Fragment {
         );
 
         btnAddReel.setOnClickListener(v -> openAddReelDialog());
-
         loadReelsFromFirestore();
 
         return view;
@@ -79,32 +78,28 @@ public class MyReelsFragment extends Fragment {
         EditText inputVideoUrl = dialogView.findViewById(R.id.inputVideoUrl);
         Button btnUpload = dialogView.findViewById(R.id.btnUploadVideo);
         Button btnAdd = dialogView.findViewById(R.id.btnAddReel);
-        Button btnGenerateAI = dialogView.findViewById(R.id.btnGenerateAI); // زر الجينيريت
+        Button btnGenerateAI = dialogView.findViewById(R.id.btnGenerateAI);
 
         builder.setView(dialogView);
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        // Generate Description mock
         btnGenerateAI.setOnClickListener(aiView -> {
             String title = inputName.getText().toString().trim();
             if (title.isEmpty()) {
                 Toast.makeText(getContext(), "Enter a title first", Toast.LENGTH_SHORT).show();
                 return;
             }
-            String generatedDesc = "This reel showcases " + title +
-                    " with amazing content tailored for food lovers!";
+            String generatedDesc = "This reel showcases " + title + " with amazing content!";
             inputDescription.setText(generatedDesc);
         });
 
-        // اختيار فيديو من المعرض
         btnUpload.setOnClickListener(uploadView -> {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("video/*");
             pickVideoLauncher.launch(intent);
         });
 
-        // حفظ الريل
         btnAdd.setOnClickListener(addView -> {
             String title = inputName.getText().toString().trim();
             String description = inputDescription.getText().toString().trim();

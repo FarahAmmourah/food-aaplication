@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Video Player -->
+    <!-- 🎥 Video Player -->
     <androidx.media3.ui.PlayerView
         android:id="@+id/playerView"
         android:layout_width="match_parent"
@@ -13,7 +14,7 @@
         app:use_controller="false"
         android:background="@android:color/black" />
 
-    <!-- Loading Spinner -->
+    <!-- ⏳ Loading Spinner -->
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleLarge"
@@ -22,14 +23,85 @@
         android:layout_gravity="center"
         android:visibility="gone" />
 
-    <!-- Info (Bottom Left) -->
+    <!-- ⬅️ زر الرجوع -->
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="top|start"
+        android:layout_margin="16dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_back"
+        android:tint="@android:color/white"
+        tools:ignore="UseAppTint" />
+
+    <!-- ➡️ أيقونات (يمين تحت) -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="100dp">
+
+        <!-- ❤️ Like -->
+        <ImageButton
+            android:id="@+id/btnLike"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_heart"
+            android:background="@android:color/transparent"
+            app:tint="@android:color/white" />
+
+        <TextView
+            android:id="@+id/tvLikeCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:layout_marginBottom="40dp" />
+
+        <!-- 💬 Comment -->
+        <ImageButton
+            android:id="@+id/btnComment"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_comment"
+            android:background="@android:color/transparent"
+            app:tint="@android:color/white" />
+
+        <TextView
+            android:id="@+id/tvCommentCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:layout_marginBottom="40dp" />
+
+        <!-- 📤 Share -->
+        <ImageButton
+            android:id="@+id/btnShare"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_share"
+            android:background="@android:color/transparent"
+            app:tint="@android:color/white" />
+
+    </LinearLayout>
+
+    <!-- ℹ️ Info (أسفل يسار) -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:padding="16dp"
-        android:layout_marginBottom="72dp">
+        android:layout_marginBottom="32dp">
 
         <TextView
             android:id="@+id/tvTitle"
@@ -44,26 +116,11 @@
             android:id="@+id/tvRestaurant"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mario's Pizzeria"
+            android:text="Description"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             android:layout_marginTop="2dp" />
 
-        <Button
-            android:id="@+id/btnOrder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/rounded_button"
-            android:text="ORDER NOW - $12.99"
-            android:textAllCaps="true"
-            android:textColor="@android:color/white"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:paddingLeft="24dp"
-            android:paddingRight="24dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp" />
     </LinearLayout>
 
 </FrameLayout>

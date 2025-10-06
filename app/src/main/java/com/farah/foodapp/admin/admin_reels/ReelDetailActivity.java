@@ -1,20 +1,27 @@
 package com.farah.foodapp.admin.admin_reels;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.OptIn;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.farah.foodapp.R;
-
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.Player;
+import androidx.media3.common.util.UnstableApi;
+import androidx.media3.datasource.cache.CacheDataSource;
+import androidx.media3.exoplayer.DefaultLoadControl;
 import androidx.media3.exoplayer.ExoPlayer;
+import androidx.media3.exoplayer.source.DefaultMediaSourceFactory;
 import androidx.media3.ui.PlayerView;
+
+import com.farah.foodapp.R;
 
 public class ReelDetailActivity extends AppCompatActivity {
 
@@ -22,18 +29,30 @@ public class ReelDetailActivity extends AppCompatActivity {
     private PlayerView playerView;
     private ProgressBar progressBar;
 
+    private boolean isLiked = false;
+    private int likeCount = 0;
+    private int commentCount = 0;
+
+    @OptIn(markerClass = UnstableApi.class)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reel_detail);
 
+        // Views
         playerView = findViewById(R.id.playerView);
         progressBar = findViewById(R.id.progressBar);
         TextView tvTitle = findViewById(R.id.tvTitle);
         TextView tvRestaurant = findViewById(R.id.tvRestaurant);
-        Button btnOrder = findViewById(R.id.btnOrder);
+        ImageButton btnBack = findViewById(R.id.btnBack);
 
-        // استقبل البيانات من Intent
+        ImageButton btnLike = findViewById(R.id.btnLike);
+        TextView tvLikeCount = findViewById(R.id.tvLikeCount);
+        ImageButton btnComment = findViewById(R.id.btnComment);
+        TextView tvCommentCount = findViewById(R.id.tvCommentCount);
+        ImageButton btnShare = findViewById(R.id.btnShare);
+
+        // بيانات من Intent
         String videoUrl = getIntent().getStringExtra("videoUrl");
         String title = getIntent().getStringExtra("title");
         String description = getIntent().getStringExtra("description");
@@ -41,25 +60,36 @@ public class ReelDetailActivity extends AppCompatActivity {
         tvTitle.setText(title);
         tvRestaurant.setText(description);
 
-        // إعداد ExoPlayer
-        player = new ExoPlayer.Builder(this).build();
+        // 🟢 CacheDataSource لتقليل البفرينغ
+        CacheDataSource.Factory cacheFactory = VideoCache.getCacheDataSourceFactory(this);
+
+        // ⚡️ LoadControl معدل عشان يشغل الفيديو بسرعة بدون انتظار
+        DefaultLoadControl loadControl = new DefaultLoadControl.Builder()
+                .setBufferDurationsMs(
+                        1000,   // minBufferMs → أقل وقت (1 ثانية)
+                        2000,   // maxBufferMs → أقصى وقت (2 ثانية)
+                        500,    // bufferForPlaybackMs → يبدأ التشغيل فوراً تقريباً
+                        500     // bufferForPlaybackAfterRebufferMs
+                )
+                .build();
+
+        player = new ExoPlayer.Builder(this)
+                .setMediaSourceFactory(new DefaultMediaSourceFactory(cacheFactory))
+                .setLoadControl(loadControl)
+                .build();
+
         playerView.setPlayer(player);
 
         if (videoUrl != null) {
             MediaItem mediaItem = MediaItem.fromUri(Uri.parse(videoUrl));
             player.setMediaItem(mediaItem);
             player.prepare();
-            player.setPlayWhenReady(true); // يشتغل مباشرة
-            player.setRepeatMode(Player.REPEAT_MODE_ONE); // يعيد نفسه
+            player.setPlayWhenReady(true);
+            player.setRepeatMode(Player.REPEAT_MODE_ONE);
         }
 
-        // إظهار/إخفاء اللودينغ حسب حالة الفيديو
+        // ⏳ إظهار/إخفاء اللودينغ
         player.addListener(new Player.Listener() {
-            @Override
-            public void onIsLoadingChanged(boolean isLoading) {
-                progressBar.setVisibility(isLoading ? ProgressBar.VISIBLE : ProgressBar.GONE);
-            }
-
             @Override
             public void onPlaybackStateChanged(int state) {
                 if (state == Player.STATE_BUFFERING) {
@@ -70,26 +100,42 @@ public class ReelDetailActivity extends AppCompatActivity {
             }
         });
 
-        // زر الأوردر (ممكن توصل مع شاشة الطلبات)
-        btnOrder.setOnClickListener(v -> {
-            // TODO: اربطها بعملية الطلب
-        });
-    }
+        // ⬅️ زر Back
+        btnBack.setOnClickListener(v -> onBackPressed());
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (player != null) {
-            player.setPlayWhenReady(true);
-        }
+        // ❤️ زر لايك
+        btnLike.setOnClickListener(v -> {
+            if (isLiked) {
+                btnLike.setColorFilter(Color.WHITE);
+                likeCount--;
+            } else {
+                btnLike.setColorFilter(Color.RED);
+                likeCount++;
+            }
+            isLiked = !isLiked;
+            tvLikeCount.setText(String.valueOf(likeCount));
+        });
+
+        // 💬 زر كومنت (مؤقت Toast)
+        btnComment.setOnClickListener(v -> {
+            commentCount++;
+            tvCommentCount.setText(String.valueOf(commentCount));
+            Toast.makeText(this, "Open comments dialog here...", Toast.LENGTH_SHORT).show();
+        });
+
+        // 📤 زر شير
+        btnShare.setOnClickListener(v -> {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "Check this reel: " + videoUrl);
+            startActivity(Intent.createChooser(shareIntent, "Share via"));
+        });
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (player != null) {
-            player.setPlayWhenReady(false);
-        }
+        if (player != null) player.setPlayWhenReady(false);
     }
 
     @Override
