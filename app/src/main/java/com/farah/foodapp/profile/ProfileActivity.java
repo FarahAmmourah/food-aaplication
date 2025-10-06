@@ -2,6 +2,7 @@ package com.farah.foodapp.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.farah.foodapp.R;
 import com.farah.foodapp.cart.CartActivity;
 import com.farah.foodapp.menu.MenuActivity;
+import com.farah.foodapp.notifications.NotificationActivity;
 import com.farah.foodapp.reel.ReelsActivity;
 import com.farah.foodapp.orders.OrdersActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -64,6 +66,14 @@ public class ProfileActivity extends AppCompatActivity {
         if (layoutOrderHistory != null) {
             layoutOrderHistory.setOnClickListener(v -> {
                 Intent intent = new Intent(ProfileActivity.this, OrdersActivity.class);
+                startActivity(intent);
+            });
+        }
+
+        View layoutNotifications = findViewById(R.id.layout_notifications);
+        if (layoutNotifications != null) {
+            layoutNotifications.setOnClickListener(v -> {
+                Intent intent = new Intent(ProfileActivity.this, NotificationActivity.class);
                 startActivity(intent);
             });
         }

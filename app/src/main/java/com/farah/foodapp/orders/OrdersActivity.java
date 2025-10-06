@@ -1,6 +1,10 @@
 package com.farah.foodapp.orders;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Button;
@@ -8,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,21 +23,23 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class OrdersActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerOrders;
     private OrdersAdapter adapter;
-    private List<OrderModel> orderList = new ArrayList<>();
-    private Handler handler = new Handler();
+    private final List<OrderModel> orderList = new ArrayList<>();
+    private final Handler handler = new Handler();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders);
 
-        recyclerOrders = findViewById(R.id.recyclerOrders);
+        RecyclerView recyclerOrders = findViewById(R.id.recyclerOrders);
         recyclerOrders.setLayoutManager(new LinearLayoutManager(this));
 
         adapter = new OrdersAdapter(orderList);
@@ -45,13 +52,12 @@ public class OrdersActivity extends AppCompatActivity {
             finish();
         });
 
-
         loadOrders();
-        handler.postDelayed(updateRunnable, 60000);
+        handler.postDelayed(updateRunnable, 2000);
     }
 
     private void loadOrders() {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         FirebaseFirestore.getInstance()
                 .collection("orders")
                 .whereEqualTo("userId", userId)
@@ -61,7 +67,6 @@ public class OrdersActivity extends AppCompatActivity {
                     for (QueryDocumentSnapshot doc : query) {
                         OrderModel order = doc.toObject(OrderModel.class);
 
-                        // inject docId
                         order = new OrderModel(
                                 doc.getId(),
                                 order.getUserId(),
@@ -79,18 +84,16 @@ public class OrdersActivity extends AppCompatActivity {
                     }
                     adapter.notifyDataSetChanged();
                 })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
+                .addOnFailureListener(e -> Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
-    private Runnable updateRunnable = new Runnable() {
+    private final Runnable updateRunnable = new Runnable() {
         @Override
         public void run() {
             for (OrderModel order : orderList) {
                 updateOrderStatus(order);
             }
-            handler.postDelayed(this, 60000);
+            handler.postDelayed(this, 2000);
         }
     };
 
@@ -107,11 +110,80 @@ public class OrdersActivity extends AppCompatActivity {
         }
 
         if (!newStatus.equals(order.getStatus())) {
+            String finalNewStatus = newStatus;
+
             FirebaseFirestore.getInstance()
                     .collection("orders")
                     .document(order.getId())
                     .update("status", newStatus)
-                    .addOnSuccessListener(aVoid -> loadOrders());
+                    .addOnSuccessListener(aVoid -> {
+                        loadOrders();
+
+
+                        showOrderNotification(order, finalNewStatus);
+                    });
         }
+    }
+
+    private void showOrderNotification(OrderModel order, String status) {
+        String channelId = "order_channel";
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    channelId,
+                    "Order Updates",
+                    NotificationManager.IMPORTANCE_DEFAULT
+            );
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        String itemsSummary = (order.getItems() != null && !order.getItems().isEmpty())
+                ? android.text.TextUtils.join("\n", order.getItems())
+                : "Your order";
+
+        Intent intent = new Intent(this, OrdersActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        android.app.PendingIntent pendingIntent = android.app.PendingIntent.getActivity(
+                this,
+                0,
+                intent,
+                android.app.PendingIntent.FLAG_UPDATE_CURRENT | android.app.PendingIntent.FLAG_IMMUTABLE
+        );
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(R.drawable.logo_app)
+                .setContentTitle("Order Update")
+                .setContentText("Your order is now " + status)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(itemsSummary + "\n\nStatus: " + status))
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        notificationManager.notify(order.getId().hashCode(), builder.build());
+        saveNotificationToFirestore("Order Update", "Your order is now " + status);
+    }
+    private void saveNotificationToFirestore(String title, String message) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String userId = null;
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        }
+
+        Map<String, Object> notification = new HashMap<>();
+        notification.put("title", title);
+        notification.put("message", message);
+        notification.put("timestamp", System.currentTimeMillis());
+        notification.put("userId", userId != null ? userId : "anonymous");
+
+        db.collection("notifications")
+                .add(notification)
+                .addOnSuccessListener(doc ->
+                        android.util.Log.d("OrdersActivity", "Notification saved: " + doc.getId()))
+                .addOnFailureListener(e ->
+                        android.util.Log.e("OrdersActivity", "Error saving notification", e));
     }
 }
