@@ -31,28 +31,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String title = null;
         String body = null;
 
-        // Case 1: Notification payload
         if (remoteMessage.getNotification() != null) {
             title = remoteMessage.getNotification().getTitle();
             body = remoteMessage.getNotification().getBody();
         }
 
-        // Case 2: Data payload
         if (remoteMessage.getData().size() > 0) {
             if (title == null) title = remoteMessage.getData().get("title");
             if (body == null) body = remoteMessage.getData().get("message");
             android.util.Log.d("FCMService", "Data payload: " + remoteMessage.getData());
         }
 
-        // Always fallback so Firestore gets something
         if (title == null) title = "Notification";
         if (body == null) body = "No message body";
 
-        // Show notification and save to Firestore
         showNotification(title, body);
         saveNotificationToFirestore(title, body);
     }
-
 
     @Override
     public void onNewToken(@NonNull String token) {
@@ -64,7 +59,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .document(userId)
                 .update("fcmToken", token);
     }
-
 
     private void showNotification(String title, String message) {
         NotificationManager notificationManager =
