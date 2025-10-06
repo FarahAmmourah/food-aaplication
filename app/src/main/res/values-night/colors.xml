@@ -23,6 +23,9 @@
     <!-- Background / Foreground -->
     <color name="background">#232E33</color>
     <color name="foreground">#E0E0E0</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="darker_gray">#AAAAAA</color>
 
     <!-- Others -->
     <color name="primary_light">#EF9A9A</color>

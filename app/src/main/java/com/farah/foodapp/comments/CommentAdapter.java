@@ -36,11 +36,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         // تقسيم الكومنت بحيث أول كلمة هي الاسم والباقي هو الكومنت
         if (commentText.contains(":")) {
             String[] parts = commentText.split(":", 2);
-            holder.tvUserName.setText(parts[0].trim());
-            holder.tvCommentText.setText(parts[1].trim());
+            holder.tvUsername.setText(parts[0].trim());
+            holder.tvComment.setText(parts[1].trim());
         } else {
-            holder.tvUserName.setText("User");
-            holder.tvCommentText.setText(commentText);
+            holder.tvUsername.setText("User");
+            holder.tvComment.setText(commentText);
         }
 
         holder.imgLike.setOnClickListener(v -> {
@@ -52,7 +52,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                 holder.imgLike.setTag(false);
             }
         });
-
     }
 
     @Override
@@ -62,13 +61,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
     public static class CommentViewHolder extends RecyclerView.ViewHolder {
         ImageView imgProfile, imgLike;
-        TextView tvUserName, tvCommentText;
+        TextView tvUsername, tvComment;
 
         public CommentViewHolder(@NonNull View itemView) {
             super(itemView);
             imgProfile = itemView.findViewById(R.id.imgProfile);
-            tvUserName = itemView.findViewById(R.id.tvUserName);
-            tvCommentText = itemView.findViewById(R.id.tvCommentText);
+            tvUsername = itemView.findViewById(R.id.tvUsername);
+            tvComment = itemView.findViewById(R.id.tvComment);
             imgLike = itemView.findViewById(R.id.imgLike);
         }
     }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,6 +16,10 @@ import com.farah.foodapp.R;
 import com.farah.foodapp.reel.ReelItem;
 import com.farah.foodapp.reel.ReelsActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
@@ -22,46 +27,83 @@ public class CommentsDialog extends BottomSheetDialog {
 
     private List<String> comments;
     private CommentAdapter adapter;
+    private ReelItem reel; // 🔹 لحفظ الكومنت داخل الريل الصحيح
+    private FirebaseFirestore db;
+    private FirebaseAuth auth;
 
     public CommentsDialog(@NonNull Context context, List<String> comments, ReelItem reel, ReelsActivity reelsActivity) {
         super(context);
         this.comments = comments;
+        this.reel = reel;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // 💬 عرض واجهة الكومنتات
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_comments, null);
         setContentView(view);
+
+        // 🩶 إزالة الخلفية البيضاء الافتراضية للـ BottomSheet (عشان الريل يظل ظاهر بالخلفية)
+        View bottomSheet = findViewById(com.google.android.material.R.id.design_bottom_sheet);
+        if (bottomSheet != null) {
+            bottomSheet.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+        }
 
         RecyclerView recyclerComments = view.findViewById(R.id.recyclerComments);
         EditText etComment = view.findViewById(R.id.etComment);
         Button btnSend = view.findViewById(R.id.btnSend);
 
-        // ✅ تهيئة الريسايكلر مع التصميم الجديد
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+
         adapter = new CommentAdapter(comments);
         recyclerComments.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerComments.setAdapter(adapter);
 
-        // 🎨 تنسيق المظهر (خلفية داكنة مثل صفحة الريلز)
-        getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        view.setBackgroundColor(getContext().getColor(android.R.color.black));
-        etComment.setHintTextColor(getContext().getColor(android.R.color.darker_gray));
-        etComment.setTextColor(getContext().getColor(android.R.color.white));
-        btnSend.setBackgroundColor(getContext().getColor(R.color.primary));
-        btnSend.setTextColor(getContext().getColor(android.R.color.white));
-
-        // 📝 زر الإرسال لإضافة كومنت جديد
+        // ✳️ زر الإرسال
         btnSend.setOnClickListener(v -> {
             String newComment = etComment.getText().toString().trim();
             if (!newComment.isEmpty()) {
-                // بإمكانك لاحقًا تعديل "user123" لاسم المستخدم الحالي
-                comments.add("user123: " + newComment);
+                // 🔹 نجيب بيانات المستخدم الحالي
+                FirebaseUser currentUser = auth.getCurrentUser();
+                String userName;
+
+                if (currentUser != null) {
+                    if (currentUser.getDisplayName() != null && !currentUser.getDisplayName().isEmpty()) {
+                        userName = currentUser.getDisplayName(); // 👤 الاسم الحقيقي
+                    } else if (currentUser.getEmail() != null) {
+                        userName = currentUser.getEmail(); // 📧 الإيميل
+                    } else {
+                        userName = "Anonymous"; // 🕵️‍♀️ احتياطي
+                    }
+                } else {
+                    userName = "Anonymous";
+                }
+
+                String formattedComment = userName + ": " + newComment;
+
+                // 1️⃣ نضيفه في الواجهة
+                comments.add(formattedComment);
                 adapter.notifyItemInserted(comments.size() - 1);
                 recyclerComments.scrollToPosition(comments.size() - 1);
                 etComment.setText("");
+
+                // 2️⃣ نضيفه في Firestore داخل نفس الريل
+                if (reel != null && reel.getReelId() != null) {
+                    db.collection("reels")
+                            .document(reel.getReelId())
+                            .update("comments", FieldValue.arrayUnion(formattedComment))
+                            .addOnSuccessListener(a -> {
+                                db.collection("reels")
+                                        .document(reel.getReelId())
+                                        .update("commentsCount", comments.size());
+                            })
+                            .addOnFailureListener(e ->
+                                    Toast.makeText(getContext(), "Failed to save comment", Toast.LENGTH_SHORT).show());
+                }
+            } else {
+                Toast.makeText(getContext(), "Type a comment first", Toast.LENGTH_SHORT).show();
             }
         });
     }

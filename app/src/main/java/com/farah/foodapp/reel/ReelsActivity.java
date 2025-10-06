@@ -117,6 +117,10 @@ public class ReelsActivity extends AppCompatActivity {
                             List<String> comments = (List<String>) doc.get("comments");
                             String restaurantId = doc.getString("restaurantId");
 
+                            // ✅ نأخذ الـ id الخاص بالريل من Firestore
+                            String reelId = doc.getId();
+
+                            // ✅ نمرر الـ reelId للـ ReelItem
                             reelList.add(new ReelItem(
                                     videoUrl,
                                     title,
@@ -125,7 +129,8 @@ public class ReelsActivity extends AppCompatActivity {
                                     commentsCount,
                                     comments,
                                     price,
-                                    restaurantId
+                                    restaurantId,
+                                    reelId // جديد
                             ));
                         } catch (Exception e) {
                             Log.e("Firestore", "Error parsing document", e);
