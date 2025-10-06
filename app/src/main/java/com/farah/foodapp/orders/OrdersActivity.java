@@ -53,7 +53,7 @@ public class OrdersActivity extends AppCompatActivity {
         });
 
         loadOrders();
-        handler.postDelayed(updateRunnable, 2000);
+        handler.postDelayed(updateRunnable, 1000);
     }
 
     private void loadOrders() {
@@ -93,7 +93,7 @@ public class OrdersActivity extends AppCompatActivity {
             for (OrderModel order : orderList) {
                 updateOrderStatus(order);
             }
-            handler.postDelayed(this, 2000);
+            handler.postDelayed(this, 1000);
         }
     };
 
@@ -163,9 +163,9 @@ public class OrdersActivity extends AppCompatActivity {
                 .setAutoCancel(true);
 
         notificationManager.notify(order.getId().hashCode(), builder.build());
-        saveNotificationToFirestore("Order Update", "Your order is now " + status);
+        saveNotificationToFirestore("Your order is now " + status);
     }
-    private void saveNotificationToFirestore(String title, String message) {
+    private void saveNotificationToFirestore(String message) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String userId = null;
 
@@ -174,7 +174,7 @@ public class OrdersActivity extends AppCompatActivity {
         }
 
         Map<String, Object> notification = new HashMap<>();
-        notification.put("title", title);
+        notification.put("title", "Order Update");
         notification.put("message", message);
         notification.put("timestamp", System.currentTimeMillis());
         notification.put("userId", userId != null ? userId : "anonymous");

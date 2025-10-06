@@ -1,6 +1,11 @@
 package com.farah.foodapp;
 
+import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.*;
@@ -8,6 +13,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import com.farah.foodapp.cards.AddCardActivity;
 import com.farah.foodapp.cards.CardStorage;
@@ -34,7 +40,6 @@ public class CheckoutActivity extends AppCompatActivity {
     private String tempCardNumber, tempCardExpiry, tempCardHolder;
     private boolean newCardSaved = false;
 
-    // store selected location
     private double selectedLat = 0;
     private double selectedLon = 0;
 
@@ -116,6 +121,7 @@ public class CheckoutActivity extends AppCompatActivity {
         tvTotal.setText("Total: JOD " + String.format("%.2f", total));
     }
 
+    @SuppressLint("SetTextI18n")
     private void loadCards() {
         rgPaymentMethod.removeAllViews();
 
@@ -134,7 +140,7 @@ public class CheckoutActivity extends AppCompatActivity {
             rbTemp.setText("**** " + tempCardNumber.substring(tempCardNumber.length() - 4)
                     + " (" + tempCardHolder + ")");
             rbTemp.setTextColor(getResources().getColor(R.color.foreground));
-            rgPaymentMethod.addView(rbTemp, 0); // add on top
+            rgPaymentMethod.addView(rbTemp, 0);
             rbTemp.setChecked(true);
         } else {
             rbCash.setChecked(true);
@@ -171,7 +177,6 @@ public class CheckoutActivity extends AppCompatActivity {
 
                 wrapper.addView(rb);
                 wrapper.addView(btnRemove);
-
                 rgPaymentMethod.addView(wrapper, 0);
 
                 if (newCardSaved && cards.get(cards.size() - 1).getId().equals(card.getId())) {
@@ -200,9 +205,11 @@ public class CheckoutActivity extends AppCompatActivity {
             double subtotal = CartManager.getSubtotal();
             double total = subtotal - DISCOUNT + DELIVERY_FEE + SERVICE_FEE;
 
-            String restaurantName = "";
+            String restaurantName;
             if (!CartManager.getCartItems().isEmpty()) {
                 restaurantName = CartManager.getCartItems().get(0).getRestaurant();
+            } else {
+                restaurantName = "";
             }
 
             ArrayList<String> itemsList = new ArrayList<>();
@@ -235,6 +242,44 @@ public class CheckoutActivity extends AppCompatActivity {
                         db.collection("orders").document(doc.getId())
                                 .update("id", doc.getId());
 
+                        showOrderNotification("Order Update", "Your order is now Preparing");
+
+                        if (restaurantName != null && !restaurantName.isEmpty()) {
+                            FirebaseFirestore db2 = FirebaseFirestore.getInstance();
+                            String currentUserId = FirebaseAuth.getInstance().getCurrentUser() != null
+                                    ? FirebaseAuth.getInstance().getCurrentUser().getUid()
+                                    : "guest";
+
+                            // ✅ جلب اسم المستخدم من Firestore
+                            db2.collection("users")
+                                    .document(currentUserId)
+                                    .get()
+                                    .addOnSuccessListener(userDoc -> {
+                                        String customerName = userDoc.exists()
+                                                ? userDoc.getString("name")
+                                                : "Customer";
+
+                                        HashMap<String, Object> restaurantNotification = new HashMap<>();
+                                        restaurantNotification.put("title", "New Order Received");
+                                        restaurantNotification.put("message", "New order from " + customerName);
+                                        restaurantNotification.put("timestamp", System.currentTimeMillis());
+                                        restaurantNotification.put("userId", currentUserId);
+                                        restaurantNotification.put("customerName", customerName);
+                                        restaurantNotification.put("restaurantName", restaurantName);
+                                        restaurantNotification.put("orderId", doc.getId());
+
+                                        db2.collection("notifications")
+                                                .add(restaurantNotification)
+                                                .addOnSuccessListener(n ->
+                                                        android.util.Log.d("CheckoutActivity", "Notification added for restaurant: " + restaurantName))
+                                                .addOnFailureListener(e ->
+                                                        android.util.Log.e("CheckoutActivity", "Error adding restaurant notification", e));
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        android.util.Log.e("CheckoutActivity", "Error fetching user name", e);
+                                    });
+                        }
+
                         Toast.makeText(this, "Order placed using: " + paymentMethod, Toast.LENGTH_SHORT).show();
                         CartManager.clearCart();
 
@@ -248,12 +293,34 @@ public class CheckoutActivity extends AppCompatActivity {
                         setResult(RESULT_OK, resultIntent);
                         finish();
                     })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
-
+                    .addOnFailureListener(e ->
+                            Toast.makeText(this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         } else {
             Toast.makeText(this, "Please select payment method", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void showOrderNotification(String title, String message) {
+        String channelId = "order_channel";
+        NotificationManager manager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    channelId,
+                    "Order Updates",
+                    NotificationManager.IMPORTANCE_DEFAULT
+            );
+            manager.createNotificationChannel(channel);
+        }
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(R.drawable.logo_app)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                .setAutoCancel(true);
+
+        manager.notify((int) System.currentTimeMillis(), builder.build());
     }
 }
