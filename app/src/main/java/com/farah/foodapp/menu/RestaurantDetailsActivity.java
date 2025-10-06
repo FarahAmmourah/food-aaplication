@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.farah.foodapp.R;
 import com.farah.foodapp.cart.CartActivity;
+import com.farah.foodapp.cart.CartManager;
 import com.farah.foodapp.profile.ProfileActivity;
 import com.farah.foodapp.reel.ReelsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -27,6 +28,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
     private FoodAdapter adapter;
     private ArrayList<FoodItem> menuList;
     private FirebaseFirestore db;
+    private BottomNavigationView bottomNavigationView; // 🔹 لحفظ المرجع
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +59,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
             Toast.makeText(this, "No restaurant found!", Toast.LENGTH_SHORT).show();
         }
 
-        // ✅ BottomNavigationView setup (نفس ديزاين البروفايل والريلز)
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        // ✅ BottomNavigationView setup
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setBackgroundColor(getResources().getColor(R.color.primary));
         bottomNavigationView.setItemIconTintList(getResources().getColorStateList(R.color.primaryForeground));
         bottomNavigationView.setItemTextColor(getResources().getColorStateList(R.color.primaryForeground));
@@ -83,6 +85,9 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
             }
             return false;
         });
+
+        // 🔹 نحدث العداد عند فتح الصفحة
+        updateCartBadge();
     }
 
     private void loadRestaurantDetails(String restaurantId) {
@@ -115,5 +120,17 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Error loading menu", Toast.LENGTH_SHORT).show());
+    }
+
+    // ✅ دالة لتحديث العداد
+    public void updateCartBadge() {
+        int count = CartManager.getTotalQuantity();
+        if (bottomNavigationView != null) {
+            if (count > 0) {
+                bottomNavigationView.getOrCreateBadge(R.id.nav_cart).setNumber(count);
+            } else {
+                bottomNavigationView.removeBadge(R.id.nav_cart);
+            }
+        }
     }
 }

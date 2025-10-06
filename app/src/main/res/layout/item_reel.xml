@@ -80,7 +80,7 @@
         android:layout_gravity="bottom"
         android:padding="16dp"
         android:background="@android:color/transparent"
-        android:layout_marginBottom="72dp">
+        android:layout_marginBottom="24dp"> <!-- 🔽 قللنا المسافة لتحت -->
 
         <!-- 🎬 Title -->
         <TextView
@@ -103,25 +103,8 @@
             android:textStyle="italic"
             android:layout_marginTop="2dp" />
 
-        <!-- ℹ️ Description -->
-        <TextView
-            android:id="@+id/tvDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Video description"
-            android:textColor="@android:color/white"
-            android:textSize="14sp"
-            android:layout_marginTop="2dp" />
 
-        <!-- 🔖 Tags -->
-        <TextView
-            android:id="@+id/tvTags"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="#tag1 #tag2"
-            android:textColor="@android:color/white"
-            android:textSize="12sp"
-            android:layout_marginTop="2dp" />
+
 
         <!-- 🛒 Order button -->
         <Button

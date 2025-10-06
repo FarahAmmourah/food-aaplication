@@ -110,6 +110,11 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
             );
 
             Toast.makeText(context, reel.getTitle() + " added to cart!", Toast.LENGTH_SHORT).show();
+
+            // 🔔 تحديث عداد الكارت
+            if (context instanceof ReelsActivity) {
+                ((ReelsActivity) context).updateCartBadge();
+            }
         });
     }
 

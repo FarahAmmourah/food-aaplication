@@ -12,6 +12,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.farah.foodapp.R;
 import com.farah.foodapp.cart.CartActivity;
+import com.farah.foodapp.cart.CartManager;
 import com.farah.foodapp.menu.MenuActivity;
 import com.farah.foodapp.profile.ProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -93,6 +94,9 @@ public class ReelsActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // 🔹 نحدث العداد عند بداية الصفحة
+        updateCartBadge();
     }
 
     private void loadReelsFromFirestore() {
@@ -130,5 +134,16 @@ public class ReelsActivity extends AppCompatActivity {
                     reelsAdapter.notifyDataSetChanged();
                 })
                 .addOnFailureListener(e -> Log.e("Firestore", "Failed to load reels", e));
+    }
+
+    // ✅ ميثود لتحديث العداد في أي وقت
+    public void updateCartBadge() {
+        int count = CartManager.getTotalQuantity();
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
+        if (count > 0) {
+            bottomNav.getOrCreateBadge(R.id.nav_cart).setNumber(count);
+        } else {
+            bottomNav.removeBadge(R.id.nav_cart);
+        }
     }
 }

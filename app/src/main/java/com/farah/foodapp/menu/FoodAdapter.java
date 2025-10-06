@@ -1,4 +1,5 @@
 package com.farah.foodapp.menu;
+
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -76,25 +78,27 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         btnSmall.setText("Small - $" + item.getSmallPrice());
         btnLarge.setText("Large - $" + item.getLargePrice());
 
+        // ✅ زر Small
         btnSmall.setOnClickListener(v -> {
             CartManager.addItem(item.getName(), item.getRestaurant(), "Small", item.getSmallPrice(), item.getImageResId());
-            notifyCartBadge();
+            Toast.makeText(context, item.getName() + " added to cart!", Toast.LENGTH_SHORT).show(); // ✅ رسالة
+            if (context instanceof RestaurantDetailsActivity) {
+                ((RestaurantDetailsActivity) context).updateCartBadge(); // ✅ تحديث العداد
+            }
             dialog.dismiss();
         });
 
+        // ✅ زر Large
         btnLarge.setOnClickListener(v -> {
             CartManager.addItem(item.getName(), item.getRestaurant(), "Large", item.getLargePrice(), item.getImageResId());
-            notifyCartBadge();
+            Toast.makeText(context, item.getName() + " added to cart!", Toast.LENGTH_SHORT).show(); // ✅ رسالة
+            if (context instanceof RestaurantDetailsActivity) {
+                ((RestaurantDetailsActivity) context).updateCartBadge(); // ✅ تحديث العداد
+            }
             dialog.dismiss();
         });
 
         dialog.show();
-    }
-
-    private void notifyCartBadge() {
-        if (context instanceof MenuActivity) {
-            ((MenuActivity) context).updateCartBadge();
-        }
     }
 
     // ✅ ميزة البحث (Filter)
@@ -146,5 +150,6 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
             tvRestaurant = itemView.findViewById(R.id.tvRestaurant);
             tvRating = itemView.findViewById(R.id.tvRating);
             cardView = (CardView) itemView;
-
-}}}
+        }
+    }
+}
