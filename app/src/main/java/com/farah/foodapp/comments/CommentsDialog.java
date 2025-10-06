@@ -32,6 +32,7 @@ public class CommentsDialog extends BottomSheetDialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // 💬 عرض واجهة الكومنتات
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_comments, null);
         setContentView(view);
 
@@ -39,14 +40,25 @@ public class CommentsDialog extends BottomSheetDialog {
         EditText etComment = view.findViewById(R.id.etComment);
         Button btnSend = view.findViewById(R.id.btnSend);
 
+        // ✅ تهيئة الريسايكلر مع التصميم الجديد
         adapter = new CommentAdapter(comments);
         recyclerComments.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerComments.setAdapter(adapter);
 
+        // 🎨 تنسيق المظهر (خلفية داكنة مثل صفحة الريلز)
+        getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        view.setBackgroundColor(getContext().getColor(android.R.color.black));
+        etComment.setHintTextColor(getContext().getColor(android.R.color.darker_gray));
+        etComment.setTextColor(getContext().getColor(android.R.color.white));
+        btnSend.setBackgroundColor(getContext().getColor(R.color.primary));
+        btnSend.setTextColor(getContext().getColor(android.R.color.white));
+
+        // 📝 زر الإرسال لإضافة كومنت جديد
         btnSend.setOnClickListener(v -> {
             String newComment = etComment.getText().toString().trim();
             if (!newComment.isEmpty()) {
-                comments.add(newComment);
+                // بإمكانك لاحقًا تعديل "user123" لاسم المستخدم الحالي
+                comments.add("user123: " + newComment);
                 adapter.notifyItemInserted(comments.size() - 1);
                 recyclerComments.scrollToPosition(comments.size() - 1);
                 etComment.setText("");
