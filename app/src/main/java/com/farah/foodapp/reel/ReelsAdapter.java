@@ -19,12 +19,16 @@ import com.farah.foodapp.R;
 import com.farah.foodapp.cart.CartManager;
 import com.farah.foodapp.comments.CommentsDialog;
 import com.farah.foodapp.menu.RestaurantDetailsActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.media3.common.MediaItem;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHolder> {
 
@@ -47,6 +51,23 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
     public void onBindViewHolder(@NonNull ReelViewHolder holder, int position) {
         ReelItem reel = reelList.get(position);
 
+        // ✅ تحقق من حالة الريل في Firestore لتحديد لون اللايك
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        db.collection("users").document(uid)
+                .collection("favorites")
+                .document(reel.getReelId())
+                .get()
+                .addOnSuccessListener(doc -> {
+                    if (doc.exists()) {
+                        reel.setLiked(true);
+                        holder.btnLike.setColorFilter(Color.RED);
+                    } else {
+                        reel.setLiked(false);
+                        holder.btnLike.setColorFilter(Color.WHITE);
+                    }
+                });
+
         // 🎥 تشغيل الفيديو
         ExoPlayer player = new ExoPlayer.Builder(context).build();
         holder.playerView.setPlayer(player);
@@ -67,21 +88,45 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
         // 🟠 فتح شاشة المنيو عند الضغط على اسم المطعم
         holder.tvRestaurant.setOnClickListener(v -> {
             Intent intent = new Intent(context, RestaurantDetailsActivity.class);
-            intent.putExtra("restaurantId", reel.getRestaurantId()); // تمرير ID
+            intent.putExtra("restaurantId", reel.getRestaurantId());
             context.startActivity(intent);
         });
 
-        // ❤️ زر اللايك
+        // ❤️ زر اللايك (تخزين في Firebase)
         holder.btnLike.setOnClickListener(v -> {
+            if (uid == null) return; // حماية من null user
+
             if (reel.isLiked()) {
                 holder.btnLike.setColorFilter(Color.WHITE);
                 reel.setLikesCount(reel.getLikesCount() - 1);
                 reel.setLiked(false);
+
+                // 🗑 حذف من المفضلات
+                db.collection("users")
+                        .document(uid)
+                        .collection("favorites")
+                        .document(reel.getReelId())
+                        .delete();
             } else {
                 holder.btnLike.setColorFilter(Color.RED);
                 reel.setLikesCount(reel.getLikesCount() + 1);
                 reel.setLiked(true);
+
+                // 💾 حفظ في المفضلات
+                Map<String, Object> fav = new HashMap<>();
+                fav.put("videoUrl", reel.getVideoUrl());
+                fav.put("title", reel.getTitle());
+                fav.put("restaurant", reel.getRestaurant());
+                fav.put("price", reel.getPrice());
+                fav.put("reelId", reel.getReelId());
+
+                db.collection("users")
+                        .document(uid)
+                        .collection("favorites")
+                        .document(reel.getReelId())
+                        .set(fav);
             }
+
             holder.tvLikeCount.setText(String.valueOf(reel.getLikesCount()));
         });
 
@@ -99,19 +144,18 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
             context.startActivity(Intent.createChooser(shareIntent, "Share Reel via"));
         });
 
-        // 🛒 زر الأوردر ناو (الإضافة إلى الكارت)
+        // 🛒 زر الأوردر ناو
         holder.btnOrder.setOnClickListener(v -> {
             CartManager.addItem(
-                    reel.getTitle(),          // اسم الأكلة
-                    reel.getRestaurant(),     // اسم المطعم
-                    "Regular",                // الحجم الافتراضي
-                    reel.getPrice(),          // السعر
-                    R.drawable.ic_launcher_background // صورة مؤقتة
+                    reel.getTitle(),
+                    reel.getRestaurant(),
+                    "Regular",
+                    reel.getPrice(),
+                    R.drawable.ic_launcher_background
             );
 
             Toast.makeText(context, reel.getTitle() + " added to cart!", Toast.LENGTH_SHORT).show();
 
-            // 🔔 تحديث عداد الكارت
             if (context instanceof ReelsActivity) {
                 ((ReelsActivity) context).updateCartBadge();
             }

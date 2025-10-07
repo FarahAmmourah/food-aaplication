@@ -70,6 +70,15 @@ public class ProfileActivity extends AppCompatActivity {
             });
         }
 
+        // ✅ Favorites click → FavoritesActivity
+        View layoutFavorites = findViewById(R.id.layout_favorites);
+        if (layoutFavorites != null) {
+            layoutFavorites.setOnClickListener(v -> {
+                Intent intent = new Intent(ProfileActivity.this, FavoritesActivity.class);
+                startActivity(intent);
+            });
+        }
+
         View layoutNotifications = findViewById(R.id.layout_notifications);
         if (layoutNotifications != null) {
             layoutNotifications.setOnClickListener(v -> {

@@ -51,6 +51,8 @@
         <activity
             android:name=".admin.admin_profile.OrderHistoryActivity"
             android:exported="true" />
+        <activity android:name=".profile.FavoritesActivity"
+            android:exported="false" />
 
         <activity android:name=".notifications.NotificationActivity" />
 
