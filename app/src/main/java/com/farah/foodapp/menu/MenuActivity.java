@@ -5,20 +5,25 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.farah.foodapp.profile.ProfileActivity;
 import com.farah.foodapp.R;
 import com.farah.foodapp.cart.CartActivity;
 import com.farah.foodapp.cart.CartManager;
+import com.farah.foodapp.profile.ProfileActivity;
 import com.farah.foodapp.reel.ReelsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -26,7 +31,10 @@ public class MenuActivity extends AppCompatActivity {
     private FoodAdapter adapter;
     private List<FoodItem> foodList;
     private EditText etSearch;
-    BottomNavigationView bottomNavigationView;
+    private BottomNavigationView bottomNavigationView;
+
+    private FirebaseFirestore firestore;
+    private String restaurantId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +47,13 @@ public class MenuActivity extends AppCompatActivity {
         etSearch = findViewById(R.id.etSearch);
 
         foodList = new ArrayList<>();
-        foodList.add(new FoodItem("Margherita Pizza","Fresh mozzarella, tomato sauce, basil","@Mario's Pizzeria",10.99,14.99,4.8f,R.drawable.pizza));
-        foodList.add(new FoodItem("Cheeseburger","Beef patty, cheddar cheese, lettuce, tomato","@Burger House",8.50,11.99,4.5f,R.drawable.burger));
-        foodList.add(new FoodItem("Pasta Alfredo","Creamy sauce, parmesan, mushrooms","@Pasta Corner",9.25,12.75,4.6f,R.drawable.pasta));
-
         adapter = new FoodAdapter(this, foodList);
         recyclerMenu.setAdapter(adapter);
+
+        firestore = FirebaseFirestore.getInstance();
+        restaurantId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+
+        loadMenuFromFirestore();
 
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -66,7 +75,6 @@ public class MenuActivity extends AppCompatActivity {
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
-
             if (id == R.id.nav_reels) {
                 startActivity(new Intent(this, ReelsActivity.class));
                 overridePendingTransition(0, 0);
@@ -84,6 +92,24 @@ public class MenuActivity extends AppCompatActivity {
             }
             return false;
         });
+    }
+
+    private void loadMenuFromFirestore() {
+        firestore.collection("restaurants")
+                .document(restaurantId)
+                .collection("menu")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    foodList.clear();
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        FoodItem item = doc.toObject(FoodItem.class);
+                        foodList.add(item);
+                    }
+                    adapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Failed to load menu: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                );
     }
 
     public void updateCartBadge() {

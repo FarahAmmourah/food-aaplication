@@ -11,7 +11,9 @@ public class FoodItem {
     private float rating;
     private int imageResId;
 
-    // ✅ Constructor كامل (زي ما كان عندك)
+    public FoodItem() {
+    }
+
     public FoodItem(String name, String description, String restaurant,
                     double smallPrice, double largePrice, float rating, int imageResId) {
         this.name = name;
