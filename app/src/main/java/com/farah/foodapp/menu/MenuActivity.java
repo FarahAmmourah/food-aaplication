@@ -95,9 +95,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void loadMenuFromFirestore() {
-        firestore.collection("restaurants")
-                .document(restaurantId)
-                .collection("menu")
+        firestore.collectionGroup("menu")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     foodList.clear();
@@ -108,7 +106,7 @@ public class MenuActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                 })
                 .addOnFailureListener(e ->
-                        Toast.makeText(this, "Failed to load menu: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Failed to load all menu items: " + e.getMessage(), Toast.LENGTH_SHORT).show()
                 );
     }
 

@@ -64,6 +64,12 @@ public class CheckoutActivity extends AppCompatActivity {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        boolean paymentSuccess = result.getData().getBooleanExtra("payment_success", false);
+
+                        if (paymentSuccess) {
+                            placeOrderWithStatus("stripe", "completed");
+                            return;
+                        }
                         tempCardNumber = result.getData().getStringExtra("tempCardNumber");
                         tempCardExpiry = result.getData().getStringExtra("tempCardExpiry");
                         tempCardHolder = result.getData().getStringExtra("tempCardHolder");
@@ -130,7 +136,6 @@ public class CheckoutActivity extends AppCompatActivity {
                 : "guest";
 
         RadioButton rbCash = new RadioButton(this);
-        rbCash.setId(R.id.rbCash);
         rbCash.setText("Cash");
         rbCash.setTextColor(getResources().getColor(R.color.foreground));
         rgPaymentMethod.addView(rbCash);
@@ -188,116 +193,65 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private void placeOrder() {
         int selectedId = rgPaymentMethod.getCheckedRadioButtonId();
-        RadioButton selected = findViewById(selectedId);
+        RadioButton selectedRadio = findViewById(selectedId);
 
-        if (selected != null) {
-            String paymentMethod = selected.getText().toString();
-
-            if (CartManager.getCartItems().isEmpty()) {
-                Toast.makeText(this, "Your cart is empty!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            String userId = FirebaseAuth.getInstance().getCurrentUser() != null
-                    ? FirebaseAuth.getInstance().getCurrentUser().getUid()
-                    : "guest";
-
-            double subtotal = CartManager.getSubtotal();
-            double total = subtotal - DISCOUNT + DELIVERY_FEE + SERVICE_FEE;
-
-            String restaurantName;
-            if (!CartManager.getCartItems().isEmpty()) {
-                restaurantName = CartManager.getCartItems().get(0).getRestaurant();
-            } else {
-                restaurantName = "";
-            }
-
-            ArrayList<String> itemsList = new ArrayList<>();
-            for (com.farah.foodapp.cart.CartItem item : CartManager.getCartItems()) {
-                String desc = item.getQuantity() + "x " + item.getName()
-                        + (item.getSize() != null ? " (" + item.getSize() + ")" : "")
-                        + " - " + String.format("%.2f JOD", item.getPrice() * item.getQuantity());
-                itemsList.add(desc);
-            }
-
-            long createdAt = System.currentTimeMillis();
-
-            HashMap<String, Object> orderData = new HashMap<>();
-            orderData.put("userId", userId);
-            orderData.put("restaurantName", restaurantName);
-            orderData.put("paymentMethod", paymentMethod);
-            orderData.put("total", total);
-            orderData.put("status", "Preparing");
-            orderData.put("address", tvAddress.getText().toString());
-            orderData.put("lat", selectedLat);
-            orderData.put("lon", selectedLon);
-            orderData.put("createdAt", createdAt);
-            orderData.put("items", itemsList);
-            orderData.put("eta", "30-40 min");
-
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            db.collection("orders")
-                    .add(orderData)
-                    .addOnSuccessListener(doc -> {
-                        db.collection("orders").document(doc.getId())
-                                .update("id", doc.getId());
-
-                        showOrderNotification("Order Update", "Your order is now Preparing");
-
-                        if (restaurantName != null && !restaurantName.isEmpty()) {
-                            FirebaseFirestore db2 = FirebaseFirestore.getInstance();
-                            String currentUserId = FirebaseAuth.getInstance().getCurrentUser() != null
-                                    ? FirebaseAuth.getInstance().getCurrentUser().getUid()
-                                    : "guest";
-
-                            // ✅ جلب اسم المستخدم من Firestore
-                            db2.collection("users")
-                                    .document(currentUserId)
-                                    .get()
-                                    .addOnSuccessListener(userDoc -> {
-                                        String customerName = userDoc.exists()
-                                                ? userDoc.getString("name")
-                                                : "Customer";
-
-                                        HashMap<String, Object> restaurantNotification = new HashMap<>();
-                                        restaurantNotification.put("title", "New Order Received");
-                                        restaurantNotification.put("message", "New order from " + customerName);
-                                        restaurantNotification.put("timestamp", System.currentTimeMillis());
-                                        restaurantNotification.put("userId", currentUserId);
-                                        restaurantNotification.put("customerName", customerName);
-                                        restaurantNotification.put("restaurantName", restaurantName);
-                                        restaurantNotification.put("orderId", doc.getId());
-
-                                        db2.collection("notifications")
-                                                .add(restaurantNotification)
-                                                .addOnSuccessListener(n ->
-                                                        android.util.Log.d("CheckoutActivity", "Notification added for restaurant: " + restaurantName))
-                                                .addOnFailureListener(e ->
-                                                        android.util.Log.e("CheckoutActivity", "Error adding restaurant notification", e));
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        android.util.Log.e("CheckoutActivity", "Error fetching user name", e);
-                                    });
-                        }
-
-                        Toast.makeText(this, "Order placed using: " + paymentMethod, Toast.LENGTH_SHORT).show();
-                        CartManager.clearCart();
-
-                        tempCardNumber = null;
-                        tempCardExpiry = null;
-                        tempCardHolder = null;
-                        newCardSaved = false;
-
-                        Intent resultIntent = new Intent();
-                        resultIntent.putExtra("orderPlaced", true);
-                        setResult(RESULT_OK, resultIntent);
-                        finish();
-                    })
-                    .addOnFailureListener(e ->
-                            Toast.makeText(this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+        if (selectedRadio != null && selectedRadio.getText().toString().equals("Cash")) {
+            placeOrderWithStatus("cash", "pending");
         } else {
-            Toast.makeText(this, "Please select payment method", Toast.LENGTH_SHORT).show();
+            placeOrderWithStatus("stripe", "completed");
         }
+    }
+
+    private void placeOrderWithStatus(String paymentMethodId, String paymentStatus) {
+        if (CartManager.getCartItems().isEmpty()) {
+            Toast.makeText(this, "Your cart is empty!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String userId = FirebaseAuth.getInstance().getCurrentUser() != null
+                ? FirebaseAuth.getInstance().getCurrentUser().getUid()
+                : "guest";
+
+        double subtotal = CartManager.getSubtotal();
+        double total = subtotal - DISCOUNT + DELIVERY_FEE + SERVICE_FEE;
+
+        String restaurantName = !CartManager.getCartItems().isEmpty()
+                ? CartManager.getCartItems().get(0).getRestaurant() : "";
+
+        ArrayList<String> itemsList = new ArrayList<>();
+        for (com.farah.foodapp.cart.CartItem item : CartManager.getCartItems()) {
+            String desc = item.getQuantity() + "x " + item.getName()
+                    + (item.getSize() != null ? " (" + item.getSize() + ")" : "")
+                    + " - " + String.format("%.2f JOD", item.getPrice() * item.getQuantity());
+            itemsList.add(desc);
+        }
+
+        HashMap<String, Object> orderData = new HashMap<>();
+        orderData.put("userId", userId);
+        orderData.put("restaurantName", restaurantName);
+        orderData.put("paymentMethod", paymentMethodId);
+        orderData.put("paymentStatus", paymentStatus);
+        orderData.put("total", total);
+        orderData.put("status", "Preparing");
+        orderData.put("address", tvAddress.getText().toString());
+        orderData.put("lat", selectedLat);
+        orderData.put("lon", selectedLon);
+        orderData.put("createdAt", System.currentTimeMillis());
+        orderData.put("items", itemsList);
+        orderData.put("eta", "30-40 min");
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("orders")
+                .add(orderData)
+                .addOnSuccessListener(doc -> {
+                    db.collection("orders").document(doc.getId())
+                            .update("id", doc.getId());
+                    Toast.makeText(this, "Order placed using: " + paymentMethodId, Toast.LENGTH_SHORT).show();
+                    CartManager.clearCart();
+                    finish();
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
     private void showOrderNotification(String title, String message) {

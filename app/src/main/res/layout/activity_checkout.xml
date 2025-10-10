@@ -1,304 +1,117 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/background">
-
-    <TextView
-        android:id="@+id/tvCheckoutTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Checkout"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="@color/foreground"
-        android:padding="12dp"
-        android:layout_alignParentTop="true"/>
-
-    <View
-        android:id="@+id/dividerCheckout"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/mutedForeground"
-        android:layout_below="@id/tvCheckoutTitle"/>
-
-    <ScrollView
-        android:id="@+id/scrollCheckout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/dividerCheckout"
-        android:layout_above="@id/layoutBottomButtons"
-        android:fillViewport="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="12dp">
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="3dp"
-                android:layout_marginBottom="12dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <ImageView
-                        android:id="@+id/ivMapPlaceholder"
-                        android:layout_width="match_parent"
-                        android:layout_height="160dp"
-                        android:src="@drawable/ic_map_placeholder"
-                        android:scaleType="centerCrop"
-                        android:background="@color/mutedForeground" />
-
-
-                    <TextView
-                        android:id="@+id/tvAddress"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Amman, Jordan"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/foreground"
-                        android:layout_marginTop="8dp"/>
-
-                    <TextView
-                        android:id="@+id/tvMobile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Mobile: +962 77xxxxxxx"
-                        android:textSize="14sp"
-                        android:textColor="@color/mutedForeground"
-                        android:layout_marginTop="2dp"/>
-
-                    <TextView
-                        android:id="@+id/tvChangeLocation"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Change"
-                        android:textSize="14sp"
-                        android:textColor="@color/primary"
-                        android:textStyle="bold"
-                        android:layout_marginTop="4dp"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="3dp"
-                android:layout_marginBottom="12dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Delivery"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/foreground"/>
-
-                    <TextView
-                        android:id="@+id/tvDeliveryETA"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Arriving in approx. 20-35 mins"
-                        android:textSize="15sp"
-                        android:textColor="@color/mutedForeground"
-                        android:layout_marginTop="4dp"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="3dp"
-                android:layout_marginBottom="12dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Payment"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/foreground"
-                        android:layout_marginBottom="8dp"/>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/ic_add"
-                            android:layout_marginEnd="6dp"
-                            app:tint="@color/primary" />
-
-                        <TextView
-                            android:id="@+id/btnAddCard"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Add Card"
-                            android:textSize="15sp"
-                            android:textColor="@color/primary"/>
-                    </LinearLayout>
-
-                    <RadioGroup
-                        android:id="@+id/rgPaymentMethod"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:buttonTint="@color/primary"
-                        android:layout_marginTop="8dp">
-
-                        <RadioButton
-                            android:id="@+id/rbCash"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Cash"
-                            android:textColor="@color/foreground"/>
-                    </RadioGroup>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="3dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Payment summary"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/foreground"
-                        android:layout_marginBottom="8dp"/>
-
-                    <TextView
-                        android:id="@+id/tvSubtotal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Subtotal: JOD 0.00"
-                        android:textSize="14sp"
-                        android:textColor="@color/foreground"
-                        android:gravity="start"/>
-
-                    <TextView
-                        android:id="@+id/tvDiscount"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Discount: -JOD 0.00"
-                        android:textSize="14sp"
-                        android:textColor="@color/destructiveForeground"
-                        android:gravity="start"
-                        android:layout_marginTop="4dp"/>
-
-                    <TextView
-                        android:id="@+id/tvDeliveryFee"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Delivery: JOD 3.00"
-                        android:textSize="14sp"
-                        android:textColor="@color/foreground"
-                        android:gravity="start"
-                        android:layout_marginTop="4dp"/>
-
-                    <TextView
-                        android:id="@+id/tvServiceFee"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Service fee: JOD 0.20"
-                        android:textSize="14sp"
-                        android:textColor="@color/foreground"
-                        android:gravity="start"
-                        android:layout_marginTop="4dp"/>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/mutedForeground"
-                        android:layout_marginTop="6dp"
-                        android:layout_marginBottom="6dp"/>
-
-                    <TextView
-                        android:id="@+id/tvTotal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Total: JOD 0.00"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/foreground"
-                        android:gravity="start"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-        </LinearLayout>
-    </ScrollView>
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/layoutBottomButtons"
+        android:orientation="vertical"
+        android:padding="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
-        android:padding="12dp"
-        android:weightSum="2"
-        android:background="@color/background"
-        android:elevation="6dp">
+        android:layout_height="wrap_content">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCancelOrder"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/tvSubtotal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Cancel"
-            android:textColor="@color/destructiveForeground"
-            android:backgroundTint="@color/destructive"
-            app:cornerRadius="12dp"
-            android:layout_marginEnd="8dp"/>
+            android:text="Subtotal: JOD 0.00"
+            android:textSize="16sp"
+            android:paddingTop="4dp"/>
 
-        <com.google.android.material.button.MaterialButton
+        <TextView
+            android:id="@+id/tvDiscount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Discount: -JOD 0.00"
+            android:textSize="16sp"
+            android:paddingTop="4dp"/>
+
+        <TextView
+            android:id="@+id/tvDeliveryFee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delivery: JOD 0.00"
+            android:textSize="16sp"
+            android:paddingTop="4dp"/>
+
+        <TextView
+            android:id="@+id/tvServiceFee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Service fee: JOD 0.00"
+            android:textSize="16sp"
+            android:paddingTop="4dp"/>
+
+        <TextView
+            android:id="@+id/tvTotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total: JOD 0.00"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"/>
+
+
+
+
+
+        <!-- Delivery Address -->
+        <TextView
+            android:id="@+id/tvAddress"
+            android:text="Select address"
+            android:layout_marginTop="16dp"
+            android:textStyle="italic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/ivMapPlaceholder"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_map_placeholder"
+            android:contentDescription="Map placeholder"
+            android:layout_marginTop="16dp"/>
+
+        <Button
+            android:id="@+id/tvChangeLocation"
+            android:text="Change Location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:text="Payment Method"
+            android:layout_marginTop="20dp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <RadioGroup
+            android:id="@+id/rgPaymentMethod"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/btnAddCard"
+            android:text="+ Add Card"
+            android:textColor="@color/red"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
             android:id="@+id/btnPlaceOrder"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Place order"
-            android:textColor="@color/primaryForeground"
-            android:backgroundTint="@color/primary"
-            app:cornerRadius="12dp"/>
-    </LinearLayout>
+            android:text="Place Order"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/btnCancelOrder"
+            android:text="Cancel"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+</ScrollView>

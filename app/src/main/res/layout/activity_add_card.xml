@@ -1,133 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
-    android:padding="16dp">
+    android:padding="20dp">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/tvAddCardTitle"
+        android:id="@+id/tvStatus"
+        android:text="Processing payment..."
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add New Card"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/foreground"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="12dp" />
+        android:layout_height="wrap_content" />
 
-    <ScrollView
-        android:id="@+id/scrollCardForm"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_below="@id/tvAddCardTitle"
-        android:layout_above="@id/layoutBottomButtons"
-        android:fillViewport="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="12dp">
-
-            <EditText
-                android:id="@+id/etCardNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Card Number"
-                android:inputType="number"
-                android:padding="12dp"
-                android:layout_marginBottom="12dp"
-                android:background="@android:drawable/edit_text" />
-
-            <EditText
-                android:id="@+id/etExpiry"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Expiry (MM/YY)"
-                android:inputType="text"
-                android:padding="12dp"
-                android:layout_marginBottom="12dp"
-                android:background="@android:drawable/edit_text" />
-
-            <EditText
-                android:id="@+id/etHolder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Card Holder Name"
-                android:inputType="textPersonName"
-                android:padding="12dp"
-                android:layout_marginBottom="12dp"
-                android:background="@android:drawable/edit_text" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="3dp"
-                android:layout_marginTop="12dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="12dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Save card for later"
-                        android:textSize="16sp"
-                        android:textColor="@color/foreground" />
-
-                    <Switch
-                        android:id="@+id/switchSaveCard"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:trackTint="@color/gray_light"
-                        android:thumbTint="@color/gray"/>
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
-    </ScrollView>
-
-    <LinearLayout
-        android:id="@+id/layoutBottomButtons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2"
-        android:padding="12dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/background"
-        android:elevation="6dp">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCancelCard"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Cancel"
-            android:textColor="@color/primaryForeground"
-            android:backgroundTint="@color/destructive"
-            app:cornerRadius="12dp"
-            android:layout_marginEnd="8dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSaveCard"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Pay now"
-            android:textColor="@color/primaryForeground"
-            android:backgroundTint="@color/primary"
-            app:cornerRadius="12dp" />
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

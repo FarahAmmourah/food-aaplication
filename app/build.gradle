@@ -89,4 +89,6 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:33.4.0')
     implementation 'com.google.firebase:firebase-messaging'
 
+    implementation 'com.stripe:stripe-android:21.28.0'
+
 }

@@ -171,12 +171,6 @@
                             android:textColor="@color/foreground"
                             android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="24 orders"
-                            android:textSize="14sp"
-                            android:textColor="@color/mutedForeground" />
                     </LinearLayout>
 
                     <ImageView

@@ -63,13 +63,15 @@
                 android:layout_marginTop="2dp" />
 
             <TextView
-                android:id="@+id/tvRestaurant"
+                android:id="@+id/tvRestaurantName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@Mario's Pizzeria"
-                android:textSize="13sp"
-                android:textColor="#888888"
-                android:layout_marginTop="2dp" />
+                android:textColor="@color/gray"
+                android:textStyle="italic"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp"
+                android:text="Restaurant name" />
+
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

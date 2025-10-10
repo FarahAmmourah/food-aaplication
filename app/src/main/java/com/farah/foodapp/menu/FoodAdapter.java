@@ -147,7 +147,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
             imgFood = itemView.findViewById(R.id.imgFood);
             tvFoodName = itemView.findViewById(R.id.tvFoodName);
             tvFoodDesc = itemView.findViewById(R.id.tvFoodDesc);
-            tvRestaurant = itemView.findViewById(R.id.tvRestaurant);
+            tvRestaurant = itemView.findViewById(R.id.tvRestaurantName); // <-- FIXED
             tvRating = itemView.findViewById(R.id.tvRating);
             cardView = (CardView) itemView;
         }
