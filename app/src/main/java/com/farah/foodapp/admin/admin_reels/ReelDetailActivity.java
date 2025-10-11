@@ -60,16 +60,14 @@ public class ReelDetailActivity extends AppCompatActivity {
         tvTitle.setText(title);
         tvRestaurant.setText(description);
 
-        // 🟢 CacheDataSource لتقليل البفرينغ
         CacheDataSource.Factory cacheFactory = VideoCache.getCacheDataSourceFactory(this);
 
-        // ⚡️ LoadControl معدل عشان يشغل الفيديو بسرعة بدون انتظار
         DefaultLoadControl loadControl = new DefaultLoadControl.Builder()
                 .setBufferDurationsMs(
-                        1000,   // minBufferMs → أقل وقت (1 ثانية)
-                        2000,   // maxBufferMs → أقصى وقت (2 ثانية)
-                        500,    // bufferForPlaybackMs → يبدأ التشغيل فوراً تقريباً
-                        500     // bufferForPlaybackAfterRebufferMs
+                        1000,
+                        2000,
+                        500,
+                        500
                 )
                 .build();
 
@@ -88,7 +86,6 @@ public class ReelDetailActivity extends AppCompatActivity {
             player.setRepeatMode(Player.REPEAT_MODE_ONE);
         }
 
-        // ⏳ إظهار/إخفاء اللودينغ
         player.addListener(new Player.Listener() {
             @Override
             public void onPlaybackStateChanged(int state) {
@@ -100,10 +97,8 @@ public class ReelDetailActivity extends AppCompatActivity {
             }
         });
 
-        // ⬅️ زر Back
         btnBack.setOnClickListener(v -> onBackPressed());
 
-        // ❤️ زر لايك
         btnLike.setOnClickListener(v -> {
             if (isLiked) {
                 btnLike.setColorFilter(Color.WHITE);
@@ -116,14 +111,12 @@ public class ReelDetailActivity extends AppCompatActivity {
             tvLikeCount.setText(String.valueOf(likeCount));
         });
 
-        // 💬 زر كومنت (مؤقت Toast)
         btnComment.setOnClickListener(v -> {
             commentCount++;
             tvCommentCount.setText(String.valueOf(commentCount));
             Toast.makeText(this, "Open comments dialog here...", Toast.LENGTH_SHORT).show();
         });
 
-        // 📤 زر شير
         btnShare.setOnClickListener(v -> {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");

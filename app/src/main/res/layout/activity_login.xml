@@ -15,7 +15,7 @@
         android:contentDescription="App Logo" />
 
     <TextView
-        android:text="FoodReels"
+        android:text="FlavorFeed"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@color/foreground"

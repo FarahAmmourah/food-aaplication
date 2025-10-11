@@ -28,14 +28,13 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
     private FoodAdapter adapter;
     private ArrayList<FoodItem> menuList;
     private FirebaseFirestore db;
-    private BottomNavigationView bottomNavigationView; // 🔹 لحفظ المرجع
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_details);
 
-        // ✅ زر الرجوع
         ImageView btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v -> finish());
 
@@ -59,7 +58,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
             Toast.makeText(this, "No restaurant found!", Toast.LENGTH_SHORT).show();
         }
 
-        // ✅ BottomNavigationView setup
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setBackgroundColor(getResources().getColor(R.color.primary));
         bottomNavigationView.setItemIconTintList(getResources().getColorStateList(R.color.primaryForeground));
@@ -86,7 +84,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
             return false;
         });
 
-        // 🔹 نحدث العداد عند فتح الصفحة
         updateCartBadge();
     }
 
@@ -122,7 +119,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
                         Toast.makeText(this, "Error loading menu", Toast.LENGTH_SHORT).show());
     }
 
-    // ✅ دالة لتحديث العداد
     public void updateCartBadge() {
         int count = CartManager.getTotalQuantity();
         if (bottomNavigationView != null) {

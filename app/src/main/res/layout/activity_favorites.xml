@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
     android:padding="12dp">
 
-    <!-- 🔝 شريط علوي -->
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
@@ -19,8 +19,8 @@
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:src="@drawable/ic_back"
-            android:tint="@color/primary"
-            android:contentDescription="Back" />
+            android:contentDescription="Back"
+            app:tint="@color/primary" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,7 +32,6 @@
             android:layout_marginStart="12dp" />
     </LinearLayout>
 
-    <!-- 📦 محتوى المفضلات -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerFavorites"
         android:layout_below="@id/topBar"
@@ -42,7 +41,6 @@
         android:clipToPadding="false"
         android:padding="4dp" />
 
-    <!-- 💔 واجهة لما تكون المفضلات فاضية -->
     <LinearLayout
         android:id="@+id/layoutEmpty"
         android:layout_width="match_parent"
@@ -56,7 +54,7 @@
             android:layout_height="120dp"
             android:src="@drawable/ic_favorite"
 
-            android:tint="@color/mutedForeground" />
+            app:tint="@color/mutedForeground" />
 
         <TextView
             android:layout_width="wrap_content"

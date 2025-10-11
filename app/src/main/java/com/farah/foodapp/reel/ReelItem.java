@@ -12,17 +12,15 @@ public class ReelItem {
     private boolean liked = false;
     private double price;
 
-    // ➕ الجديد: id المطعم
     private String restaurantId;
 
-    // ✅ الجديد: id الريل (للتعليقات)
     private String reelId;
 
     public ReelItem() {}
 
     public ReelItem(String videoUrl, String title, String restaurant,
                     int likesCount, int commentsCount, List<String> comments,
-                    double price, String restaurantId, String reelId) { // ✅ أضفنا reelId
+                    double price, String restaurantId, String reelId) {
         this.videoUrl = videoUrl;
         this.title = title;
         this.restaurant = restaurant;
@@ -31,7 +29,7 @@ public class ReelItem {
         this.comments = comments;
         this.price = price;
         this.restaurantId = restaurantId;
-        this.reelId = reelId; // ✅ تخزينه
+        this.reelId = reelId;
     }
 
     public String getVideoUrl() { return videoUrl; }
@@ -46,11 +44,9 @@ public class ReelItem {
     public void setLiked(boolean liked) { this.liked = liked; }
     public double getPrice() { return price; }
 
-    // ➕ getters/setters للـ restaurantId
     public String getRestaurantId() { return restaurantId; }
     public void setRestaurantId(String restaurantId) { this.restaurantId = restaurantId; }
 
-    // ✅ getters/setters للـ reelId
     public String getReelId() { return reelId; }
     public void setReelId(String reelId) { this.reelId = reelId; }
 }

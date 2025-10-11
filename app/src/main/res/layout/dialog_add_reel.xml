@@ -9,7 +9,6 @@
         android:layout_height="wrap_content"
         android:padding="20dp">
 
-        <!-- عنوان الدايالوج -->
         <TextView
             android:id="@+id/tvDialogTitle"
             android:layout_width="wrap_content"
@@ -20,7 +19,6 @@
             android:textColor="@color/primary"
             android:layout_marginBottom="16dp"/>
 
-        <!-- اسم الريل -->
         <EditText
             android:id="@+id/inputReelName"
             android:layout_width="match_parent"
@@ -50,7 +48,6 @@
             android:layout_marginBottom="16dp"/>
 
 
-        <!-- زر لاختيار فيديو من المعرض (تصميم فقط) -->
         <Button
             android:id="@+id/btnUploadVideo"
             android:layout_width="match_parent"
@@ -60,7 +57,6 @@
             android:textColor="@android:color/white"
             android:layout_marginBottom="12dp"/>
 
-        <!-- إدخال رابط الفيديو (URL) -->
         <EditText
             android:id="@+id/inputVideoUrl"
             android:layout_width="match_parent"
@@ -70,7 +66,6 @@
             android:background="@drawable/edittext_bg"
             android:layout_marginBottom="16dp"/>
 
-        <!-- زر إضافة -->
         <Button
             android:id="@+id/btnAddReel"
             android:layout_width="match_parent"

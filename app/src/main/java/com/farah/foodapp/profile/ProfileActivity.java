@@ -61,7 +61,6 @@ public class ProfileActivity extends AppCompatActivity {
             });
         }
 
-        // ✅ Order History click → OrdersActivity
         layoutOrderHistory = findViewById(R.id.layout_order_history);
         if (layoutOrderHistory != null) {
             layoutOrderHistory.setOnClickListener(v -> {
@@ -70,7 +69,6 @@ public class ProfileActivity extends AppCompatActivity {
             });
         }
 
-        // ✅ Favorites click → FavoritesActivity
         View layoutFavorites = findViewById(R.id.layout_favorites);
         if (layoutFavorites != null) {
             layoutFavorites.setOnClickListener(v -> {

@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="@android:color/black">
 
-    <!-- 🎥 Video Player -->
     <androidx.media3.ui.PlayerView
         android:id="@+id/playerView"
         android:layout_width="match_parent"
@@ -14,7 +13,6 @@
         app:use_controller="false"
         android:background="@android:color/black" />
 
-    <!-- ➡️ Right-side buttons -->
     <LinearLayout
         android:orientation="vertical"
         android:gravity="center"
@@ -24,7 +22,6 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="100dp">
 
-        <!-- ❤️ Like -->
         <ImageButton
             android:id="@+id/btnLike"
             android:layout_width="48dp"
@@ -43,7 +40,6 @@
             android:gravity="center"
             android:layout_marginBottom="40dp" />
 
-        <!-- 💬 Comment -->
         <ImageButton
             android:id="@+id/btnComment"
             android:layout_width="48dp"
@@ -62,7 +58,6 @@
             android:gravity="center"
             android:layout_marginBottom="40dp" />
 
-        <!-- 📤 Share -->
         <ImageButton
             android:id="@+id/btnShare"
             android:layout_width="48dp"
@@ -72,7 +67,6 @@
             app:tint="@android:color/white" />
     </LinearLayout>
 
-    <!-- ⬇️ Bottom left info -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -80,9 +74,8 @@
         android:layout_gravity="bottom"
         android:padding="16dp"
         android:background="@android:color/transparent"
-        android:layout_marginBottom="24dp"> <!-- 🔽 قللنا المسافة لتحت -->
+        android:layout_marginBottom="24dp">
 
-        <!-- 🎬 Title -->
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
@@ -92,7 +85,6 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <!-- 🏪 Restaurant -->
         <TextView
             android:id="@+id/tvRestaurant"
             android:layout_width="wrap_content"
@@ -105,8 +97,6 @@
 
 
 
-
-        <!-- 🛒 Order button -->
         <Button
             android:id="@+id/btnOrder"
             android:layout_width="wrap_content"

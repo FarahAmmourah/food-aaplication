@@ -1,6 +1,6 @@
 package com.farah.foodapp.menu;
 
-import com.farah.foodapp.R; // عشان الصورة الافتراضية
+import com.farah.foodapp.R;
 
 public class FoodItem {
     private String name;
@@ -36,7 +36,6 @@ public class FoodItem {
         this.imageResId = R.drawable.ic_food_placeholder;
     }
 
-    // Getter methods
     public String getName() { return name; }
     public String getDescription() { return description; }
     public String getRestaurant() { return restaurantName; }

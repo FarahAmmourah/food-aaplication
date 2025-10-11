@@ -6,7 +6,6 @@
     android:background="@android:color/white"
     android:padding="12dp">
 
-    <!-- 🏷️ عنوان الكومنتات -->
     <TextView
         android:id="@+id/tvCommentsTitle"
         android:layout_width="match_parent"
@@ -18,14 +17,12 @@
         android:gravity="center_horizontal"
         android:paddingBottom="8dp" />
 
-    <!-- 🔹 خط فاصل تحت العنوان -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
         android:layout_marginBottom="8dp" />
 
-    <!-- 🧾 قائمة الكومنتات -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerComments"
         android:layout_width="match_parent"
@@ -34,7 +31,6 @@
         android:background="@android:color/white"
         android:overScrollMode="never" />
 
-    <!-- ✏️ إدخال الكومنت -->
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"

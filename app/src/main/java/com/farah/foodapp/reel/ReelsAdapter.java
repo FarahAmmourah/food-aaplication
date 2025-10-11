@@ -51,7 +51,6 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
     public void onBindViewHolder(@NonNull ReelViewHolder holder, int position) {
         ReelItem reel = reelList.get(position);
 
-        // ✅ تحقق من حالة الريل في Firestore لتحديد لون اللايك
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         db.collection("users").document(uid)
@@ -68,7 +67,6 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
                     }
                 });
 
-        // 🎥 تشغيل الفيديو
         ExoPlayer player = new ExoPlayer.Builder(context).build();
         holder.playerView.setPlayer(player);
 
@@ -78,30 +76,26 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
         player.prepare();
         player.pause();
 
-        // 📝 بيانات الريل
         holder.tvTitle.setText(reel.getTitle());
         holder.tvRestaurant.setText(reel.getRestaurant());
         holder.btnOrder.setText("ORDER NOW - $" + reel.getPrice());
         holder.tvLikeCount.setText(String.valueOf(reel.getLikesCount()));
         holder.tvCommentCount.setText(String.valueOf(reel.getCommentsCount()));
 
-        // 🟠 فتح شاشة المنيو عند الضغط على اسم المطعم
         holder.tvRestaurant.setOnClickListener(v -> {
             Intent intent = new Intent(context, RestaurantDetailsActivity.class);
             intent.putExtra("restaurantId", reel.getRestaurantId());
             context.startActivity(intent);
         });
 
-        // ❤️ زر اللايك (تخزين في Firebase)
         holder.btnLike.setOnClickListener(v -> {
-            if (uid == null) return; // حماية من null user
+            if (uid == null) return;
 
             if (reel.isLiked()) {
                 holder.btnLike.setColorFilter(Color.WHITE);
                 reel.setLikesCount(reel.getLikesCount() - 1);
                 reel.setLiked(false);
 
-                // 🗑 حذف من المفضلات
                 db.collection("users")
                         .document(uid)
                         .collection("favorites")
@@ -112,7 +106,6 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
                 reel.setLikesCount(reel.getLikesCount() + 1);
                 reel.setLiked(true);
 
-                // 💾 حفظ في المفضلات
                 Map<String, Object> fav = new HashMap<>();
                 fav.put("videoUrl", reel.getVideoUrl());
                 fav.put("title", reel.getTitle());
@@ -130,13 +123,11 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
             holder.tvLikeCount.setText(String.valueOf(reel.getLikesCount()));
         });
 
-        // 💬 زر الكومنت
         holder.btnComment.setOnClickListener(v -> {
             CommentsDialog dialog = new CommentsDialog(context, reel.getComments(), reel, (ReelsActivity) context);
             dialog.show();
         });
 
-        // 📤 زر الشير
         holder.btnShare.setOnClickListener(v -> {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
@@ -144,7 +135,6 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
             context.startActivity(Intent.createChooser(shareIntent, "Share Reel via"));
         });
 
-        // 🛒 زر الأوردر ناو
         holder.btnOrder.setOnClickListener(v -> {
             CartManager.addItem(
                     reel.getTitle(),

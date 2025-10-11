@@ -42,7 +42,6 @@
         android:gravity="center"
         android:padding="16dp"/>
 
-    <!-- Let RecyclerView scroll itself -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerOrders"
         android:layout_width="match_parent"

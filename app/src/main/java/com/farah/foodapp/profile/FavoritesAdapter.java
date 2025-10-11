@@ -38,14 +38,12 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavV
     public void onBindViewHolder(@NonNull FavViewHolder holder, int position) {
         ReelItem reel = favoriteList.get(position);
 
-        // تحميل الصورة (لاحقاً ممكن نستبدلها بـ thumbnail للفيديو)
         Glide.with(context)
                 .load(reel.getVideoUrl())
                 .placeholder(R.drawable.ic_launcher_background)
                 .centerCrop()
                 .into(holder.imgThumbnail);
 
-        // عند الضغط → فتح صفحة الريلز لتشغيل الفيديو
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ReelsActivity.class);
             intent.putExtra("openReelId", reel.getReelId());

@@ -52,7 +52,6 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         holder.tvRating.setText("★ " + item.getRating());
         holder.imgFood.setImageResource(item.getImageResId());
 
-        // 📌 لما المستخدم يضغط على الكارد → نفتح Dialog
         holder.cardView.setOnClickListener(v -> showFoodDialog(item));
     }
 
@@ -61,7 +60,6 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         return foodList.size();
     }
 
-    // 📌 دالة عرض الـ Dialog
     private void showFoodDialog(FoodItem item) {
         BottomSheetDialog dialog = new BottomSheetDialog(context);
         dialog.setContentView(R.layout.dialog_food_details);
@@ -78,22 +76,20 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         btnSmall.setText("Small - $" + item.getSmallPrice());
         btnLarge.setText("Large - $" + item.getLargePrice());
 
-        // ✅ زر Small
         btnSmall.setOnClickListener(v -> {
             CartManager.addItem(item.getName(), item.getRestaurant(), "Small", item.getSmallPrice(), item.getImageResId());
             Toast.makeText(context, item.getName() + " added to cart!", Toast.LENGTH_SHORT).show(); // ✅ رسالة
             if (context instanceof RestaurantDetailsActivity) {
-                ((RestaurantDetailsActivity) context).updateCartBadge(); // ✅ تحديث العداد
+                ((RestaurantDetailsActivity) context).updateCartBadge();
             }
             dialog.dismiss();
         });
 
-        // ✅ زر Large
         btnLarge.setOnClickListener(v -> {
             CartManager.addItem(item.getName(), item.getRestaurant(), "Large", item.getLargePrice(), item.getImageResId());
             Toast.makeText(context, item.getName() + " added to cart!", Toast.LENGTH_SHORT).show(); // ✅ رسالة
             if (context instanceof RestaurantDetailsActivity) {
-                ((RestaurantDetailsActivity) context).updateCartBadge(); // ✅ تحديث العداد
+                ((RestaurantDetailsActivity) context).updateCartBadge();
             }
             dialog.dismiss();
         });
@@ -101,7 +97,6 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         dialog.show();
     }
 
-    // ✅ ميزة البحث (Filter)
     @Override
     public Filter getFilter() {
         return foodFilter;
@@ -147,7 +142,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
             imgFood = itemView.findViewById(R.id.imgFood);
             tvFoodName = itemView.findViewById(R.id.tvFoodName);
             tvFoodDesc = itemView.findViewById(R.id.tvFoodDesc);
-            tvRestaurant = itemView.findViewById(R.id.tvRestaurantName); // <-- FIXED
+            tvRestaurant = itemView.findViewById(R.id.tvRestaurantName);
             tvRating = itemView.findViewById(R.id.tvRating);
             cardView = (CardView) itemView;
         }

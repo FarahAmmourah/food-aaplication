@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- ✅ ViewPager2 لعرض الريلز -->
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPagerReels"
         android:layout_width="match_parent"

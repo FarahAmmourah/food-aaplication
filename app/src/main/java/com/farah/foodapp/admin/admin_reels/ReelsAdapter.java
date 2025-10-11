@@ -37,11 +37,10 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
     public void onBindViewHolder(@NonNull ReelViewHolder holder, int position) {
         ReelModel reel = reels.get(position);
 
-        // Extract thumbnail
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         try {
             retriever.setDataSource(reel.getVideoUrl(), new java.util.HashMap<>());
-            holder.thumbnail.setImageBitmap(retriever.getFrameAtTime(1000000)); // frame at 1s
+            holder.thumbnail.setImageBitmap(retriever.getFrameAtTime(1000000));
         } catch (Exception e) {
             holder.thumbnail.setImageResource(R.drawable.ic_video_placeholder);
         } finally {

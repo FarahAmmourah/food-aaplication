@@ -35,19 +35,15 @@ public class ReelsActivity extends AppCompatActivity {
         viewPagerReels = findViewById(R.id.viewPagerReels);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        // ✅ تعديل ألوان البار لتطابق صفحة البروفايل
         bottomNavigationView.setBackgroundColor(getResources().getColor(R.color.primary));
         bottomNavigationView.setItemIconTintList(getResources().getColorStateList(R.color.primaryForeground));
         bottomNavigationView.setItemTextColor(getResources().getColorStateList(R.color.primaryForeground));
 
-        // ✅ نربط الـ Adapter
         reelsAdapter = new ReelsAdapter(this, reelList);
         viewPagerReels.setAdapter(reelsAdapter);
 
-        // ✅ تحميل الريلز من Firestore
         loadReelsFromFirestore();
 
-        // ✅ Bottom Navigation
         bottomNavigationView.setSelectedItemId(R.id.nav_reels);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
@@ -69,7 +65,6 @@ public class ReelsActivity extends AppCompatActivity {
             return false;
         });
 
-        // ✅ تشغيل/إيقاف الفيديو حسب الصفحة
         viewPagerReels.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -95,7 +90,6 @@ public class ReelsActivity extends AppCompatActivity {
             }
         });
 
-        // 🔹 نحدث العداد عند بداية الصفحة
         updateCartBadge();
     }
 
@@ -117,10 +111,8 @@ public class ReelsActivity extends AppCompatActivity {
                             List<String> comments = (List<String>) doc.get("comments");
                             String restaurantId = doc.getString("restaurantId");
 
-                            // ✅ نأخذ الـ id الخاص بالريل من Firestore
                             String reelId = doc.getId();
 
-                            // ✅ نمرر الـ reelId للـ ReelItem
                             reelList.add(new ReelItem(
                                     videoUrl,
                                     title,
@@ -141,7 +133,6 @@ public class ReelsActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Log.e("Firestore", "Failed to load reels", e));
     }
 
-    // ✅ ميثود لتحديث العداد في أي وقت
     public void updateCartBadge() {
         int count = CartManager.getTotalQuantity();
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);

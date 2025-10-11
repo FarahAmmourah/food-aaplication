@@ -60,7 +60,6 @@ public class CartManager {
         cartItems.clear();
     }
 
-    // ✅ method جديدة لتحويل الـ items لقائمة نصوص
     public static List<String> getItemsAsList() {
         List<String> items = new ArrayList<>();
         for (CartItem item : cartItems) {

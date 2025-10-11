@@ -2,6 +2,7 @@ package com.farah.foodapp.admin.admin_reels;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context; // ✅ الاستيراد الصحيح
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,7 +17,13 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.OptIn;
 import androidx.fragment.app.Fragment;
+import androidx.media3.common.MediaItem;
+import androidx.media3.common.util.UnstableApi;
+import androidx.media3.datasource.cache.CacheDataSource;
+import androidx.media3.exoplayer.ExoPlayer;
+import androidx.media3.exoplayer.source.DefaultMediaSourceFactory;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,7 +43,7 @@ public class MyReelsFragment extends Fragment {
 
     private RecyclerView recyclerReels;
     private ReelsAdapter adapter;
-    private List<ReelModel> reelList = new ArrayList<>();
+    private final List<ReelModel> reelList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -63,6 +70,7 @@ public class MyReelsFragment extends Fragment {
         );
 
         btnAddReel.setOnClickListener(v -> openAddReelDialog());
+
         loadReelsFromFirestore();
 
         return view;
@@ -162,8 +170,33 @@ public class MyReelsFragment extends Fragment {
                     for (QueryDocumentSnapshot doc : query) {
                         ReelModel reel = doc.toObject(ReelModel.class);
                         reelList.add(reel);
+
+                        preloadVideo(requireContext(), reel.getVideoUrl());
                     }
                     adapter.notifyDataSetChanged();
                 });
+    }
+
+    @OptIn(markerClass = UnstableApi.class)
+    private void preloadVideo(Context context, String videoUrl) {
+        new Thread(() -> {
+            try {
+                CacheDataSource.Factory cacheFactory = VideoCache.getCacheDataSourceFactory(context);
+
+                ExoPlayer tempPlayer = new ExoPlayer.Builder(context)
+                        .setMediaSourceFactory(new DefaultMediaSourceFactory(cacheFactory))
+                        .build();
+
+                MediaItem mediaItem = MediaItem.fromUri(Uri.parse(videoUrl));
+                tempPlayer.setMediaItem(mediaItem);
+
+                tempPlayer.prepare();
+                tempPlayer.setPlayWhenReady(false);
+
+                Thread.sleep(2000);
+
+                tempPlayer.release();
+            } catch (Exception ignored) { }
+        }).start();
     }
 }

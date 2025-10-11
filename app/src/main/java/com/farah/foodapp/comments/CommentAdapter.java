@@ -33,7 +33,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
         String commentText = comments.get(position);
 
-        // تقسيم الكومنت بحيث أول كلمة هي الاسم والباقي هو الكومنت
         if (commentText.contains(":")) {
             String[] parts = commentText.split(":", 2);
             holder.tvUsername.setText(parts[0].trim());

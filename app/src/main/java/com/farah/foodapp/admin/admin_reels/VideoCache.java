@@ -19,7 +19,7 @@ public class VideoCache {
     public static synchronized Cache getCache(Context context) {
         if (cache == null) {
             File cacheDir = new File(context.getCacheDir(), "video_cache");
-            long cacheSize = 100 * 1024 * 1024; // 100MB
+            long cacheSize = 100 * 1024 * 1024;
             cache = new SimpleCache(cacheDir, new LeastRecentlyUsedCacheEvictor(cacheSize));
         }
         return cache;

@@ -72,7 +72,6 @@ public class FavoritesActivity extends AppCompatActivity {
 
                     favoritesAdapter.notifyDataSetChanged();
 
-                    // 💔 إظهار الرسالة الجميلة لما ما يكون في مفضلات
                     if (favoriteList.isEmpty()) {
                         layoutEmpty.setVisibility(View.VISIBLE);
                         recyclerView.setVisibility(View.GONE);

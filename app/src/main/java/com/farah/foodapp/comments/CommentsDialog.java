@@ -27,7 +27,7 @@ public class CommentsDialog extends BottomSheetDialog {
 
     private List<String> comments;
     private CommentAdapter adapter;
-    private ReelItem reel; // 🔹 لحفظ الكومنت داخل الريل الصحيح
+    private ReelItem reel;
     private FirebaseFirestore db;
     private FirebaseAuth auth;
 
@@ -44,7 +44,6 @@ public class CommentsDialog extends BottomSheetDialog {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_comments, null);
         setContentView(view);
 
-        // 🩶 إزالة الخلفية البيضاء الافتراضية للـ BottomSheet (عشان الريل يظل ظاهر بالخلفية)
         View bottomSheet = findViewById(com.google.android.material.R.id.design_bottom_sheet);
         if (bottomSheet != null) {
             bottomSheet.setBackgroundColor(android.graphics.Color.TRANSPARENT);
@@ -61,21 +60,19 @@ public class CommentsDialog extends BottomSheetDialog {
         recyclerComments.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerComments.setAdapter(adapter);
 
-        // ✳️ زر الإرسال
         btnSend.setOnClickListener(v -> {
             String newComment = etComment.getText().toString().trim();
             if (!newComment.isEmpty()) {
-                // 🔹 نجيب بيانات المستخدم الحالي
                 FirebaseUser currentUser = auth.getCurrentUser();
                 String userName;
 
                 if (currentUser != null) {
                     if (currentUser.getDisplayName() != null && !currentUser.getDisplayName().isEmpty()) {
-                        userName = currentUser.getDisplayName(); // 👤 الاسم الحقيقي
+                        userName = currentUser.getDisplayName();
                     } else if (currentUser.getEmail() != null) {
-                        userName = currentUser.getEmail(); // 📧 الإيميل
+                        userName = currentUser.getEmail();
                     } else {
-                        userName = "Anonymous"; // 🕵️‍♀️ احتياطي
+                        userName = "Anonymous";
                     }
                 } else {
                     userName = "Anonymous";
@@ -83,13 +80,11 @@ public class CommentsDialog extends BottomSheetDialog {
 
                 String formattedComment = userName + ": " + newComment;
 
-                // 1️⃣ نضيفه في الواجهة
                 comments.add(formattedComment);
                 adapter.notifyItemInserted(comments.size() - 1);
                 recyclerComments.scrollToPosition(comments.size() - 1);
                 etComment.setText("");
 
-                // 2️⃣ نضيفه في Firestore داخل نفس الريل
                 if (reel != null && reel.getReelId() != null) {
                     db.collection("reels")
                             .document(reel.getReelId())
