@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.*;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -15,7 +16,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
-import com.farah.foodapp.cards.AddCardActivity;
+import com.farah.foodapp.cards.AddCardDialog;
 import com.farah.foodapp.cards.CardStorage;
 import com.farah.foodapp.cart.CartManager;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,9 +38,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> addCardLauncher;
     private ActivityResultLauncher<Intent> pickLocationLauncher;
 
-    private String tempCardNumber, tempCardExpiry, tempCardHolder;
     private boolean newCardSaved = false;
-
     private double selectedLat = 0;
     private double selectedLon = 0;
 
@@ -62,28 +61,24 @@ public class CheckoutActivity extends AppCompatActivity {
 
         addCardLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        boolean paymentSuccess = result.getData().getBooleanExtra("payment_success", false);
-
-                        if (paymentSuccess) {
-                            placeOrderWithStatus("stripe", "completed");
-                            return;
-                        }
-                        tempCardNumber = result.getData().getStringExtra("tempCardNumber");
-                        tempCardExpiry = result.getData().getStringExtra("tempCardExpiry");
-                        tempCardHolder = result.getData().getStringExtra("tempCardHolder");
-                        newCardSaved = false;
-                    } else if (result.getResultCode() == RESULT_OK) {
-                        newCardSaved = true;
-                    }
-                    loadCards();
-                }
+                result -> loadCards()
         );
 
         btnAddCard.setOnClickListener(v -> {
-            Intent intent = new Intent(this, AddCardActivity.class);
-            addCardLauncher.launch(intent);
+            AddCardDialog dialog = new AddCardDialog((last4, expiry, holderName) ->
+                    CardStorage.saveCard(this, last4, expiry, holderName, success ->
+                            runOnUiThread(() -> {
+                                if (success) {
+                                    newCardSaved = true;
+                                    loadCards();
+                                    Toast.makeText(this, "Card added successfully", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(this, "Failed to save card", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                    )
+            );
+            dialog.show(getSupportFragmentManager(), "AddCardDialog");
         });
 
         pickLocationLauncher = registerForActivityResult(
@@ -93,24 +88,18 @@ public class CheckoutActivity extends AppCompatActivity {
                         String addr = result.getData().getStringExtra("pickedAddress");
                         selectedLat = result.getData().getDoubleExtra("pickedLat", 0);
                         selectedLon = result.getData().getDoubleExtra("pickedLon", 0);
-
-                        if (addr != null && !addr.isEmpty()) {
-                            tvAddress.setText(addr);
-                        } else {
-                            tvAddress.setText(String.format("Lat: %.5f, Lon: %.5f", selectedLat, selectedLon));
-                        }
+                        if (addr != null && !addr.isEmpty()) tvAddress.setText(addr);
+                        else tvAddress.setText(String.format("Lat: %.5f, Lon: %.5f", selectedLat, selectedLon));
                     }
                 }
         );
 
-        findViewById(R.id.ivMapPlaceholder).setOnClickListener(v -> {
-            Intent intent = new Intent(this, MapPickActivity.class);
-            pickLocationLauncher.launch(intent);
-        });
-        findViewById(R.id.tvChangeLocation).setOnClickListener(v -> {
-            Intent intent = new Intent(this, MapPickActivity.class);
-            pickLocationLauncher.launch(intent);
-        });
+        findViewById(R.id.ivMapPlaceholder).setOnClickListener(v ->
+                pickLocationLauncher.launch(new Intent(this, MapPickActivity.class))
+        );
+        findViewById(R.id.tvChangeLocation).setOnClickListener(v ->
+                pickLocationLauncher.launch(new Intent(this, MapPickActivity.class))
+        );
 
         updateSummary();
         loadCards();
@@ -119,7 +108,6 @@ public class CheckoutActivity extends AppCompatActivity {
     private void updateSummary() {
         double subtotal = CartManager.getSubtotal();
         double total = subtotal - DISCOUNT + DELIVERY_FEE + SERVICE_FEE;
-
         tvSubtotal.setText("Subtotal: JOD " + String.format("%.2f", subtotal));
         tvDiscount.setText("Discount: -JOD " + String.format("%.2f", DISCOUNT));
         tvDeliveryFee.setText("Delivery: JOD " + String.format("%.2f", DELIVERY_FEE));
@@ -132,74 +120,75 @@ public class CheckoutActivity extends AppCompatActivity {
         rgPaymentMethod.removeAllViews();
 
         String userId = FirebaseAuth.getInstance().getCurrentUser() != null
-                ? FirebaseAuth.getInstance().getCurrentUser().getUid()
-                : "guest";
-
-        RadioButton rbCash = new RadioButton(this);
-        rbCash.setText("Cash");
-        rbCash.setTextColor(getResources().getColor(R.color.foreground));
-        rgPaymentMethod.addView(rbCash);
-
-        if (tempCardNumber != null && !tempCardNumber.isEmpty()) {
-            RadioButton rbTemp = new RadioButton(this);
-            rbTemp.setText("**** " + tempCardNumber.substring(tempCardNumber.length() - 4)
-                    + " (" + tempCardHolder + ")");
-            rbTemp.setTextColor(getResources().getColor(R.color.foreground));
-            rgPaymentMethod.addView(rbTemp, 0);
-            rbTemp.setChecked(true);
-        } else {
-            rbCash.setChecked(true);
-        }
+                ? FirebaseAuth.getInstance().getCurrentUser().getUid() : "guest";
 
         CardStorage.getCards(this, cards -> {
+
+            ArrayList<RadioButton> allRadioButtons = new ArrayList<>();
+
             for (CardStorage.CardModel card : cards) {
                 LinearLayout wrapper = new LinearLayout(this);
                 wrapper.setOrientation(LinearLayout.HORIZONTAL);
+                wrapper.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                ));
 
                 RadioButton rb = new RadioButton(this);
                 rb.setText("**** " + card.getCardNumber() + " (" + card.getHolderName() + ")");
                 rb.setTextColor(getResources().getColor(R.color.foreground));
-                rb.setLayoutParams(new LinearLayout.LayoutParams(0,
-                        LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+                rb.setId(View.generateViewId());
+                rb.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+                allRadioButtons.add(rb);
 
                 ImageButton btnRemove = new ImageButton(this);
                 btnRemove.setImageResource(R.drawable.ic_deleted);
                 btnRemove.setBackgroundColor(Color.TRANSPARENT);
-
-                btnRemove.setOnClickListener(v -> {
-                    new AlertDialog.Builder(this)
-                            .setTitle("Remove Card")
-                            .setMessage("Are you sure you want to delete this card?")
-                            .setPositiveButton("Yes", (dialog, which) -> {
-                                CardStorage.deleteCard(userId, card.getId(), () -> {
-                                    Toast.makeText(this, "Card deleted", Toast.LENGTH_SHORT).show();
-                                    loadCards();
-                                });
-                            })
-                            .setNegativeButton("No", null)
-                            .show();
-                });
+                btnRemove.setOnClickListener(v ->
+                        new AlertDialog.Builder(this)
+                                .setTitle("Remove Card")
+                                .setMessage("Are you sure you want to delete this card?")
+                                .setPositiveButton("Yes", (dialog, which) -> CardStorage.deleteCard(userId, card.getId(), this::loadCards))
+                                .setNegativeButton("No", null)
+                                .show()
+                );
 
                 wrapper.addView(rb);
                 wrapper.addView(btnRemove);
-                rgPaymentMethod.addView(wrapper, 0);
+                rgPaymentMethod.addView(wrapper);
+            }
 
-                if (newCardSaved && cards.get(cards.size() - 1).getId().equals(card.getId())) {
-                    rb.setChecked(true);
-                }
+            RadioButton rbCash = new RadioButton(this);
+            rbCash.setText("Cash");
+            rbCash.setTextColor(getResources().getColor(R.color.foreground));
+            rbCash.setId(View.generateViewId());
+            rgPaymentMethod.addView(rbCash);
+            allRadioButtons.add(rbCash);
+
+            if (cards.isEmpty()) rbCash.setChecked(true);
+            else if (newCardSaved) {
+                allRadioButtons.get(0).setChecked(true);
+                newCardSaved = false;
+            }
+
+            for (RadioButton rb : allRadioButtons) {
+                rb.setOnClickListener(v -> {
+                    for (RadioButton otherRb : allRadioButtons) {
+                        otherRb.setChecked(otherRb == rb);
+                    }
+                });
             }
         });
     }
 
+
     private void placeOrder() {
         int selectedId = rgPaymentMethod.getCheckedRadioButtonId();
         RadioButton selectedRadio = findViewById(selectedId);
-
-        if (selectedRadio != null && selectedRadio.getText().toString().equals("Cash")) {
+        if (selectedRadio != null && selectedRadio.getText().toString().equals("Cash"))
             placeOrderWithStatus("cash", "pending");
-        } else {
+        else
             placeOrderWithStatus("stripe", "completed");
-        }
     }
 
     private void placeOrderWithStatus(String paymentMethodId, String paymentStatus) {
@@ -209,8 +198,7 @@ public class CheckoutActivity extends AppCompatActivity {
         }
 
         String userId = FirebaseAuth.getInstance().getCurrentUser() != null
-                ? FirebaseAuth.getInstance().getCurrentUser().getUid()
-                : "guest";
+                ? FirebaseAuth.getInstance().getCurrentUser().getUid() : "guest";
 
         double subtotal = CartManager.getSubtotal();
         double total = subtotal - DISCOUNT + DELIVERY_FEE + SERVICE_FEE;
@@ -244,27 +232,23 @@ public class CheckoutActivity extends AppCompatActivity {
         db.collection("orders")
                 .add(orderData)
                 .addOnSuccessListener(doc -> {
-                    db.collection("orders").document(doc.getId())
-                            .update("id", doc.getId());
+                    db.collection("orders").document(doc.getId()).update("id", doc.getId());
                     Toast.makeText(this, "Order placed using: " + paymentMethodId, Toast.LENGTH_SHORT).show();
                     CartManager.clearCart();
+                    newCardSaved = false;
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("orderPlaced", true);
+                    setResult(RESULT_OK, resultIntent);
                     finish();
                 })
-                .addOnFailureListener(e ->
-                        Toast.makeText(this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e -> Toast.makeText(this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
     private void showOrderNotification(String title, String message) {
         String channelId = "order_channel";
-        NotificationManager manager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(
-                    channelId,
-                    "Order Updates",
-                    NotificationManager.IMPORTANCE_DEFAULT
-            );
+            NotificationChannel channel = new NotificationChannel(channelId, "Order Updates", NotificationManager.IMPORTANCE_DEFAULT);
             manager.createNotificationChannel(channel);
         }
 
@@ -274,7 +258,6 @@ public class CheckoutActivity extends AppCompatActivity {
                 .setContentText(message)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
                 .setAutoCancel(true);
-
         manager.notify((int) System.currentTimeMillis(), builder.build());
     }
 }
