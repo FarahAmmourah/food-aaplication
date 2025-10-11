@@ -2,15 +2,17 @@ package com.farah.foodapp.admin.admin_reels;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context; // ✅ الاستيراد الصحيح
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -44,6 +46,7 @@ public class MyReelsFragment extends Fragment {
     private RecyclerView recyclerReels;
     private ReelsAdapter adapter;
     private final List<ReelModel> reelList = new ArrayList<>();
+    private ProgressBar progressBar;
 
     @Nullable
     @Override
@@ -54,6 +57,7 @@ public class MyReelsFragment extends Fragment {
 
         Button btnAddReel = view.findViewById(R.id.btnAddReel);
         recyclerReels = view.findViewById(R.id.recyclerViewReels);
+        progressBar = view.findViewById(R.id.progressBar);
 
         recyclerReels.setLayoutManager(new GridLayoutManager(getContext(), 3));
         adapter = new ReelsAdapter(getContext(), reelList);
@@ -71,7 +75,7 @@ public class MyReelsFragment extends Fragment {
 
         btnAddReel.setOnClickListener(v -> openAddReelDialog());
 
-        loadReelsFromFirestore();
+        new Handler().postDelayed(this::loadReelsFromFirestore, 600);
 
         return view;
     }
@@ -158,6 +162,8 @@ public class MyReelsFragment extends Fragment {
     }
 
     private void loadReelsFromFirestore() {
+        if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
+
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         FirebaseFirestore.getInstance()
@@ -170,33 +176,44 @@ public class MyReelsFragment extends Fragment {
                     for (QueryDocumentSnapshot doc : query) {
                         ReelModel reel = doc.toObject(ReelModel.class);
                         reelList.add(reel);
-
-                        preloadVideo(requireContext(), reel.getVideoUrl());
                     }
                     adapter.notifyDataSetChanged();
+
+                    if (!reelList.isEmpty()) {
+                        preloadSequentially(requireContext(), 0);
+                    }
+
+                    if (progressBar != null) progressBar.setVisibility(View.GONE);
+                })
+                .addOnFailureListener(e -> {
+                    if (progressBar != null) progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 
     @OptIn(markerClass = UnstableApi.class)
-    private void preloadVideo(Context context, String videoUrl) {
+    private void preloadSequentially(Context context, int index) {
+        if (index >= reelList.size()) return;
+
+        String videoUrl = reelList.get(index).getVideoUrl();
+
         new Thread(() -> {
             try {
                 CacheDataSource.Factory cacheFactory = VideoCache.getCacheDataSourceFactory(context);
-
                 ExoPlayer tempPlayer = new ExoPlayer.Builder(context)
                         .setMediaSourceFactory(new DefaultMediaSourceFactory(cacheFactory))
                         .build();
 
                 MediaItem mediaItem = MediaItem.fromUri(Uri.parse(videoUrl));
                 tempPlayer.setMediaItem(mediaItem);
-
                 tempPlayer.prepare();
                 tempPlayer.setPlayWhenReady(false);
-
-                Thread.sleep(2000);
-
+                Thread.sleep(1000);
                 tempPlayer.release();
-            } catch (Exception ignored) { }
+
+                preloadSequentially(context, index + 1);
+
+            } catch (Exception ignored) {}
         }).start();
     }
 }
