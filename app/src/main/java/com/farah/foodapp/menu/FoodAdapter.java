@@ -1,7 +1,5 @@
 package com.farah.foodapp.menu;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.farah.foodapp.R;
 import com.farah.foodapp.cart.CartManager;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,9 +48,14 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
 
         holder.tvFoodName.setText(item.getName());
         holder.tvFoodDesc.setText(item.getDescription());
-        holder.tvRestaurant.setText(item.getRestaurant());
+        holder.tvRestaurant.setText(item.getRestaurantName());
         holder.tvRating.setText("★ " + item.getRating());
-        holder.imgFood.setImageResource(item.getImageResId());
+
+        Glide.with(context)
+                .load(item.getImageUrl())
+                .placeholder(R.drawable.ic_food_placeholder)
+                .error(R.drawable.ic_food_placeholder)
+                .into(holder.imgFood);
 
         holder.cardView.setOnClickListener(v -> showFoodDialog(item));
     }
@@ -70,27 +75,30 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         TextView btnSmall = dialog.findViewById(R.id.btnSmall);
         TextView btnLarge = dialog.findViewById(R.id.btnLarge);
 
-        imgMeal.setImageResource(item.getImageResId());
+        Glide.with(context)
+                .load(item.getImageUrl())
+                .placeholder(R.drawable.ic_food_placeholder)
+                .error(R.drawable.ic_food_placeholder)
+                .into(imgMeal);
+
         tvMealName.setText(item.getName());
         tvDescription.setText(item.getDescription());
         btnSmall.setText("Small - $" + item.getSmallPrice());
         btnLarge.setText("Large - $" + item.getLargePrice());
 
         btnSmall.setOnClickListener(v -> {
-            CartManager.addItem(item.getName(), item.getRestaurant(), "Small", item.getSmallPrice(), item.getImageResId());
-            Toast.makeText(context, item.getName() + " added to cart!", Toast.LENGTH_SHORT).show(); // ✅ رسالة
-            if (context instanceof RestaurantDetailsActivity) {
+            CartManager.addItem(item.getName(), item.getRestaurantName(), "Small", item.getSmallPrice(), 0);
+            Toast.makeText(context, item.getName() + " added to cart!", Toast.LENGTH_SHORT).show();
+            if (context instanceof RestaurantDetailsActivity)
                 ((RestaurantDetailsActivity) context).updateCartBadge();
-            }
             dialog.dismiss();
         });
 
         btnLarge.setOnClickListener(v -> {
-            CartManager.addItem(item.getName(), item.getRestaurant(), "Large", item.getLargePrice(), item.getImageResId());
-            Toast.makeText(context, item.getName() + " added to cart!", Toast.LENGTH_SHORT).show(); // ✅ رسالة
-            if (context instanceof RestaurantDetailsActivity) {
+            CartManager.addItem(item.getName(), item.getRestaurantName(), "Large", item.getLargePrice(), 0);
+            Toast.makeText(context, item.getName() + " added to cart!", Toast.LENGTH_SHORT).show();
+            if (context instanceof RestaurantDetailsActivity)
                 ((RestaurantDetailsActivity) context).updateCartBadge();
-            }
             dialog.dismiss();
         });
 
@@ -102,7 +110,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         return foodFilter;
     }
 
-    private Filter foodFilter = new Filter() {
+    private final Filter foodFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<FoodItem> filteredList = new ArrayList<>();
@@ -113,7 +121,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
                 String filterPattern = constraint.toString().toLowerCase(Locale.ROOT).trim();
                 for (FoodItem item : foodListFull) {
                     if (item.getName().toLowerCase(Locale.ROOT).contains(filterPattern)
-                            || item.getRestaurant().toLowerCase(Locale.ROOT).contains(filterPattern)) {
+                            || item.getRestaurantName().toLowerCase(Locale.ROOT).contains(filterPattern)) {
                         filteredList.add(item);
                     }
                 }
@@ -127,7 +135,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             foodList.clear();
-            foodList.addAll((List) results.values);
+            foodList.addAll((List<FoodItem>) results.values);
             notifyDataSetChanged();
         }
     };

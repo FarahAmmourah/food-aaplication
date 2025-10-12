@@ -1,46 +1,48 @@
 package com.farah.foodapp.menu;
 
-import com.farah.foodapp.R;
-
 public class FoodItem {
     private String name;
     private String description;
+    private String imageUrl;
+    private float rating;
     private String restaurantName;
     private double smallPrice;
     private double largePrice;
-    private float rating;
-    private int imageResId;
 
-    public FoodItem() {
-    }
-
-    public FoodItem(String name, String description, String restaurantName,
-                    double smallPrice, double largePrice, float rating, int imageResId) {
+    // Full constructor
+    public FoodItem(String name, String description, String imageUrl, float rating,
+                    String restaurantName, double smallPrice, double largePrice) {
         this.name = name;
         this.description = description;
+        this.imageUrl = imageUrl;
+        this.rating = rating;
         this.restaurantName = restaurantName;
         this.smallPrice = smallPrice;
         this.largePrice = largePrice;
-        this.rating = rating;
-        this.imageResId = imageResId;
     }
 
+    // Empty constructor for Firestore
+    public FoodItem() {}
 
-    public FoodItem(String name, String description, double price) {
-        this.name = name;
-        this.description = description;
-        this.restaurantName = "";
-        this.smallPrice = price;
-        this.largePrice = price + 2;
-        this.rating = 5;
-        this.imageResId = R.drawable.ic_food_placeholder;
-    }
-
+    // Getters and setters
     public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
     public String getDescription() { return description; }
-    public String getRestaurant() { return restaurantName; }
-    public double getSmallPrice() { return smallPrice; }
-    public double getLargePrice() { return largePrice; }
+    public void setDescription(String description) { this.description = description; }
+
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
     public float getRating() { return rating; }
-    public int getImageResId() { return imageResId;}
+    public void setRating(float rating) { this.rating = rating; }
+
+    public String getRestaurantName() { return restaurantName; }
+    public void setRestaurantName(String restaurantName) { this.restaurantName = restaurantName; }
+
+    public double getSmallPrice() { return smallPrice; }
+    public void setSmallPrice(double smallPrice) { this.smallPrice = smallPrice; }
+
+    public double getLargePrice() { return largePrice; }
+    public void setLargePrice(double largePrice) { this.largePrice = largePrice; }
 }

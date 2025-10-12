@@ -50,7 +50,6 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         String restaurantId = getIntent().getStringExtra("restaurantId");
-
         if (restaurantId != null) {
             loadRestaurantDetails(restaurantId);
             loadMenuItems(restaurantId);
@@ -108,10 +107,24 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
                     menuList.clear();
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                         String name = doc.getString("name");
-                        String desc = doc.getString("description");
-                        double price = doc.getDouble("price");
+                        String description = doc.getString("description");
+                        String restaurant = doc.getString("restaurant");
+                        String imageUrl = doc.getString("imageUrl"); // Make sure this is stored as String
+                        double smallPrice = doc.getDouble("smallPrice") != null ? doc.getDouble("smallPrice") : 0.0;
+                        double largePrice = doc.getDouble("largePrice") != null ? doc.getDouble("largePrice") : smallPrice;
+                        float rating = doc.getDouble("rating") != null ? doc.getDouble("rating").floatValue() : 0f;
 
-                        menuList.add(new FoodItem(name, desc, price));
+                        FoodItem item = new FoodItem(
+                                name != null ? name : "",
+                                description != null ? description : "",
+                                imageUrl != null ? imageUrl : "",
+                                rating,
+                                restaurant != null ? restaurant : "",
+                                smallPrice,
+                                largePrice
+                        );
+
+                        menuList.add(item);
                     }
                     adapter.notifyDataSetChanged();
                 })
