@@ -60,7 +60,7 @@ public class FavoritesActivity extends AppCompatActivity {
                                 doc.getDouble("price"),
                                 doc.getString("restaurantId"),
                                 doc.getString("reelId"),
-                                doc.getString("imageUrl") // added
+                                doc.getString("imageUrl")
                         );
                         reel.setLiked(true);
                         favoriteList.add(reel);

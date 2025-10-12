@@ -107,7 +107,7 @@ public class ReelsActivity extends AppCompatActivity {
                             List<String> comments = (List<String>) doc.get("comments");
                             String restaurantId = doc.getString("restaurantId");
                             String reelId = doc.getId();
-                            String imageUrl = doc.getString("imageUrl"); // fixed
+                            String imageUrl = doc.getString("imageUrl");
 
                             reelList.add(new ReelItem(
                                     videoUrl,
