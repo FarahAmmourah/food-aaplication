@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.farah.foodapp.R;
 
 import java.util.List;
@@ -47,7 +48,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.tvCartRestaurant.setText(item.getRestaurant());
         holder.tvCartQuantity.setText(String.valueOf(item.getQuantity()));
         holder.tvCartPrice.setText("JOD " + String.format("%.2f", item.getPrice() * item.getQuantity()));
-        holder.imgCartFood.setImageResource(item.getImageResId());
+
+        Glide.with(context)
+                .load(item.getImageUrl())
+                .placeholder(R.drawable.ic_food_placeholder)
+                .error(R.drawable.ic_food_placeholder)
+                .into(holder.imgCartFood);
 
         holder.btnDecrease.setOnClickListener(v -> {
             CartManager.decreaseItem(item);

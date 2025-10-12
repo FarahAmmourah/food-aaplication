@@ -5,19 +5,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.farah.foodapp.R;
 import com.farah.foodapp.reel.ReelItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +36,6 @@ public class FavoritesActivity extends AppCompatActivity {
 
         layoutEmpty = findViewById(R.id.layoutEmpty);
 
-        // 🔙 زر الرجوع
         ImageView btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v -> finish());
 
@@ -64,7 +59,8 @@ public class FavoritesActivity extends AppCompatActivity {
                                 0, 0, null,
                                 doc.getDouble("price"),
                                 doc.getString("restaurantId"),
-                                doc.getString("reelId")
+                                doc.getString("reelId"),
+                                doc.getString("imageUrl") // added
                         );
                         reel.setLiked(true);
                         favoriteList.add(reel);

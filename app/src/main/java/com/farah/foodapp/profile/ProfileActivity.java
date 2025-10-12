@@ -1,5 +1,7 @@
 package com.farah.foodapp.profile;
 
+import static com.farah.foodapp.R.*;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -22,7 +24,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
     LinearLayout layoutSettings, layoutOrderHistory;
-    TextView tvAvatar, tvUsername, tvEmail, tvPhone;
+    TextView tvAvatar, tvUsername, tvEmail, tvPhone, tvTotalOrders;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +86,7 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             });
         }
-
+        tvTotalOrders = findViewById(R.id.tv_total_orders);
         tvAvatar = findViewById(R.id.tv_avatar);
         tvUsername = findViewById(R.id.tv_username);
         tvEmail = findViewById(R.id.tv_email);
@@ -111,7 +113,24 @@ public class ProfileActivity extends AppCompatActivity {
                         if (name != null && !name.isEmpty()) {
                             tvAvatar.setText(String.valueOf(name.charAt(0)).toUpperCase());
                         }
+
+                        // 🔹 Now load total orders for this customer
+                        loadTotalOrders(uid);
                     }
+                });
+    }
+
+    private void loadTotalOrders(String userId) {
+        FirebaseFirestore.getInstance()
+                .collection("orders")
+                .whereEqualTo("userId", userId)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    int totalOrders = querySnapshot.size();
+                    tvTotalOrders.setText(String.valueOf(totalOrders));
+                })
+                .addOnFailureListener(e -> {
+                    tvTotalOrders.setText("0");
                 });
     }
 }

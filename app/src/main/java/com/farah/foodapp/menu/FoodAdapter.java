@@ -87,20 +87,17 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         btnLarge.setText("Large - $" + item.getLargePrice());
 
         btnSmall.setOnClickListener(v -> {
-            CartManager.addItem(item.getName(), item.getRestaurantName(), "Small", item.getSmallPrice(), 0);
+            CartManager.addItem(item.getName(), item.getRestaurantName(), "Small", item.getSmallPrice(), item.getImageUrl());
             Toast.makeText(context, item.getName() + " added to cart!", Toast.LENGTH_SHORT).show();
-            if (context instanceof RestaurantDetailsActivity)
-                ((RestaurantDetailsActivity) context).updateCartBadge();
             dialog.dismiss();
         });
 
         btnLarge.setOnClickListener(v -> {
-            CartManager.addItem(item.getName(), item.getRestaurantName(), "Large", item.getLargePrice(), 0);
+            CartManager.addItem(item.getName(), item.getRestaurantName(), "Large", item.getLargePrice(), item.getImageUrl());
             Toast.makeText(context, item.getName() + " added to cart!", Toast.LENGTH_SHORT).show();
-            if (context instanceof RestaurantDetailsActivity)
-                ((RestaurantDetailsActivity) context).updateCartBadge();
             dialog.dismiss();
         });
+
 
         dialog.show();
     }

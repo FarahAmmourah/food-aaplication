@@ -4,12 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
-
 import com.farah.foodapp.R;
 import com.farah.foodapp.cart.CartActivity;
 import com.farah.foodapp.cart.CartManager;
@@ -18,7 +16,6 @@ import com.farah.foodapp.profile.ProfileActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,11 +104,10 @@ public class ReelsActivity extends AppCompatActivity {
                             int likes = doc.getLong("likesCount").intValue();
                             int commentsCount = doc.getLong("commentsCount").intValue();
                             double price = doc.getDouble("price");
-
                             List<String> comments = (List<String>) doc.get("comments");
                             String restaurantId = doc.getString("restaurantId");
-
                             String reelId = doc.getId();
+                            String imageUrl = doc.getString("imageUrl"); // fixed
 
                             reelList.add(new ReelItem(
                                     videoUrl,
@@ -122,7 +118,8 @@ public class ReelsActivity extends AppCompatActivity {
                                     comments,
                                     price,
                                     restaurantId,
-                                    reelId // جديد
+                                    reelId,
+                                    imageUrl
                             ));
                         } catch (Exception e) {
                             Log.e("Firestore", "Error parsing document", e);

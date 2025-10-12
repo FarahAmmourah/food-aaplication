@@ -34,7 +34,6 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
 
     private Context context;
     private List<ReelItem> reelList;
-
     public ReelsAdapter(Context context, List<ReelItem> reelList) {
         this.context = context;
         this.reelList = reelList;
@@ -141,7 +140,7 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
                     reel.getRestaurant(),
                     "Regular",
                     reel.getPrice(),
-                    R.drawable.ic_launcher_background
+                    reel.getImageUrl()
             );
 
             Toast.makeText(context, reel.getTitle() + " added to cart!", Toast.LENGTH_SHORT).show();
@@ -150,6 +149,7 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
                 ((ReelsActivity) context).updateCartBadge();
             }
         });
+
     }
 
     @Override

@@ -13,14 +13,15 @@ public class ReelItem {
     private double price;
 
     private String restaurantId;
-
     private String reelId;
+
+    private String imageUrl; // <-- add this field
 
     public ReelItem() {}
 
     public ReelItem(String videoUrl, String title, String restaurant,
                     int likesCount, int commentsCount, List<String> comments,
-                    double price, String restaurantId, String reelId) {
+                    double price, String restaurantId, String reelId, String imageUrl) {
         this.videoUrl = videoUrl;
         this.title = title;
         this.restaurant = restaurant;
@@ -30,6 +31,7 @@ public class ReelItem {
         this.price = price;
         this.restaurantId = restaurantId;
         this.reelId = reelId;
+        this.imageUrl = imageUrl; // set imageUrl
     }
 
     public String getVideoUrl() { return videoUrl; }
@@ -49,4 +51,7 @@ public class ReelItem {
 
     public String getReelId() { return reelId; }
     public void setReelId(String reelId) { this.reelId = reelId; }
+
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 }
