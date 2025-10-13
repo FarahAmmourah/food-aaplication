@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import com.farah.foodapp.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.stripe.android.PaymentConfiguration;
 import com.stripe.android.paymentsheet.PaymentSheet;
 import com.stripe.android.paymentsheet.PaymentSheetResult;
@@ -40,11 +41,9 @@ public class AddCardDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog);
         builder.setMessage("Processing payment...")
                 .setCancelable(false);
+        String publishableKey = getString(R.string.stripe_publishable_key);
 
-        // Initialize Stripe
-        PaymentConfiguration.init(requireContext(),
-                "pk_test_51SEjk8AtRQUYdXhWjSg5BMTdsvRdH4jJcllY1aygfB36eQyTHwDbRUKMBQbroLBmUGK9gpHBFxCQwhqrXxONOTlX003ULuDrrI"
-        );
+        PaymentConfiguration.init(requireContext(), publishableKey);
 
         paymentSheet = new PaymentSheet(this, this::onPaymentSheetResult);
 
@@ -57,9 +56,9 @@ public class AddCardDialog extends DialogFragment {
         new Thread(() -> {
             try {
                 JSONObject jsonBody = new JSONObject();
-                jsonBody.put("amount", 1000); // example amount in cents
+                jsonBody.put("amount", 1000);
 
-                URL url = new URL("https://foodapp-backend-vcay.onrender.com/api/payments/create-payment-intent/");
+                URL url = new URL(getString(R.string.backend_url) + "/api/payments/create-payment-intent/");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
                 conn.setRequestProperty("Content-Type", "application/json");
@@ -108,17 +107,8 @@ public class AddCardDialog extends DialogFragment {
 
     private void onPaymentSheetResult(PaymentSheetResult result) {
         if (result instanceof PaymentSheetResult.Completed) {
-            // For demo purposes, we use hardcoded card info; in a real app, get this from Stripe PaymentMethod
-            String last4 = "4242";        // last 4 digits
-            String expiry = "12/25";      // expiry date
-            String holderName = "Aya";    // cardholder name
-
-            if (listener != null) {
-                listener.onPaymentSuccess(last4, expiry, holderName);
-            }
-
             Toast.makeText(requireContext(), "Payment successful!", Toast.LENGTH_SHORT).show();
-
+            fetchCardDetails(paymentIntentClientSecret);
         } else if (result instanceof PaymentSheetResult.Canceled) {
             Toast.makeText(requireContext(), "Payment canceled.", Toast.LENGTH_SHORT).show();
         } else if (result instanceof PaymentSheetResult.Failed) {
@@ -127,4 +117,74 @@ public class AddCardDialog extends DialogFragment {
         }
         dismiss();
     }
+
+    private void fetchCardDetails(String clientSecret) {
+        new Thread(() -> {
+            try {
+                JSONObject jsonBody = new JSONObject();
+                jsonBody.put("client_secret", clientSecret);
+                String userId = FirebaseAuth.getInstance().getCurrentUser() != null
+                        ? FirebaseAuth.getInstance().getCurrentUser().getUid()
+                        : "guest";
+
+                jsonBody.put("user_id", userId);
+
+                URL url = new URL(getString(R.string.backend_url) + "/api/payments/payment-method-details/");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setDoOutput(true);
+
+                OutputStream os = conn.getOutputStream();
+                os.write(jsonBody.toString().getBytes("UTF-8"));
+                os.close();
+
+                int responseCode = conn.getResponseCode();
+                InputStream is = (responseCode == HttpURLConnection.HTTP_OK)
+                        ? conn.getInputStream() : conn.getErrorStream();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) response.append(line);
+                reader.close();
+
+                JSONObject jsonResponse = new JSONObject(response.toString());
+
+                if (responseCode == HttpURLConnection.HTTP_OK && !jsonResponse.has("error")) {
+                    String last4 = jsonResponse.optString("last4", "");
+                    String expiry = jsonResponse.optString("expiry", "");
+                    String holderName = jsonResponse.optString("holder_name", "");
+
+                    if (getActivity() != null && isAdded()) {
+                        getActivity().runOnUiThread(() -> {
+                            if (listener != null) {
+                                listener.onPaymentSuccess(last4, expiry, holderName);
+                            }
+                            dismissAllowingStateLoss();
+                        });
+                    }
+
+                } else {
+                    String errorMessage = jsonResponse.optString("error", "Unknown error");
+                    if (getActivity() != null && isAdded()) {
+                        getActivity().runOnUiThread(() -> {
+                            Toast.makeText(requireContext(), "Failed to get card details: " + errorMessage, Toast.LENGTH_LONG).show();
+                            dismissAllowingStateLoss();
+                        });
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                if (getActivity() != null && isAdded()) {
+                    getActivity().runOnUiThread(() -> {
+                        Toast.makeText(requireContext(), "Exception: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        dismissAllowingStateLoss();
+                    });
+                }
+            }
+        }).start();
+    }
+
 }

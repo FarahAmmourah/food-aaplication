@@ -10,5 +10,4 @@
     <style name="DialogButton">
         <item name="android:textColor">@color/primary</item>
     </style>
-
 </resources>

@@ -2,11 +2,11 @@ package com.farah.foodapp.cards;
 
 import android.content.Context;
 import android.widget.Toast;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +14,13 @@ import java.util.Map;
 
 public class CardStorage {
 
-    private static final String COLLECTION_NAME = "cards";
+    private static final String USERS_COLLECTION = "cards";
 
     public interface CardSaveCallback {
         void onComplete(boolean success);
     }
 
-    public static void saveCard(Context context, String cardNumber, String expiry, String holderName, CardSaveCallback callback) {
+    public static void saveCard(Context context, String last4, String expiry, String holderName, CardSaveCallback callback) {
         if (context == null) {
             if (callback != null) callback.onComplete(false);
             return;
@@ -31,19 +31,18 @@ public class CardStorage {
             if (callback != null) callback.onComplete(false);
             return;
         }
+
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        String last4 = cardNumber.substring(cardNumber.length() - 4);
-
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference userCards = db.collection(COLLECTION_NAME)
+
+        CardModel card = new CardModel(null, last4, expiry, holderName);
+        CollectionReference userCards = db.collection(USERS_COLLECTION)
                 .document(userId)
                 .collection("userCards");
 
-        CardModel card = new CardModel(null, last4, expiry, holderName);
-
-        userCards.add(card)
-                .addOnSuccessListener(documentReference -> {
+        userCards
+                .add(card)
+                .addOnSuccessListener(docRef -> {
                     if (callback != null) callback.onComplete(true);
                 })
                 .addOnFailureListener(e -> {
@@ -51,63 +50,58 @@ public class CardStorage {
                 });
     }
 
-    public static void saveCard(Context context, String cardNumber, String expiry, String holderName) {
-        saveCard(context, cardNumber, expiry, holderName, null);
-    }
-
     public interface CardListCallback {
         void onCardsLoaded(List<CardModel> cards);
     }
 
-    public static void getCards(Context context, CardListCallback callback) {
+
+    public static ListenerRegistration getCards(Context context, CardListCallback callback) {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             if (callback != null) callback.onCardsLoaded(new ArrayList<>());
-            return;
+            return null;
         }
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(COLLECTION_NAME)
+
+        return db.collection(USERS_COLLECTION)
                 .document(userId)
                 .collection("userCards")
-                .get()
-                .addOnSuccessListener(querySnapshot -> {
+                .addSnapshotListener((querySnapshot, error) -> {
+                    if (error != null || querySnapshot == null) {
+                        if (callback != null) callback.onCardsLoaded(new ArrayList<>());
+                        return;
+                    }
+
                     List<CardModel> cards = new ArrayList<>();
                     for (QueryDocumentSnapshot doc : querySnapshot) {
                         Map<String, Object> data = doc.getData();
                         if (data != null) {
-                            String number = data.get("cardNumber") == null ? "" : String.valueOf(data.get("cardNumber"));
-                            String expiry = data.get("expiry") == null ? "" : String.valueOf(data.get("expiry"));
-                            String holder = data.get("holderName") == null ? "" : String.valueOf(data.get("holderName"));
-                            String id = doc.getId();
-                            cards.add(new CardModel(id, number, expiry, holder));
+                            String last4 = data.get("cardNumber") != null ? String.valueOf(data.get("cardNumber")) : "";
+                            String expiry = data.get("expiry") != null ? String.valueOf(data.get("expiry")) : "";
+                            String holder = data.get("holderName") != null ? String.valueOf(data.get("holderName")) : "";
+                            cards.add(new CardModel(doc.getId(), last4, expiry, holder));
                         }
                     }
+
                     if (callback != null) callback.onCardsLoaded(cards);
-                })
-                .addOnFailureListener(e -> {
-                    if (callback != null) callback.onCardsLoaded(new ArrayList<>());
                 });
     }
 
     public static void deleteCard(String userId, String cardId, Runnable onComplete) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(COLLECTION_NAME)
+        db.collection(USERS_COLLECTION)
                 .document(userId)
                 .collection("userCards")
                 .document(cardId)
                 .delete()
-                .addOnSuccessListener(aVoid -> {
-                    if (onComplete != null) onComplete.run();
-                })
-                .addOnFailureListener(e -> {
-                    if (onComplete != null) onComplete.run();
-                });
+                .addOnSuccessListener(v -> { if (onComplete != null) onComplete.run(); })
+                .addOnFailureListener(e -> { if (onComplete != null) onComplete.run(); });
     }
 
     public static class CardModel {
         private String id;
-        private String cardNumber; // last4
+        private String cardNumber;
         private String expiry;
         private String holderName;
 
@@ -124,10 +118,5 @@ public class CardStorage {
         public String getCardNumber() { return cardNumber; }
         public String getExpiry() { return expiry; }
         public String getHolderName() { return holderName; }
-
-        public void setId(String id) { this.id = id; }
-        public void setCardNumber(String cardNumber) { this.cardNumber = cardNumber; }
-        public void setExpiry(String expiry) { this.expiry = expiry; }
-        public void setHolderName(String holderName) { this.holderName = holderName; }
     }
 }

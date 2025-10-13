@@ -14,5 +14,8 @@
     <string name="total_price">Total Price</string>
     <string name="cancel">Cancel</string>
     <string name="complete">Complete</string>
+    <string name="stripe_publishable_key">pk_test_51SEjk8AtRQUYdXhWjSg5BMTdsvRdH4jJcllY1aygfB36eQyTHwDbRUKMBQbroLBmUGK9gpHBFxCQwhqrXxONOTlX003ULuDrrI</string>
+    <string name="backend_url">https://foodapp-backend-vcay.onrender.com</string>
+
 
 </resources>

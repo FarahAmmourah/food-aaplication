@@ -21,6 +21,7 @@ import com.farah.foodapp.cards.CardStorage;
 import com.farah.foodapp.cart.CartManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +31,8 @@ public class CheckoutActivity extends AppCompatActivity {
     private TextView tvSubtotal, tvDiscount, tvDeliveryFee, tvServiceFee, tvTotal, tvAddress;
     private RadioGroup rgPaymentMethod;
     private TextView btnAddCard;
+
+    private ListenerRegistration cardListener;
 
     private static final double DELIVERY_FEE = 3.00;
     private static final double SERVICE_FEE = 0.20;
@@ -114,7 +117,6 @@ public class CheckoutActivity extends AppCompatActivity {
         tvServiceFee.setText("Service fee: JOD " + String.format("%.2f", SERVICE_FEE));
         tvTotal.setText("Total: JOD " + String.format("%.2f", total));
     }
-
     @SuppressLint("SetTextI18n")
     private void loadCards() {
         rgPaymentMethod.removeAllViews();
