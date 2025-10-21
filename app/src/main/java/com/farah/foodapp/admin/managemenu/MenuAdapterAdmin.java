@@ -11,24 +11,33 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.farah.foodapp.R;
-import com.farah.foodapp.menu.FoodItem;
 
 import java.util.List;
-public class MenuAdapterAdmin extends RecyclerView.Adapter<MenuAdapterAdmin.MenuViewHolder> {
-    private final List<FoodItem> menuList;
 
-    public MenuAdapterAdmin(List<FoodItem> menuList) { this.menuList = menuList; }
+public class MenuAdapterAdmin extends RecyclerView.Adapter<MenuAdapterAdmin.MenuViewHolder> {
+    private List<FoodItemAdmin> menuList;
+
+    public MenuAdapterAdmin(List<FoodItemAdmin> menuList) {
+        this.menuList = menuList;
+    }
+
+    public void setData(List<FoodItemAdmin> newList) {
+        this.menuList = newList;
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override
     public MenuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_food_admin, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_food_admin, parent, false);
         return new MenuViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MenuViewHolder holder, int position) {
-        FoodItem item = menuList.get(position);
+        FoodItemAdmin item = menuList.get(position);
+
         holder.tvName.setText(item.getName());
         holder.tvDescription.setText(item.getDescription());
         holder.tvPrice.setText("Price: " + item.getSmallPrice() + " JD");
@@ -47,7 +56,9 @@ public class MenuAdapterAdmin extends RecyclerView.Adapter<MenuAdapterAdmin.Menu
     }
 
     @Override
-    public int getItemCount() { return menuList.size(); }
+    public int getItemCount() {
+        return menuList.size();
+    }
 
     static class MenuViewHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvDescription, tvPrice, tvRating;

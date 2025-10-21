@@ -62,6 +62,4 @@
         app:menu="@menu/admin_bottom_nav_menu"
         app:itemIconTint="@menu/nav_item_colors"
         app:itemTextColor="@menu/nav_item_colors" />
-
-
 </LinearLayout>

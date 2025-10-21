@@ -175,15 +175,7 @@
                             android:layout_height="wrap_content"
                             android:text="Order History"
                             android:textSize="18sp"
-                            android:textColor="@color/foreground"
-                            android:textStyle="bold" />
-
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="24 orders"-->
-<!--                            android:textSize="14sp"-->
-<!--                            android:textColor="@color/mutedForeground" />-->
+                            android:textColor="@color/foreground" />
                     </LinearLayout>
 
                     <ImageView
@@ -195,6 +187,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/layout_specials"
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
                     android:orientation="horizontal"
@@ -206,7 +199,7 @@
                     <ImageView
                         android:layout_width="28dp"
                         android:layout_height="28dp"
-                        android:src="@drawable/ic_favorite"
+                        android:src="@drawable/ic_specials"
                         android:tint="@color/primary"
                         android:layout_marginEnd="16dp"
                         tools:ignore="UseAppTint" />
@@ -215,7 +208,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Favorites"
+                        android:text="Specials"
                         android:textSize="18sp"
                         android:textColor="@color/foreground" />
 
@@ -248,7 +241,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Addresses"
+                        android:text="Location and Branches"
                         android:textSize="18sp"
                         android:textColor="@color/foreground" />
 

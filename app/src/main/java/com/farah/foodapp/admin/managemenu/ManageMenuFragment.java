@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.farah.foodapp.R;
-import com.farah.foodapp.menu.FoodItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -24,15 +23,18 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
 public class ManageMenuFragment extends Fragment {
+
     private MenuAdapterAdmin menuAdapter;
-    private List<FoodItem> menuItemList = new ArrayList<>();
+    private List<FoodItemAdmin> menuItemList = new ArrayList<>();
     private FirebaseFirestore firestore;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_manage_menu, container, false);
         firestore = FirebaseFirestore.getInstance();
 
@@ -45,6 +47,7 @@ public class ManageMenuFragment extends Fragment {
         btnAdd.setOnClickListener(v -> showAddItemDialog());
 
         loadMenuItems();
+
         return view;
     }
 
@@ -55,10 +58,10 @@ public class ManageMenuFragment extends Fragment {
                 .document(restaurantId)
                 .collection("menu")
                 .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
+                .addOnSuccessListener(querySnapshot -> {
                     menuItemList.clear();
-                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                        FoodItem item = doc.toObject(FoodItem.class);
+                    for (QueryDocumentSnapshot doc : querySnapshot) {
+                        FoodItemAdmin item = doc.toObject(FoodItemAdmin.class);
                         menuItemList.add(item);
                     }
                     menuAdapter.notifyDataSetChanged();
@@ -69,7 +72,9 @@ public class ManageMenuFragment extends Fragment {
 
     private void showAddItemDialog() {
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_menu_item, null);
-        AlertDialog dialog = new AlertDialog.Builder(getContext()).setView(dialogView).create();
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
+                .setView(dialogView)
+                .create();
         dialog.show();
 
         EditText etName = dialogView.findViewById(R.id.inputName);
@@ -101,19 +106,27 @@ public class ManageMenuFragment extends Fragment {
                 return;
             }
 
-            double price = Double.parseDouble(priceStr);
-            FoodItem newItem = new FoodItem(
-                    name,
-                    description,
-                    imageUrl,
-                    0f,
-                    "",
-                    price,
-                    price + 2
-            );
-
+            double smallPrice;
+            try {
+                smallPrice = Double.parseDouble(priceStr);
+            } catch (NumberFormatException e) {
+                Toast.makeText(getContext(), "Invalid price format", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             String restaurantId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+
+
+            FoodItemAdmin newItem = new FoodItemAdmin(
+                    name,
+                    description.isEmpty() ? "Delicious " + name + " prepared with care!" : description,
+                    restaurantId,
+                    smallPrice,
+                    ingredients,
+                    0f,
+                    imageUrl
+            );
+
             firestore.collection("restaurants")
                     .document(restaurantId)
                     .collection("menu")

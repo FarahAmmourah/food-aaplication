@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.farah.foodapp.R;
 import com.farah.foodapp.admin.AdminDashboardActivity;
 import com.farah.foodapp.admin.activeorders.OrderAdmin;
+import com.farah.foodapp.admin.admin_profile.orderhistory.OrderHistoryActivity;
+import com.farah.foodapp.admin.admin_profile.specials.SpecialsActivity;
 import com.farah.foodapp.profile.ChangePasswordActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,7 +26,7 @@ import java.util.Objects;
 public class AdminProfileActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
-    LinearLayout layoutSettings, layoutOrderHistory;
+    LinearLayout layoutSettings, layoutOrderHistory, layoutSpecials;
     TextView tvAvatar, tvUsername, tvEmail, tvPhone, tvTotalOrders;
 
     @Override
@@ -54,6 +56,12 @@ public class AdminProfileActivity extends AppCompatActivity {
 
         layoutSettings = findViewById(R.id.layout_settings);
         layoutOrderHistory = findViewById(R.id.layout_order_history);
+        layoutSpecials = findViewById(R.id.layout_specials);
+
+        if (layoutSpecials != null){
+            layoutSpecials.setOnClickListener(v ->
+                    startActivity(new Intent(AdminProfileActivity.this, SpecialsActivity.class)));
+        }
 
 
         if (layoutSettings != null) {
@@ -137,6 +145,4 @@ public class AdminProfileActivity extends AppCompatActivity {
                         Toast.makeText(this, "Error loading orders: " + e.getMessage(), Toast.LENGTH_SHORT).show()
                 );
     }
-
-
 }
