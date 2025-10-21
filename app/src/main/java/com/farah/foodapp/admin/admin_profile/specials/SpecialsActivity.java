@@ -53,6 +53,7 @@ public class SpecialsActivity extends AppCompatActivity {
         db.collection("restaurants")
                 .document(restaurantId)
                 .collection("menu")
+                .whereGreaterThan("rating", 6)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
                     specialList.clear();
