@@ -44,4 +44,48 @@ public class OrderModel {
     public long getCreatedAt() { return createdAt; }
     public List<String> getItems() { return items; }
     public String getEta() { return eta; }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public void setLon(double lon) {
+        this.lon = lon;
+    }
+
+    public void setCreatedAt(long createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setItems(List<String> items) {
+        this.items = items;
+    }
+
+    public void setEta(String eta) {
+        this.eta = eta;
+    }
 }

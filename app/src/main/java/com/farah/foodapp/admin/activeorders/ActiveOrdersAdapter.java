@@ -60,15 +60,12 @@ public class ActiveOrdersAdapter extends RecyclerView.Adapter<ActiveOrdersAdapte
                     .collection("orders")
                     .document(order.getId())
                     .update("status", "cancelled")
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(v.getContext(), "Order cancelled", Toast.LENGTH_SHORT).show();
-                        orders.remove(position);
-                        notifyItemRemoved(position);
-                        notifyItemRangeChanged(position, orders.size());
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(v.getContext(), "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
+                    .addOnSuccessListener(aVoid ->
+                            Toast.makeText(v.getContext(), "Order cancelled", Toast.LENGTH_SHORT).show()
+                    )
+                    .addOnFailureListener(e ->
+                            Toast.makeText(v.getContext(), "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                    );
         });
 
         holder.btnComplete.setOnClickListener(v -> {
@@ -76,15 +73,12 @@ public class ActiveOrdersAdapter extends RecyclerView.Adapter<ActiveOrdersAdapte
                     .collection("orders")
                     .document(order.getId())
                     .update("status", "completed")
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(v.getContext(), "Order completed", Toast.LENGTH_SHORT).show();
-                        orders.remove(position);
-                        notifyItemRemoved(position);
-                        notifyItemRangeChanged(position, orders.size());
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(v.getContext(), "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
+                    .addOnSuccessListener(aVoid ->
+                            Toast.makeText(v.getContext(), "Order completed", Toast.LENGTH_SHORT).show()
+                    )
+                    .addOnFailureListener(e ->
+                            Toast.makeText(v.getContext(), "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                    );
         });
     }
 
@@ -103,7 +97,6 @@ public class ActiveOrdersAdapter extends RecyclerView.Adapter<ActiveOrdersAdapte
             tvCustomerName = itemView.findViewById(R.id.tvCustomerName);
             tvStatus = itemView.findViewById(R.id.tvStatus);
             tvTotalPrice = itemView.findViewById(R.id.tvTotalPrice);
-
             btnCancel = itemView.findViewById(R.id.btnCancel);
             btnComplete = itemView.findViewById(R.id.btnComplete);
         }

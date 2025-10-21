@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -26,13 +25,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class OrdersActivity extends AppCompatActivity {
 
     private OrdersAdapter adapter;
     private final List<OrderModel> orderList = new ArrayList<>();
-    private final Handler handler = new Handler();
+    private final Map<String, String> lastStatuses = new HashMap<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,76 +50,40 @@ public class OrdersActivity extends AppCompatActivity {
             finish();
         });
 
-        loadOrders();
-        handler.postDelayed(updateRunnable, 1000);
+        listenToOrders();
     }
 
-    private void loadOrders() {
-        String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+    private void listenToOrders() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         FirebaseFirestore.getInstance()
                 .collection("orders")
                 .whereEqualTo("userId", userId)
-                .get()
-                .addOnSuccessListener(query -> {
-                    orderList.clear();
-                    for (QueryDocumentSnapshot doc : query) {
-                        OrderModel order = doc.toObject(OrderModel.class);
+                .addSnapshotListener((snapshots, e) -> {
+                    if (e != null) {
+                        Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-                        order = new OrderModel(
-                                doc.getId(),
-                                order.getUserId(),
-                                order.getRestaurantName(),
-                                order.getTotal(),
-                                order.getStatus(),
-                                order.getAddress(),
-                                order.getLat(),
-                                order.getLon(),
-                                order.getCreatedAt(),
-                                order.getItems(),
-                                order.getEta()
-                        );
-                        orderList.add(order);
+                    orderList.clear();
+                    if (snapshots != null) {
+                        for (QueryDocumentSnapshot doc : snapshots) {
+                            OrderModel order = doc.toObject(OrderModel.class);
+                            order.setId(doc.getId());
+                            orderList.add(order);
+                            maybeNotify(order);
+                        }
                     }
                     adapter.notifyDataSetChanged();
-                })
-                .addOnFailureListener(e -> Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                });
     }
 
-    private final Runnable updateRunnable = new Runnable() {
-        @Override
-        public void run() {
-            for (OrderModel order : orderList) {
-                updateOrderStatus(order);
-            }
-            handler.postDelayed(this, 1000);
-        }
-    };
-
-    private void updateOrderStatus(OrderModel order) {
-        long now = System.currentTimeMillis();
-        long diff = now - order.getCreatedAt();
-
-        String newStatus = order.getStatus();
-
-        if (diff > 2 * 60 * 1000 && diff <= 5 * 60 * 1000) {
-            newStatus = "On the way";
-        } else if (diff > 5 * 60 * 1000) {
-            newStatus = "Completed";
-        }
-
-        if (!newStatus.equals(order.getStatus())) {
-            String finalNewStatus = newStatus;
-
-            FirebaseFirestore.getInstance()
-                    .collection("orders")
-                    .document(order.getId())
-                    .update("status", newStatus)
-                    .addOnSuccessListener(aVoid -> {
-                        loadOrders();
-
-
-                        showOrderNotification(order, finalNewStatus);
-                    });
+    private void maybeNotify(OrderModel order) {
+        String last = lastStatuses.get(order.getId());
+        String current = order.getStatus();
+        if (last == null || !last.equals(current)) {
+            lastStatuses.put(order.getId(), current);
+            showOrderNotification(order, current);
         }
     }
 
@@ -165,25 +127,20 @@ public class OrdersActivity extends AppCompatActivity {
         notificationManager.notify(order.getId().hashCode(), builder.build());
         saveNotificationToFirestore("Your order is now " + status);
     }
+
     private void saveNotificationToFirestore(String message) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String userId = null;
-
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        }
+        String userId = FirebaseAuth.getInstance().getCurrentUser() != null
+                ? FirebaseAuth.getInstance().getCurrentUser().getUid()
+                : "anonymous";
 
         Map<String, Object> notification = new HashMap<>();
         notification.put("title", "Order Update");
         notification.put("message", message);
         notification.put("timestamp", System.currentTimeMillis());
-        notification.put("userId", userId != null ? userId : "anonymous");
+        notification.put("userId", userId);
 
         db.collection("notifications")
-                .add(notification)
-                .addOnSuccessListener(doc ->
-                        android.util.Log.d("OrdersActivity", "Notification saved: " + doc.getId()))
-                .addOnFailureListener(e ->
-                        android.util.Log.e("OrdersActivity", "Error saving notification", e));
+                .add(notification);
     }
 }

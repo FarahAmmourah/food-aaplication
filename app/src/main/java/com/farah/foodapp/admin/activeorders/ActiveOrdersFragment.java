@@ -15,19 +15,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.farah.foodapp.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ActiveOrdersFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private ActiveOrdersAdapter adapter;
-    private List<OrderAdmin> orders = new ArrayList<>();
+    private final List<OrderAdmin> orders = new ArrayList<>();
     private FirebaseFirestore firestore;
     private TextView tvNoOrders;
+    private ListenerRegistration activeOrdersListener;
 
     @Nullable
     @Override
@@ -52,7 +58,11 @@ public class ActiveOrdersFragment extends Fragment {
                 .addOnSuccessListener(doc -> {
                     if (doc.exists()) {
                         String restaurantName = doc.getString("name");
-                        loadActiveOrders(restaurantName);
+                        if (restaurantName != null && !restaurantName.isEmpty()) {
+                            listenToActiveOrders(restaurantName);
+                        } else {
+                            Toast.makeText(getContext(), "Restaurant name missing", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
                         Toast.makeText(getContext(), "Restaurant not found", Toast.LENGTH_SHORT).show();
                     }
@@ -64,50 +74,65 @@ public class ActiveOrdersFragment extends Fragment {
         return view;
     }
 
-    private void loadActiveOrders(String restaurantName) {
-        firestore.collection("orders")
-                .whereEqualTo("restaurantName", restaurantName)
-                .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    orders.clear();
-                    List<OrderAdmin> tempOrders = new ArrayList<>();
+    private void listenToActiveOrders(String restaurantName) {
+        if (activeOrdersListener != null) {
+            activeOrdersListener.remove();
+        }
 
-                    for (QueryDocumentSnapshot doc : querySnapshot) {
-                        String status = doc.getString("status");
-                        if (status != null &&
-                                (status.equalsIgnoreCase("preparing") || status.equalsIgnoreCase("pending"))) {
+        activeOrdersListener = firestore.collection("orders")
+                .whereEqualTo("restaurantName", restaurantName)
+                .whereIn("status", Arrays.asList("Preparing", "Pending"))
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot snapshots,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            tvNoOrders.setText("Error loading orders: " + e.getMessage());
+                            tvNoOrders.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.GONE);
+                            return;
+                        }
+
+                        if (snapshots == null || snapshots.isEmpty()) {
+                            orders.clear();
+                            adapter.notifyDataSetChanged();
+                            recyclerView.setVisibility(View.GONE);
+                            tvNoOrders.setVisibility(View.VISIBLE);
+                            return;
+                        }
+
+                        List<OrderAdmin> tempOrders = new ArrayList<>();
+                        for (QueryDocumentSnapshot doc : snapshots) {
                             OrderAdmin order = doc.toObject(OrderAdmin.class);
                             order.setId(doc.getId());
                             tempOrders.add(order);
                         }
-                    }
 
-                    if (tempOrders.isEmpty()) {
-                        recyclerView.setVisibility(View.GONE);
-                        tvNoOrders.setVisibility(View.VISIBLE);
-                    } else {
-                        recyclerView.setVisibility(View.VISIBLE);
-                        tvNoOrders.setVisibility(View.GONE);
                         fetchUserNames(tempOrders);
                     }
-                })
-                .addOnFailureListener(e -> {
-                    recyclerView.setVisibility(View.GONE);
-                    tvNoOrders.setText("Failed to load orders: " + e.getMessage());
-                    tvNoOrders.setVisibility(View.VISIBLE);
                 });
     }
 
     private void fetchUserNames(List<OrderAdmin> tempOrders) {
+        if (tempOrders.isEmpty()) {
+            orders.clear();
+            adapter.notifyDataSetChanged();
+            recyclerView.setVisibility(View.GONE);
+            tvNoOrders.setVisibility(View.VISIBLE);
+            return;
+        }
+
         final int[] remaining = {tempOrders.size()};
 
         for (OrderAdmin order : tempOrders) {
-            firestore.collection("restaurants")
+            firestore.collection("users")
                     .document(order.getUserId())
                     .get()
                     .addOnSuccessListener(userDoc -> {
                         if (userDoc.exists()) {
                             order.setCustomerName(userDoc.getString("name"));
+                        } else {
+                            order.setCustomerName("Unknown");
                         }
                     })
                     .addOnCompleteListener(task -> {
@@ -116,8 +141,19 @@ public class ActiveOrdersFragment extends Fragment {
                             orders.clear();
                             orders.addAll(tempOrders);
                             adapter.notifyDataSetChanged();
+                            recyclerView.setVisibility(View.VISIBLE);
+                            tvNoOrders.setVisibility(View.GONE);
                         }
                     });
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (activeOrdersListener != null) {
+            activeOrdersListener.remove();
+            activeOrdersListener = null;
         }
     }
 }

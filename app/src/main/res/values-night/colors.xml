@@ -1,31 +1,31 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#9E090F</color>
-    <color name="orange_app">#9E090F</color>
+    <color name="primary">#E53935</color>
+    <color name="orange_app">#E53935</color>
     <color name="primaryForeground">#FFFFFF</color>
 
-    <color name="secondary">#FF8A65</color>
-    <color name="secondaryForeground">#FFFFFF</color>
-
-    <color name="red">#FF5252</color>
-    <color name="destructive">#FF5722</color>
-    <color name="destructiveForeground">#FFFFFF</color>
-
-    <color name="muted">#263237</color>
-    <color name="mutedForeground">#CFD8DC</color>
+    <color name="secondary">#4E342E</color>
+    <color name="secondaryForeground">#FFE0B2</color>
     <color name="accent">#FFB74D</color>
     <color name="accentForeground">#212121</color>
 
-    <color name="background">#232E33</color>
-    <color name="foreground">#E0E0E0</color>
-    <color name="black">#000000</color>
-    <color name="white">#FFFFFF</color>
-    <color name="darker_gray">#AAAAAA</color>
-
-    <color name="primary_light">#EF9A9A</color>
-    <color name="gray">#757575</color>
-    <color name="gray_light">#B0BEC5</color>
-    <color name="green">#66BB6A</color>
+    <color name="red">#FF5252</color>
     <color name="red2">#EF5350</color>
-</resources>
+    <color name="green">#81C784</color>
 
+    <color name="background">#121212</color>
+    <color name="foreground">#E0E0E0</color>
+
+    <color name="muted">#1E1E1E</color>
+    <color name="mutedForeground">#BDBDBD</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray">#9E9E9E</color>
+    <color name="gray_light">#616161</color>
+    <color name="darker_gray">#757575</color>
+
+    <color name="destructive">#CF6679</color>
+    <color name="destructiveForeground">#000000</color>
+
+    <color name="primary_light">#B71C1C</color>
+</resources>
