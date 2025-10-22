@@ -133,30 +133,4 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Login Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            FirebaseFirestore.getInstance()
-                    .collection("users")
-                    .document(currentUser.getUid())
-                    .get()
-                    .addOnSuccessListener(documentSnapshot -> {
-                        if (documentSnapshot.exists()) {
-                            String role = documentSnapshot.getString("role");
-
-                            if ("admin".equals(role)) {
-                                startActivity(new Intent(this, AdminDashboardActivity.class));
-                            } else {
-                                startActivity(new Intent(this, ReelsActivity.class));
-                            }
-                            finish();
-                        }
-                    })
-                    .addOnFailureListener(e ->
-                            Toast.makeText(this, "Failed to fetch user data: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-        }
-    }
-
 }
