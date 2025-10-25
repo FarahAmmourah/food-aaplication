@@ -1,14 +1,15 @@
 package com.farah.foodapp;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.webkit.WebChromeClient;
 import android.webkit.GeolocationPermissions;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MapPickActivity extends AppCompatActivity {
@@ -17,6 +18,11 @@ public class MapPickActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
 
         WebView webView = new WebView(this);
         setContentView(webView);
@@ -31,9 +37,6 @@ public class MapPickActivity extends AppCompatActivity {
                 callback.invoke(origin, true, false);
             }
         });
-
-        String baseUrl = getString(R.string.map_url);
-        String mapUrl = baseUrl + "/select-location/";
 
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -56,6 +59,8 @@ public class MapPickActivity extends AppCompatActivity {
             }
         });
 
+        String baseUrl = getString(R.string.map_url);
+        String mapUrl = baseUrl + "/select-location/";
         webView.loadUrl(mapUrl);
     }
 }
