@@ -6,10 +6,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MapPickActivity extends AppCompatActivity {
-    private static final String MAP_URL = "http://10.0.2.2:8000/select-location/"; // Django URL
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -20,6 +20,10 @@ public class MapPickActivity extends AppCompatActivity {
         setContentView(webView);
 
         webView.getSettings().setJavaScriptEnabled(true);
+
+        String baseUrl = getString(R.string.map_url);
+        String mapUrl = baseUrl + "/select-location/";
+
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -41,6 +45,6 @@ public class MapPickActivity extends AppCompatActivity {
             }
         });
 
-        webView.loadUrl(MAP_URL);
+        webView.loadUrl(mapUrl);
     }
 }

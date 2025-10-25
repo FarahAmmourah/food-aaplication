@@ -2,10 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- ✅ صلاحيات الإنترنت والموقع -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
@@ -20,7 +21,9 @@
         android:theme="@style/Theme.FoodApp"
         tools:targetApi="31">
 
-        <activity android:name=".MapPickActivity"
+        <!-- ✅ نشاط تحديد الموقع -->
+        <activity
+            android:name=".MapPickActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -30,7 +33,7 @@
             </intent-filter>
         </activity>
 
-
+        <!-- باقي الأنشطة كما هي -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -40,11 +43,9 @@
             </intent-filter>
         </activity>
 
-
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".login.RegisterActivity" />
         <activity android:name=".login.ForgotPasswordActivity" />
-
         <activity android:name=".menu.MenuActivity" />
         <activity android:name=".cart.CartActivity" />
         <activity android:name=".CheckoutActivity" />
@@ -53,24 +54,25 @@
         <activity android:name=".profile.ProfileActivity" />
         <activity android:name=".profile.ChangePasswordActivity" />
         <activity android:name=".admin.AdminDashboardActivity" />
-        <activity android:name=".menu.RestaurantDetailsActivity"  />
-        <activity android:name=".admin.admin_profile.AdminProfileActivity"/>
-        <activity android:name=".admin.admin_reels.ReelDetailActivity"
+        <activity android:name=".menu.RestaurantDetailsActivity" />
+        <activity android:name=".admin.admin_profile.AdminProfileActivity" />
+        <activity
+            android:name=".admin.admin_reels.ReelDetailActivity"
             android:exported="false" />
         <activity
             android:name=".admin.admin_profile.orderhistory.OrderHistoryActivity"
             android:exported="true" />
-        <activity android:name=".profile.FavoritesActivity"
+        <activity
+            android:name=".profile.FavoritesActivity"
             android:exported="false" />
         <activity android:name=".admin.admin_profile.specials.SpecialsActivity" />
-
         <activity android:name=".notifications.NotificationActivity" />
 
         <service
             android:name=".notifications.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
