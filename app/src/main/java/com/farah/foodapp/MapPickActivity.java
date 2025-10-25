@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.webkit.WebChromeClient;
+import android.webkit.GeolocationPermissions;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,6 +22,15 @@ public class MapPickActivity extends AppCompatActivity {
         setContentView(webView);
 
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setDomStorageEnabled(true);
+        webView.getSettings().setGeolocationEnabled(true);
+
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
+                callback.invoke(origin, true, false);
+            }
+        });
 
         String baseUrl = getString(R.string.map_url);
         String mapUrl = baseUrl + "/select-location/";
