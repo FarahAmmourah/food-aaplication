@@ -15,7 +15,7 @@ public class ReelItem {
     private String restaurantId;
     private String reelId;
 
-    private String imageUrl; // <-- add this field
+    private String imageUrl;
 
     public ReelItem() {}
 
@@ -31,7 +31,7 @@ public class ReelItem {
         this.price = price;
         this.restaurantId = restaurantId;
         this.reelId = reelId;
-        this.imageUrl = imageUrl; // set imageUrl
+        this.imageUrl = imageUrl;
     }
 
     public String getVideoUrl() { return videoUrl; }

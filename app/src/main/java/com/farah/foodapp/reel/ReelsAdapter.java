@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -34,6 +35,7 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
 
     private Context context;
     private List<ReelItem> reelList;
+
     public ReelsAdapter(Context context, List<ReelItem> reelList) {
         this.context = context;
         this.reelList = reelList;
@@ -52,6 +54,7 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         db.collection("users").document(uid)
                 .collection("favorites")
                 .document(reel.getReelId())
@@ -75,6 +78,20 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
         player.prepare();
         player.pause();
 
+        holder.playerView.setOnTouchListener((v, event) -> {
+            if (holder.playerView.getPlayer() == null) return false;
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    holder.playerView.getPlayer().pause();
+                    return true;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    holder.playerView.getPlayer().play();
+                    return true;
+            }
+            return false;
+        });
+
         holder.tvTitle.setText(reel.getTitle());
         holder.tvRestaurant.setText(reel.getRestaurant());
         holder.btnOrder.setText("ORDER NOW - $" + reel.getPrice());
@@ -94,12 +111,8 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
                 holder.btnLike.setColorFilter(Color.WHITE);
                 reel.setLikesCount(reel.getLikesCount() - 1);
                 reel.setLiked(false);
-
-                db.collection("users")
-                        .document(uid)
-                        .collection("favorites")
-                        .document(reel.getReelId())
-                        .delete();
+                db.collection("users").document(uid)
+                        .collection("favorites").document(reel.getReelId()).delete();
             } else {
                 holder.btnLike.setColorFilter(Color.RED);
                 reel.setLikesCount(reel.getLikesCount() + 1);
@@ -112,13 +125,9 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
                 fav.put("price", reel.getPrice());
                 fav.put("reelId", reel.getReelId());
 
-                db.collection("users")
-                        .document(uid)
-                        .collection("favorites")
-                        .document(reel.getReelId())
-                        .set(fav);
+                db.collection("users").document(uid)
+                        .collection("favorites").document(reel.getReelId()).set(fav);
             }
-
             holder.tvLikeCount.setText(String.valueOf(reel.getLikesCount()));
         });
 
@@ -142,14 +151,11 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
                     reel.getPrice(),
                     reel.getImageUrl()
             );
-
             Toast.makeText(context, reel.getTitle() + " added to cart!", Toast.LENGTH_SHORT).show();
-
             if (context instanceof ReelsActivity) {
                 ((ReelsActivity) context).updateCartBadge();
             }
         });
-
     }
 
     @Override
