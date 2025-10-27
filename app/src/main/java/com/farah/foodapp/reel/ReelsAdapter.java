@@ -1,5 +1,6 @@
 package com.farah.foodapp.reel;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -78,7 +79,10 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
         player.prepare();
         player.pause();
 
+<<<<<<< Updated upstream
         // Play/pause on click
+=======
+>>>>>>> Stashed changes
         holder.playerView.setOnClickListener(v -> {
             if (player.isPlaying()) {
                 player.pause();
@@ -95,7 +99,7 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
         // Set text values
         holder.tvTitle.setText(reel.getTitle());
         holder.tvRestaurant.setText(reel.getRestaurant());
-        holder.btnOrder.setText("ORDER NOW - $" + reel.getPrice());
+        holder.btnOrder.setText("ORDER NOW");
         holder.tvLikeCount.setText(String.valueOf(reel.getLikesCount()));
         holder.tvCommentCount.setText(String.valueOf(reel.getCommentsCount()));
 
@@ -159,19 +163,51 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
                         if (!querySnapshot.isEmpty()) {
                             DocumentSnapshot doc = querySnapshot.getDocuments().get(0);
                             String name = doc.getString("name");
-                            double price = doc.getDouble("price");
+                            Double smallPrice = doc.getDouble("smallPrice");
+                            Double largePrice = doc.getDouble("largePrice");
                             String imageUrl = doc.getString("imageUrl");
-                            CartManager.addItem(
-                                    name,
-                                    reel.getRestaurant(),
-                                    "Regular",
-                                    price,
-                                    imageUrl
-                            );
-                            Toast.makeText(context, name + " added to cart!", Toast.LENGTH_SHORT).show();
-                            if (context instanceof ReelsActivity) {
-                                ((ReelsActivity) context).updateCartBadge();
-                            }
+
+                            if (smallPrice == null) smallPrice = 0.0;
+                            if (largePrice == null) largePrice = smallPrice;
+
+                            String finalName = name;
+                            String finalImageUrl = imageUrl;
+                            Double finalSmallPrice = smallPrice;
+                            Double finalLargePrice = largePrice;
+
+                            View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_choose_size, null);
+                            AlertDialog dialog = new AlertDialog.Builder(context)
+                                    .setView(dialogView)
+                                    .create();
+
+                            Button btnSmall = dialogView.findViewById(R.id.btnSmall);
+                            Button btnLarge = dialogView.findViewById(R.id.btnLarge);
+                            TextView title = dialogView.findViewById(R.id.tvDialogTitle);
+
+                            title.setText("Choose Size");
+
+                            btnSmall.setText("Small - $" + finalSmallPrice);
+                            btnLarge.setText("Large - $" + finalLargePrice);
+
+                            btnSmall.setOnClickListener(v1 -> {
+                                CartManager.addItem(finalName, reel.getRestaurant(), "Small", finalSmallPrice, finalImageUrl);
+                                Toast.makeText(context, finalName + " (Small) added to cart!", Toast.LENGTH_SHORT).show();
+                                if (context instanceof ReelsActivity) {
+                                    ((ReelsActivity) context).updateCartBadge();
+                                }
+                                dialog.dismiss();
+                            });
+
+                            btnLarge.setOnClickListener(v2 -> {
+                                CartManager.addItem(finalName, reel.getRestaurant(), "Large", finalLargePrice, finalImageUrl);
+                                Toast.makeText(context, finalName + " (Large) added to cart!", Toast.LENGTH_SHORT).show();
+                                if (context instanceof ReelsActivity) {
+                                    ((ReelsActivity) context).updateCartBadge();
+                                }
+                                dialog.dismiss();
+                            });
+
+                            dialog.show();
                         } else {
                             Toast.makeText(context, "Item not found in menu!", Toast.LENGTH_SHORT).show();
                         }

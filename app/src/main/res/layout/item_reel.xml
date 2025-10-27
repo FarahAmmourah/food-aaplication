@@ -76,12 +76,13 @@
             app:tint="@android:color/white" />
     </LinearLayout>
 
+    <!-- ====== الجزء السفلي (النصوص + الزر) ====== -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:padding="16dp"
+        android:padding="20dp"
         android:background="@android:color/transparent"
         android:layout_marginBottom="24dp">
 
@@ -91,34 +92,44 @@
             android:layout_height="wrap_content"
             android:text="Video Title"
             android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:shadowColor="#80000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="4" />
 
         <TextView
             android:id="@+id/tvRestaurant"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Restaurant Name"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
+            android:textColor="#E0E0E0"
+            android:textSize="18sp"
             android:textStyle="italic"
-            android:layout_marginTop="2dp" />
+            android:layout_marginTop="4dp"
+            android:shadowColor="#80000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="4" />
 
         <Button
             android:id="@+id/btnOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/rounded_button"
             android:text="ORDER NOW"
             android:textAllCaps="true"
             android:textColor="@android:color/white"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:textStyle="bold"
-            android:paddingLeft="24dp"
-            android:paddingRight="24dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp" />
+            android:paddingLeft="28dp"
+            android:paddingRight="28dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp" />
     </LinearLayout>
 
 </FrameLayout>

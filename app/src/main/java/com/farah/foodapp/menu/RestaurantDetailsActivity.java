@@ -108,10 +108,9 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                         String name = doc.getString("name");
                         String description = doc.getString("description");
-                        String restaurant = doc.getString("restaurant");
-                        String imageUrl = doc.getString("imageUrl"); // Make sure this is stored as String
+                        String imageUrl = doc.getString("imageUrl");
                         double smallPrice = doc.getDouble("smallPrice") != null ? doc.getDouble("smallPrice") : 0.0;
-                        double largePrice = doc.getDouble("largePrice") != null ? doc.getDouble("largePrice") : smallPrice;
+                        double largePrice = doc.getDouble("largePrice") != null ? doc.getDouble("largePrice") : 0.0;
                         float rating = doc.getDouble("rating") != null ? doc.getDouble("rating").floatValue() : 0f;
 
                         FoodItem item = new FoodItem(
@@ -119,7 +118,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
                                 description != null ? description : "",
                                 imageUrl != null ? imageUrl : "",
                                 rating,
-                                restaurant != null ? restaurant : "",
+                                "",
                                 smallPrice,
                                 largePrice
                         );
