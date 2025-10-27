@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import com.farah.foodapp.cart.CartManager;
 import com.farah.foodapp.comments.CommentsDialog;
 import com.farah.foodapp.menu.RestaurantDetailsActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.media3.common.MediaItem;
@@ -78,6 +80,7 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
         player.prepare();
         player.pause();
 
+<<<<<<< Updated upstream
         holder.playerView.setOnTouchListener((v, event) -> {
             if (holder.playerView.getPlayer() == null) return false;
             switch (event.getAction()) {
@@ -90,6 +93,19 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
                     return true;
             }
             return false;
+=======
+        holder.playerView.setOnClickListener(v -> {
+            if (player.isPlaying()) {
+                player.pause();
+                holder.ivPlayPause.setImageResource(R.drawable.ic_play);
+                holder.ivPlayPause.setVisibility(View.VISIBLE);
+            } else {
+                player.play();
+                holder.ivPlayPause.setImageResource(R.drawable.ic_pause);
+                holder.ivPlayPause.setVisibility(View.VISIBLE);
+            }
+            holder.ivPlayPause.postDelayed(() -> holder.ivPlayPause.setVisibility(View.GONE), 800);
+>>>>>>> Stashed changes
         });
 
         holder.tvTitle.setText(reel.getTitle());
@@ -144,6 +160,7 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
         });
 
         holder.btnOrder.setOnClickListener(v -> {
+<<<<<<< Updated upstream
             CartManager.addItem(
                     reel.getTitle(),
                     reel.getRestaurant(),
@@ -155,6 +172,35 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
             if (context instanceof ReelsActivity) {
                 ((ReelsActivity) context).updateCartBadge();
             }
+=======
+            db.collection("restaurants")
+                    .document(reel.getRestaurantId())
+                    .collection("menu")
+                    .whereEqualTo("name", reel.getTitle())
+                    .get()
+                    .addOnSuccessListener(querySnapshot -> {
+                        if (!querySnapshot.isEmpty()) {
+                            DocumentSnapshot doc = querySnapshot.getDocuments().get(0);
+                            String name = doc.getString("name");
+                            double price = doc.getDouble("price");
+                            String imageUrl = doc.getString("imageUrl");
+                            CartManager.addItem(
+                                    name,
+                                    reel.getRestaurant(),
+                                    "Regular",
+                                    price,
+                                    imageUrl
+                            );
+                            Toast.makeText(context, name + " added to cart!", Toast.LENGTH_SHORT).show();
+                            if (context instanceof ReelsActivity) {
+                                ((ReelsActivity) context).updateCartBadge();
+                            }
+                        } else {
+                            Toast.makeText(context, "Item not found in menu!", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+>>>>>>> Stashed changes
         });
     }
 
@@ -177,6 +223,7 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
         TextView tvTitle, tvRestaurant, tvLikeCount, tvCommentCount;
         ImageButton btnLike, btnComment, btnShare;
         Button btnOrder;
+        ImageView ivPlayPause;
 
         public ReelViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -189,6 +236,7 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
             btnComment = itemView.findViewById(R.id.btnComment);
             btnShare = itemView.findViewById(R.id.btnShare);
             btnOrder = itemView.findViewById(R.id.btnOrder);
+            ivPlayPause = itemView.findViewById(R.id.ivPlayPause);
         }
     }
 }

@@ -8,6 +8,15 @@ public class CartItem {
     private int quantity;
     private String imageUrl;
 
+    public CartItem(String name, double price, String imageUrl) {
+        this.name = name;
+        this.restaurant = "";
+        this.size = "Regular";
+        this.price = price;
+        this.imageUrl = imageUrl;
+        this.quantity = 1;
+    }
+
     public CartItem(String name, String restaurant, String size, double price, String imageUrl) {
         this.name = name;
         this.restaurant = restaurant;
