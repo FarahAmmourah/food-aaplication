@@ -4,15 +4,24 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.webkit.WebChromeClient;
 import android.webkit.GeolocationPermissions;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MapPickActivity extends AppCompatActivity {
+
+    private WebView webView;
+    private ProgressBar progressBar;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -24,8 +33,20 @@ public class MapPickActivity extends AppCompatActivity {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
 
-        WebView webView = new WebView(this);
-        setContentView(webView);
+        FrameLayout rootLayout = new FrameLayout(this);
+        webView = new WebView(this);
+        progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyleLarge);
+
+        FrameLayout.LayoutParams progressParams = new FrameLayout.LayoutParams(
+                150, 150, Gravity.CENTER);
+        progressBar.setLayoutParams(progressParams);
+        progressBar.setIndeterminate(true);
+        progressBar.getIndeterminateDrawable().setColorFilter(
+                Color.parseColor("#9E090F"), android.graphics.PorterDuff.Mode.SRC_IN);
+
+        rootLayout.addView(webView);
+        rootLayout.addView(progressBar);
+        setContentView(rootLayout);
 
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
@@ -39,6 +60,20 @@ public class MapPickActivity extends AppCompatActivity {
         });
 
         webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageStarted(WebView view, String url, android.graphics.Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                progressBar.setVisibility(View.VISIBLE);
+                webView.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                progressBar.setVisibility(View.GONE);
+                webView.setVisibility(View.VISIBLE);
+            }
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (url.startsWith("myapp://pick-location")) {
@@ -62,5 +97,13 @@ public class MapPickActivity extends AppCompatActivity {
         String baseUrl = getString(R.string.map_url);
         String mapUrl = baseUrl + "/select-location/";
         webView.loadUrl(mapUrl);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (webView != null) webView.reload();
+        }
     }
 }
