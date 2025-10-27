@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -16,6 +15,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.media3.common.MediaItem;
+import androidx.media3.exoplayer.ExoPlayer;
+import androidx.media3.ui.PlayerView;
 
 import com.farah.foodapp.R;
 import com.farah.foodapp.cart.CartManager;
@@ -25,18 +27,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import androidx.media3.common.MediaItem;
-import androidx.media3.exoplayer.ExoPlayer;
-import androidx.media3.ui.PlayerView;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHolder> {
 
-    private Context context;
-    private List<ReelItem> reelList;
+    private final Context context;
+    private final List<ReelItem> reelList;
 
     public ReelsAdapter(Context context, List<ReelItem> reelList) {
         this.context = context;
@@ -53,10 +51,10 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
     @Override
     public void onBindViewHolder(@NonNull ReelViewHolder holder, int position) {
         ReelItem reel = reelList.get(position);
-
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        // Check if reel is in favorites
         db.collection("users").document(uid)
                 .collection("favorites")
                 .document(reel.getReelId())
@@ -71,29 +69,16 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
                     }
                 });
 
+        // Setup ExoPlayer
         ExoPlayer player = new ExoPlayer.Builder(context).build();
         holder.playerView.setPlayer(player);
-
         MediaItem mediaItem = MediaItem.fromUri(Uri.parse(reel.getVideoUrl()));
         player.setMediaItem(mediaItem);
         player.setRepeatMode(ExoPlayer.REPEAT_MODE_ONE);
         player.prepare();
         player.pause();
 
-<<<<<<< Updated upstream
-        holder.playerView.setOnTouchListener((v, event) -> {
-            if (holder.playerView.getPlayer() == null) return false;
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    holder.playerView.getPlayer().pause();
-                    return true;
-                case MotionEvent.ACTION_UP:
-                case MotionEvent.ACTION_CANCEL:
-                    holder.playerView.getPlayer().play();
-                    return true;
-            }
-            return false;
-=======
+        // Play/pause on click
         holder.playerView.setOnClickListener(v -> {
             if (player.isPlaying()) {
                 player.pause();
@@ -105,21 +90,23 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
                 holder.ivPlayPause.setVisibility(View.VISIBLE);
             }
             holder.ivPlayPause.postDelayed(() -> holder.ivPlayPause.setVisibility(View.GONE), 800);
->>>>>>> Stashed changes
         });
 
+        // Set text values
         holder.tvTitle.setText(reel.getTitle());
         holder.tvRestaurant.setText(reel.getRestaurant());
         holder.btnOrder.setText("ORDER NOW - $" + reel.getPrice());
         holder.tvLikeCount.setText(String.valueOf(reel.getLikesCount()));
         holder.tvCommentCount.setText(String.valueOf(reel.getCommentsCount()));
 
+        // Open restaurant details
         holder.tvRestaurant.setOnClickListener(v -> {
             Intent intent = new Intent(context, RestaurantDetailsActivity.class);
             intent.putExtra("restaurantId", reel.getRestaurantId());
             context.startActivity(intent);
         });
 
+        // Like button
         holder.btnLike.setOnClickListener(v -> {
             if (uid == null) return;
 
@@ -147,11 +134,13 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
             holder.tvLikeCount.setText(String.valueOf(reel.getLikesCount()));
         });
 
+        // Comments
         holder.btnComment.setOnClickListener(v -> {
             CommentsDialog dialog = new CommentsDialog(context, reel.getComments(), reel, (ReelsActivity) context);
             dialog.show();
         });
 
+        // Share
         holder.btnShare.setOnClickListener(v -> {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
@@ -159,20 +148,8 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
             context.startActivity(Intent.createChooser(shareIntent, "Share Reel via"));
         });
 
+        // Order button
         holder.btnOrder.setOnClickListener(v -> {
-<<<<<<< Updated upstream
-            CartManager.addItem(
-                    reel.getTitle(),
-                    reel.getRestaurant(),
-                    "Regular",
-                    reel.getPrice(),
-                    reel.getImageUrl()
-            );
-            Toast.makeText(context, reel.getTitle() + " added to cart!", Toast.LENGTH_SHORT).show();
-            if (context instanceof ReelsActivity) {
-                ((ReelsActivity) context).updateCartBadge();
-            }
-=======
             db.collection("restaurants")
                     .document(reel.getRestaurantId())
                     .collection("menu")
@@ -199,8 +176,8 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
                             Toast.makeText(context, "Item not found in menu!", Toast.LENGTH_SHORT).show();
                         }
                     })
-                    .addOnFailureListener(e -> Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
->>>>>>> Stashed changes
+                    .addOnFailureListener(e ->
+                            Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         });
     }
 
