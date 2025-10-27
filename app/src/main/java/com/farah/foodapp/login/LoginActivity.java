@@ -85,16 +85,15 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        // اقرأ الدور المختار من الراديو
         int selectedId = rgRole.getCheckedRadioButtonId();
-        final String selectedRole;  // <-- final عشان نقدر نستخدمه جوة lambda
+        final String selectedRole;
 
         if (selectedId == R.id.rbCustomer) {
             selectedRole = "customer";
         } else if (selectedId == R.id.rbAdmin) {
             selectedRole = "admin";
         } else {
-            selectedRole = ""; // لو ما اختار ولا وحدة
+            selectedRole = "";
         }
 
         auth.signInWithEmailAndPassword(email, password)
