@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Restaurant Analytics"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/primary"
+            android:layout_marginBottom="20dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                layout="@layout/item_stat_card"
+                android:id="@+id/card_total_revenue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp" />
+
+            <include
+                layout="@layout/item_stat_card"
+                android:id="@+id/card_total_customers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp" />
+
+            <include
+                layout="@layout/item_stat_card"
+                android:id="@+id/card_avg_rating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Monthly Orders"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/foreground"
+            android:layout_marginBottom="8dp" />
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barChartOrders"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="@drawable/card_bg"
+            android:padding="12dp"
+            android:layout_marginBottom="20dp" />
+        <TextView
+            android:id="@+id/tv_prediction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Next Month (Predicted): --"
+            android:textColor="@color/primary"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:background="@drawable/card_bg"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center_horizontal"/>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Orders by Category"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/foreground"
+            android:layout_marginBottom="8dp" />
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pieChartCategories"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="@drawable/card_bg"
+            android:padding="12dp" />
+    </LinearLayout>
+</ScrollView>

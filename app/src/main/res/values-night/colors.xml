@@ -26,6 +26,6 @@
 
     <color name="destructive">#CF6679</color>
     <color name="destructiveForeground">#000000</color>
-
+    <color name="blue">#64B5F6</color>
     <color name="primary_light">#B71C1C</color>
 </resources>

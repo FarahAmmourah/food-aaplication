@@ -114,7 +114,6 @@ public class ProfileActivity extends AppCompatActivity {
                             tvAvatar.setText(String.valueOf(name.charAt(0)).toUpperCase());
                         }
 
-                        // 🔹 Now load total orders for this customer
                         loadTotalOrders(uid);
                     }
                 });

@@ -70,225 +70,35 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="16dp">
+                app:tabGravity="fill"
+                app:tabMode="fixed"
+                app:tabIndicatorColor="@color/accent"
+                app:tabIndicatorHeight="4dp"
+                app:tabSelectedTextColor="@color/primary"
+                app:tabTextColor="@color/accentForeground"
+                android:layout_marginTop="12dp">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="110dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:background="@drawable/card_bg"
-                    android:layout_marginEnd="10dp">
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Profile" />
 
-                    <TextView
-                        android:id="@+id/tv_total_orders"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textColor="@color/primary"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Stats" />
+            </com.google.android.material.tabs.TabLayout>
 
-                    <TextView
-                        android:id="@+id/tv_no_orders"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="No orders yet"
-                        android:visibility="gone"
-                        android:textColor="@color/primary"
-                        android:textSize="16sp"/>
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Total Orders"
-                        android:textSize="16sp"
-                        android:textColor="@color/foreground" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="110dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:background="@drawable/card_bg"
-                    android:layout_marginStart="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Favorite"
-                        android:textSize="18sp"
-                        android:textColor="@color/primary"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Mario's Pizzeria"
-                        android:textSize="16sp"
-                        android:textColor="@color/foreground" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <LinearLayout
-                    android:id="@+id/layout_order_history"
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/card_bg"
-                    android:layout_marginBottom="20dp"
-                    android:padding="16dp"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:src="@drawable/ic_history"
-                        android:tint="@color/primary"
-                        android:layout_marginEnd="16dp"
-                        tools:ignore="UseAppTint" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Order History"
-                            android:textSize="18sp"
-                            android:textColor="@color/foreground" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/arrow_forward"
-                        android:tint="@color/mutedForeground"
-                        tools:ignore="UseAppTint" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout_specials"
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/card_bg"
-                    android:layout_marginBottom="20dp"
-                    android:padding="16dp">
-
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:src="@drawable/ic_specials"
-                        android:tint="@color/primary"
-                        android:layout_marginEnd="16dp"
-                        tools:ignore="UseAppTint" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Specials"
-                        android:textSize="18sp"
-                        android:textColor="@color/foreground" />
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/arrow_forward"
-                        android:tint="@color/mutedForeground"
-                        tools:ignore="UseAppTint" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/card_bg"
-                    android:layout_marginBottom="20dp"
-                    android:padding="16dp">
-
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:src="@drawable/ic_address"
-                        android:tint="@color/primary"
-                        android:layout_marginEnd="16dp"
-                        tools:ignore="UseAppTint" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Location and Branches"
-                        android:textSize="18sp"
-                        android:textColor="@color/foreground" />
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/arrow_forward"
-                        android:tint="@color/mutedForeground"
-                        tools:ignore="UseAppTint" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout_settings"
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/card_bg"
-                    android:layout_marginBottom="20dp"
-                    android:padding="16dp"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:src="@drawable/ic_settings"
-                        android:tint="@color/primary"
-                        android:layout_marginEnd="16dp"
-                        tools:ignore="UseAppTint" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Settings"
-                        android:textSize="18sp"
-                        android:textColor="@color/foreground" />
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/arrow_forward"
-                        android:tint="@color/mutedForeground"
-                        tools:ignore="UseAppTint" />
-                </LinearLayout>
-            </LinearLayout>
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/background" />
         </LinearLayout>
     </ScrollView>
 

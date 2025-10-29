@@ -141,23 +141,51 @@ public class MyReelsFragment extends Fragment {
 
     private void saveReelToFirestore(String title, String description, String videoUrl) {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        FirebaseFirestore.getInstance()
-                .collection("restaurants")
+        db.collection("restaurants")
                 .document(uid)
-                .collection("reels")
-                .add(new HashMap<String, Object>() {{
-                    put("title", title);
-                    put("description", description);
-                    put("videoUrl", videoUrl);
-                    put("createdAt", System.currentTimeMillis());
-                }})
-                .addOnSuccessListener(docRef -> {
-                    Toast.makeText(getContext(), "Reel Saved ✅", Toast.LENGTH_SHORT).show();
-                    loadReelsFromFirestore();
+                .get()
+                .addOnSuccessListener(doc -> {
+                    if (doc.exists()) {
+                        String restaurantName = doc.getString("name");
+                        String restaurantImage = doc.getString("imageUrl"); // optional
+
+                        if (restaurantName == null || restaurantName.isEmpty()) {
+                            Toast.makeText(getContext(), "Restaurant name not found", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        HashMap<String, Object> reelData = new HashMap<>();
+                        reelData.put("title", title);
+                        reelData.put("description", description);
+                        reelData.put("videoUrl", videoUrl);
+                        reelData.put("restaurantId", uid);
+                        reelData.put("restaurant", restaurantName);
+                        reelData.put("likesCount", 0);
+                        reelData.put("commentsCount", 0);
+                        reelData.put("price", 0.0);
+                        reelData.put("comments", new ArrayList<String>());
+                        reelData.put("imageUrl", restaurantImage != null ? restaurantImage : "");
+                        reelData.put("createdAt", System.currentTimeMillis());
+
+                        db.collection("restaurants")
+                                .document(uid)
+                                .collection("reels")
+                                .add(reelData)
+                                .addOnSuccessListener(docRef -> {
+                                    Toast.makeText(getContext(), "Reel Saved ✅", Toast.LENGTH_SHORT).show();
+                                    loadReelsFromFirestore();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(getContext(), "Error saving reel: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                });
+                    } else {
+                        Toast.makeText(getContext(), "Restaurant profile not found", Toast.LENGTH_SHORT).show();
+                    }
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error fetching restaurant: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 

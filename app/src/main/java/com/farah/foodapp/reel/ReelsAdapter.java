@@ -55,7 +55,6 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        // Check if reel is in favorites
         db.collection("users").document(uid)
                 .collection("favorites")
                 .document(reel.getReelId())
@@ -70,7 +69,6 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
                     }
                 });
 
-        // Setup ExoPlayer
         ExoPlayer player = new ExoPlayer.Builder(context).build();
         holder.playerView.setPlayer(player);
         MediaItem mediaItem = MediaItem.fromUri(Uri.parse(reel.getVideoUrl()));
@@ -79,10 +77,6 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
         player.prepare();
         player.pause();
 
-<<<<<<< Updated upstream
-        // Play/pause on click
-=======
->>>>>>> Stashed changes
         holder.playerView.setOnClickListener(v -> {
             if (player.isPlaying()) {
                 player.pause();
@@ -96,21 +90,18 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
             holder.ivPlayPause.postDelayed(() -> holder.ivPlayPause.setVisibility(View.GONE), 800);
         });
 
-        // Set text values
         holder.tvTitle.setText(reel.getTitle());
         holder.tvRestaurant.setText(reel.getRestaurant());
         holder.btnOrder.setText("ORDER NOW");
         holder.tvLikeCount.setText(String.valueOf(reel.getLikesCount()));
         holder.tvCommentCount.setText(String.valueOf(reel.getCommentsCount()));
 
-        // Open restaurant details
         holder.tvRestaurant.setOnClickListener(v -> {
             Intent intent = new Intent(context, RestaurantDetailsActivity.class);
             intent.putExtra("restaurantId", reel.getRestaurantId());
             context.startActivity(intent);
         });
 
-        // Like button
         holder.btnLike.setOnClickListener(v -> {
             if (uid == null) return;
 
@@ -138,13 +129,11 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
             holder.tvLikeCount.setText(String.valueOf(reel.getLikesCount()));
         });
 
-        // Comments
         holder.btnComment.setOnClickListener(v -> {
             CommentsDialog dialog = new CommentsDialog(context, reel.getComments(), reel, (ReelsActivity) context);
             dialog.show();
         });
 
-        // Share
         holder.btnShare.setOnClickListener(v -> {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
@@ -152,7 +141,6 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
             context.startActivity(Intent.createChooser(shareIntent, "Share Reel via"));
         });
 
-        // Order button
         holder.btnOrder.setOnClickListener(v -> {
             db.collection("restaurants")
                     .document(reel.getRestaurantId())

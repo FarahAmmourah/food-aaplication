@@ -23,7 +23,7 @@
     <color name="green">#43A047</color>
     <color name="red2">#E53935</color>
     <color name="black">#000000</color>
-
+    <color name="blue">#2196F3</color>
     <color name="darker_gray">#AAAAAA</color>
 
 </resources>

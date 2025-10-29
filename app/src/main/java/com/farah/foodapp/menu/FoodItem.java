@@ -9,7 +9,6 @@ public class FoodItem {
     private double smallPrice;
     private double largePrice;
 
-    // Full constructor
     public FoodItem(String name, String description, String imageUrl, float rating,
                     String restaurantName, double smallPrice, double largePrice) {
         this.name = name;
@@ -21,10 +20,8 @@ public class FoodItem {
         this.largePrice = largePrice;
     }
 
-    // Empty constructor for Firestore
     public FoodItem() {}
 
-    // Getters and setters
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 

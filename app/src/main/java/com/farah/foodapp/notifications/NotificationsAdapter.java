@@ -37,7 +37,6 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
         holder.tvTitle.setText(notification.getTitle());
         holder.tvMessage.setText(notification.getMessage());
 
-        // Format timestamp into readable date/time
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMM, hh:mm a", Locale.getDefault());
         String formattedDate = sdf.format(new Date(notification.getTimestamp()));
         holder.tvTime.setText(formattedDate);

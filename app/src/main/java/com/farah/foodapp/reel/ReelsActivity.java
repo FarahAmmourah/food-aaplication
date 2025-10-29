@@ -151,22 +151,30 @@ public class ReelsActivity extends AppCompatActivity {
 
     private void loadReelsFromFirestore() {
         FirebaseFirestore.getInstance()
-                .collection("reels")
+                .collectionGroup("reels")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     reelList.clear();
+
                     for (DocumentSnapshot doc : queryDocumentSnapshots) {
                         try {
                             String videoUrl = doc.getString("videoUrl");
                             String title = doc.getString("title");
                             String restaurant = doc.getString("restaurant");
-                            int likes = doc.getLong("likesCount").intValue();
-                            int commentsCount = doc.getLong("commentsCount").intValue();
-                            double price = doc.getDouble("price");
-                            List<String> comments = (List<String>) doc.get("comments");
                             String restaurantId = doc.getString("restaurantId");
-                            String reelId = doc.getId();
                             String imageUrl = doc.getString("imageUrl");
+
+                            Long likesVal = doc.getLong("likesCount");
+                            int likes = likesVal != null ? likesVal.intValue() : 0;
+
+                            Long commentsVal = doc.getLong("commentsCount");
+                            int commentsCount = commentsVal != null ? commentsVal.intValue() : 0;
+
+                            Double priceVal = doc.getDouble("price");
+                            double price = priceVal != null ? priceVal : 0.0;
+
+                            List<String> comments = (List<String>) doc.get("comments");
+                            if (comments == null) comments = new ArrayList<>();
 
                             reelList.add(new ReelItem(
                                     videoUrl,
@@ -177,19 +185,22 @@ public class ReelsActivity extends AppCompatActivity {
                                     comments,
                                     price,
                                     restaurantId,
-                                    reelId,
+                                    doc.getId(),
                                     imageUrl
                             ));
                         } catch (Exception e) {
                             Log.e("Firestore", "Error parsing document", e);
                         }
                     }
+
                     reelsAdapter.notifyDataSetChanged();
 
                     viewPagerReels.post(() -> {
                         viewPagerReels.setCurrentItem(lastPosition, false);
                         playOnlyCurrent(lastPosition);
                     });
+
+                    Log.d("Firestore", "Loaded reels count: " + reelList.size());
                 })
                 .addOnFailureListener(e -> Log.e("Firestore", "Failed to load reels", e));
     }
