@@ -1,6 +1,7 @@
 package com.farah.foodapp.menu;
 
 public class FoodItem {
+    private String id;
     private String name;
     private String description;
     private String imageUrl;
@@ -9,6 +10,7 @@ public class FoodItem {
     private double smallPrice;
     private double largePrice;
 
+    // Full constructor
     public FoodItem(String name, String description, String imageUrl, float rating,
                     String restaurantName, double smallPrice, double largePrice) {
         this.name = name;
@@ -20,8 +22,11 @@ public class FoodItem {
         this.largePrice = largePrice;
     }
 
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
     public FoodItem() {}
 
+    // Getters and setters
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 

@@ -2,7 +2,8 @@ package com.farah.foodapp.menu;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageView;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,8 +36,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_details);
 
-        ImageView btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(v -> finish());
+        ImageButton btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(v -> onBackPressed());
 
         tvRestaurantName = findViewById(R.id.tvRestaurantName);
         tvAddress = findViewById(R.id.tvAddress);
@@ -53,6 +54,13 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
         if (restaurantId != null) {
             loadRestaurantDetails(restaurantId);
             loadMenuItems(restaurantId);
+
+            Button btnShowChart = findViewById(R.id.btnShowChart);
+            btnShowChart.setOnClickListener(v -> {
+                Intent intent = new Intent(this, RatingsChartActivity.class);
+                intent.putExtra("restaurantId", restaurantId);
+                startActivity(intent);
+            });
         } else {
             Toast.makeText(this, "No restaurant found!", Toast.LENGTH_SHORT).show();
         }
@@ -123,6 +131,7 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
                                 largePrice
                         );
 
+                        item.setId(doc.getId());
                         menuList.add(item);
                     }
                     adapter.notifyDataSetChanged();

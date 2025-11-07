@@ -8,6 +8,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReelsActivity extends AppCompatActivity {
+
     private ViewPager2 viewPagerReels;
     private ReelsAdapter reelsAdapter;
     private List<ReelItem> reelList = new ArrayList<>();
@@ -40,9 +42,9 @@ public class ReelsActivity extends AppCompatActivity {
         viewPagerReels = findViewById(R.id.viewPagerReels);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        bottomNavigationView.setBackgroundColor(getResources().getColor(R.color.primary));
-        bottomNavigationView.setItemIconTintList(getResources().getColorStateList(R.color.primaryForeground));
-        bottomNavigationView.setItemTextColor(getResources().getColorStateList(R.color.primaryForeground));
+        bottomNavigationView.setBackgroundColor(ContextCompat.getColor(this, R.color.primary));
+        bottomNavigationView.setItemIconTintList(ContextCompat.getColorStateList(this, R.color.primaryForeground));
+        bottomNavigationView.setItemTextColor(ContextCompat.getColorStateList(this, R.color.primaryForeground));
 
         reelsAdapter = new ReelsAdapter(this, reelList);
         viewPagerReels.setAdapter(reelsAdapter);
@@ -111,28 +113,6 @@ public class ReelsActivity extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        pauseAllVideos();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        pauseAllVideos();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        viewPagerReels.postDelayed(() -> {
-            viewPagerReels.setCurrentItem(lastPosition, false);
-            playOnlyCurrent(lastPosition);
-        }, 250);
     }
 
     private void pauseAllVideos() {
@@ -213,5 +193,26 @@ public class ReelsActivity extends AppCompatActivity {
         } else {
             bottomNav.removeBadge(R.id.nav_cart);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        pauseAllVideos();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        pauseAllVideos();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        viewPagerReels.postDelayed(() -> {
+            viewPagerReels.setCurrentItem(lastPosition, false);
+            playOnlyCurrent(lastPosition);
+        }, 250);
     }
 }

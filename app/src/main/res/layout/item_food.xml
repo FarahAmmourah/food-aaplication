@@ -19,7 +19,6 @@
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_background"
             android:layout_marginEnd="12dp" />
 
         <LinearLayout
@@ -28,6 +27,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
+            <!-- السطر العلوي: الاسم يسار، الزر يمين -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -44,19 +44,22 @@
                     android:textSize="16sp"
                     android:textColor="#000000" />
 
-                <TextView
-                    android:id="@+id/tvRating"
+                <Button
+                    android:id="@+id/btnRate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="★ 4.8"
-                    android:textColor="#F39C12"
-                    android:textSize="14sp"
-                    android:paddingStart="4dp" />
+                    android:text="Rate ★ 4.8"
+                    android:textSize="12sp"
+                    android:backgroundTint="@color/primary"
+                    android:textColor="@android:color/white"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="3dp"
+                    android:layout_marginStart="6dp" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/tvFoodDesc"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Fresh mozzarella, tomato sauce, basil"
                 android:textSize="14sp"
@@ -65,13 +68,13 @@
 
             <TextView
                 android:id="@+id/tvRestaurantName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Restaurant name"
                 android:textColor="@color/gray"
                 android:textStyle="italic"
-                android:textSize="14sp"
-                android:layout_marginTop="4dp"
-                android:text="Restaurant name" />
+                android:textSize="13sp"
+                android:layout_marginTop="4dp" />
 
         </LinearLayout>
     </LinearLayout>

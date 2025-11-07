@@ -2,49 +2,76 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
-    <ImageView
+
+    <ImageButton
         android:id="@+id/btnBack"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="12dp"
-        android:src="@android:drawable/ic_menu_revert"
+        android:src="@drawable/ic_arrow_back"
+        android:background="@android:color/transparent"
+        android:tint="@color/black"
         android:contentDescription="Back"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        app:tint="@android:color/holo_red_dark" />
+        android:layout_alignParentTop="true" />
+
 
     <LinearLayout
-        android:id="@+id/contentLayout"
-        android:orientation="vertical"
+        android:id="@+id/headerLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp"
-        android:layout_below="@id/btnBack"
-        android:layout_above="@id/bottomNavigationView">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_toEndOf="@id/btnBack"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="56dp"
+        android:layout_alignParentTop="true">
 
         <TextView
             android:id="@+id/tvRestaurantName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Restaurant Name"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:paddingBottom="8dp"/>
+            android:textColor="@color/black" />
 
-        <TextView
-            android:id="@+id/tvAddress"
+        <Button
+            android:id="@+id/btnShowChart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Address here"
-            android:paddingBottom="8dp"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewMenu"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:text="Ratings Chart"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/primary"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="6dp" />
     </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tvAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Address here"
+        android:layout_below="@id/headerLayout"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/black" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewMenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tvAddress"
+        android:layout_above="@id/bottomNavigationView"
+        android:layout_marginTop="8dp" />
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"

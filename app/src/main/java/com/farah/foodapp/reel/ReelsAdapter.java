@@ -77,6 +77,7 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
         player.prepare();
         player.pause();
 
+
         holder.playerView.setOnClickListener(v -> {
             if (player.isPlaying()) {
                 player.pause();
