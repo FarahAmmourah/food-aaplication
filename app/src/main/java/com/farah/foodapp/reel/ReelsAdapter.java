@@ -155,7 +155,7 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
                             Double smallPrice = doc.getDouble("smallPrice");
                             Double largePrice = doc.getDouble("largePrice");
                             String imageUrl = doc.getString("imageUrl");
-
+                            String restaurantId = doc.getString("restaurantId");
                             if (smallPrice == null) smallPrice = 0.0;
                             if (largePrice == null) largePrice = smallPrice;
 
@@ -163,7 +163,6 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
                             String finalImageUrl = imageUrl;
                             Double finalSmallPrice = smallPrice;
                             Double finalLargePrice = largePrice;
-
                             View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_choose_size, null);
                             AlertDialog dialog = new AlertDialog.Builder(context)
                                     .setView(dialogView)
@@ -179,7 +178,7 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
                             btnLarge.setText("Large - $" + finalLargePrice);
 
                             btnSmall.setOnClickListener(v1 -> {
-                                CartManager.addItem(finalName, reel.getRestaurant(), "Small", finalSmallPrice, finalImageUrl);
+                                CartManager.addItem(finalName, reel.getRestaurant(), "Small", finalSmallPrice, finalImageUrl, reel.getRestaurantId() );
                                 Toast.makeText(context, finalName + " (Small) added to cart!", Toast.LENGTH_SHORT).show();
                                 if (context instanceof ReelsActivity) {
                                     ((ReelsActivity) context).updateCartBadge();
@@ -188,7 +187,7 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
                             });
 
                             btnLarge.setOnClickListener(v2 -> {
-                                CartManager.addItem(finalName, reel.getRestaurant(), "Large", finalLargePrice, finalImageUrl);
+                                CartManager.addItem(finalName, reel.getRestaurant(), "Large", finalLargePrice, finalImageUrl, reel.getRestaurantId());
                                 Toast.makeText(context, finalName + " (Large) added to cart!", Toast.LENGTH_SHORT).show();
                                 if (context instanceof ReelsActivity) {
                                     ((ReelsActivity) context).updateCartBadge();

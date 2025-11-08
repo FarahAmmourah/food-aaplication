@@ -6,7 +6,8 @@
         <item name="colorOnSecondary">@color/secondaryForeground</item>
         <item name="android:windowBackground">@color/background</item>
         <item name="android:textColor">@color/foreground</item>
-
+        <item name="android:fontFamily">@font/poppins_medium</item>
+        <item name="fontFamily">@font/poppins_medium</item>
         <item name="materialButtonStyle">@style/Widget.FoodApp.Button</item>
     </style>
 

@@ -7,6 +7,8 @@ public class CartItem {
     private double price;
     private int quantity;
     private String imageUrl;
+    private String restaurantId;
+
 
     public CartItem(String name, double price, String imageUrl) {
         this.name = name;
@@ -35,4 +37,12 @@ public class CartItem {
 
     public void increaseQuantity() { this.quantity++; }
     public void decreaseQuantity() { if (this.quantity > 0) this.quantity--; }
+
+    public String getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
+    }
 }

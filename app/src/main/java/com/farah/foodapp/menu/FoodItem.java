@@ -9,8 +9,9 @@ public class FoodItem {
     private String restaurantName;
     private double smallPrice;
     private double largePrice;
+    private String restaurantId;
 
-    // Full constructor
+
     public FoodItem(String name, String description, String imageUrl, float rating,
                     String restaurantName, double smallPrice, double largePrice) {
         this.name = name;
@@ -26,7 +27,6 @@ public class FoodItem {
     public void setId(String id) { this.id = id; }
     public FoodItem() {}
 
-    // Getters and setters
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
@@ -47,4 +47,11 @@ public class FoodItem {
 
     public double getLargePrice() { return largePrice; }
     public void setLargePrice(double largePrice) { this.largePrice = largePrice; }
+    public String getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
+    }
 }

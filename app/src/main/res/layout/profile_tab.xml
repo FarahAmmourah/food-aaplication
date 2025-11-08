@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:fillViewport="true"
-    tools:context=".admin.admin_profile.AdminProfileTabFragment">
+    tools:context="profile.ProfileTabFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,19 +31,10 @@
                     android:id="@+id/tv_total_orders"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textColor="@color/primary"
+                    android:text="24"
                     android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_no_orders"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="No orders yet"
-                    android:visibility="gone"
                     android:textColor="@color/primary"
-                    android:textSize="16sp" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -116,7 +107,8 @@
                         android:layout_height="wrap_content"
                         android:text="Order History"
                         android:textSize="18sp"
-                        android:textColor="@color/foreground" />
+                        android:textColor="@color/foreground"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <ImageView
@@ -128,7 +120,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/layout_specials"
+                android:id="@+id/layout_favorites"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:orientation="horizontal"
@@ -142,7 +134,7 @@
                 <ImageView
                     android:layout_width="28dp"
                     android:layout_height="28dp"
-                    android:src="@drawable/ic_specials"
+                    android:src="@drawable/ic_favorite"
                     android:tint="@color/primary"
                     android:layout_marginEnd="16dp"
                     tools:ignore="UseAppTint" />
@@ -151,40 +143,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Specials"
-                    android:textSize="18sp"
-                    android:textColor="@color/foreground" />
-
-                <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:src="@drawable/arrow_forward"
-                    android:tint="@color/mutedForeground"
-                    tools:ignore="UseAppTint" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:background="@drawable/card_bg"
-                android:layout_marginBottom="20dp"
-                android:padding="16dp">
-
-                <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:src="@drawable/ic_address"
-                    android:tint="@color/primary"
-                    android:layout_marginEnd="16dp"
-                    tools:ignore="UseAppTint" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Location and Branches"
+                    android:text="Favorites"
                     android:textSize="18sp"
                     android:textColor="@color/foreground" />
 

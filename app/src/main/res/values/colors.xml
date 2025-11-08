@@ -27,4 +27,7 @@
     <color name="blue">#2196F3</color>
     <color name="darker_gray">#AAAAAA</color>
 
+    <color name="tab_text_selected">#FFFFFF</color>
+    <color name="tab_text_unselected">#555555</color>
+
 </resources>

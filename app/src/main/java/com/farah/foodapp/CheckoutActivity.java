@@ -1,11 +1,7 @@
 package com.farah.foodapp;
 
 import android.annotation.SuppressLint;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -14,10 +10,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 
 import com.farah.foodapp.cards.AddCardDialog;
 import com.farah.foodapp.cards.CardStorage;
+import com.farah.foodapp.cart.CartItem;
 import com.farah.foodapp.cart.CartManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,8 +27,6 @@ public class CheckoutActivity extends AppCompatActivity {
     private TextView tvSubtotal, tvDiscount, tvDeliveryFee, tvServiceFee, tvTotal, tvAddress;
     private RadioGroup rgPaymentMethod;
     private TextView btnAddCard;
-
-    private ListenerRegistration cardListener;
 
     private static final double DELIVERY_FEE = 3.00;
     private static final double SERVICE_FEE = 0.20;
@@ -183,16 +177,15 @@ public class CheckoutActivity extends AppCompatActivity {
         });
     }
 
-
     private void placeOrder() {
         int selectedId = rgPaymentMethod.getCheckedRadioButtonId();
         RadioButton selectedRadio = findViewById(selectedId);
-        if (selectedRadio != null && selectedRadio.getText().toString().equals("Cash"))
-            placeOrderWithStatus("cash", "pending");
-        else
+        placeOrderWithStatus("cash", "pending");
+        if (selectedRadio != null && !selectedRadio.getText().toString().equals("Cash")) {
             placeOrderWithStatus("stripe", "completed");
-    }
 
+        }
+    }
     private void placeOrderWithStatus(String paymentMethodId, String paymentStatus) {
         if (CartManager.getCartItems().isEmpty()) {
             Toast.makeText(this, "Your cart is empty!", Toast.LENGTH_SHORT).show();
@@ -205,11 +198,12 @@ public class CheckoutActivity extends AppCompatActivity {
         double subtotal = CartManager.getSubtotal();
         double total = subtotal - DISCOUNT + DELIVERY_FEE + SERVICE_FEE;
 
-        String restaurantName = !CartManager.getCartItems().isEmpty()
-                ? CartManager.getCartItems().get(0).getRestaurant() : "";
+        CartItem firstItem = CartManager.getCartItems().get(0);
+        String restaurantName = firstItem.getRestaurant();
+        String restaurantId = firstItem.getRestaurantId();
 
         ArrayList<String> itemsList = new ArrayList<>();
-        for (com.farah.foodapp.cart.CartItem item : CartManager.getCartItems()) {
+        for (CartItem item : CartManager.getCartItems()) {
             String desc = item.getQuantity() + "x " + item.getName()
                     + (item.getSize() != null ? " (" + item.getSize() + ")" : "")
                     + " - " + String.format("%.2f JOD", item.getPrice() * item.getQuantity());
@@ -218,6 +212,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
         HashMap<String, Object> orderData = new HashMap<>();
         orderData.put("userId", userId);
+        orderData.put("restaurantId", restaurantId);
         orderData.put("restaurantName", restaurantName);
         orderData.put("paymentMethod", paymentMethodId);
         orderData.put("paymentStatus", paymentStatus);
@@ -243,23 +238,8 @@ public class CheckoutActivity extends AppCompatActivity {
                     setResult(RESULT_OK, resultIntent);
                     finish();
                 })
-                .addOnFailureListener(e -> Toast.makeText(this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
-    private void showOrderNotification(String title, String message) {
-        String channelId = "order_channel";
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId, "Order Updates", NotificationManager.IMPORTANCE_DEFAULT);
-            manager.createNotificationChannel(channel);
-        }
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId)
-                .setSmallIcon(R.drawable.logo_app)
-                .setContentTitle(title)
-                .setContentText(message)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
-                .setAutoCancel(true);
-        manager.notify((int) System.currentTimeMillis(), builder.build());
-    }
 }

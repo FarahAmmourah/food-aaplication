@@ -10,7 +10,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_navigation"
+        android:layout_above="@id/bottomNavigationView"
         android:fillViewport="true">
 
         <LinearLayout
@@ -21,35 +21,35 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
-                android:orientation="horizontal"
+                android:background="@drawable/bg_header"
                 android:gravity="center_vertical"
-                android:padding="20dp"
-                android:background="@drawable/bg_header">
+                android:orientation="horizontal"
+                android:padding="20dp">
 
                 <TextView
                     android:id="@+id/tv_avatar"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
+                    android:background="@drawable/circle_avatar"
                     android:gravity="center"
                     android:text="F"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
                     android:textColor="@color/primaryForeground"
-                    android:background="@drawable/circle_avatar" />
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginStart="16dp">
+                    android:layout_marginStart="16dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tv_username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="foodie_user"
-                        android:textSize="20sp"
                         android:textColor="@color/primaryForeground"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -57,243 +57,71 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="user@foodreels.com"
-                        android:textSize="16sp"
-                        android:textColor="@color/primaryForeground" />
+                        android:textColor="@color/primaryForeground"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/tv_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0790000000"
-                        android:textSize="16sp"
-                        android:textColor="@color/primaryForeground" />
+                        android:textColor="@color/primaryForeground"
+                        android:textSize="16sp" />
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="16dp">
+                android:layout_height="48dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_tab_container"
+                android:clipToOutline="true"
+                android:elevation="3dp"
+                android:padding="4dp"
+                app:tabGravity="fill"
+                app:tabIndicator="@drawable/bg_tab_selected"
+                app:tabIndicatorGravity="stretch"
+                app:tabMode="fixed"
+                app:tabRippleColor="@android:color/transparent"
+                app:tabSelectedTextColor="@color/tab_text_selected"
+                app:tabTextAppearance="@style/TabTextStyle"
+                app:tabTextColor="@color/tab_text_unselected">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="110dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:background="@drawable/card_bg"
-                    android:layout_marginEnd="10dp">
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Profile" />
 
-                    <TextView
-                        android:id="@+id/tv_total_orders"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="24"
-                        android:textSize="24sp"
-                        android:textColor="@color/primary"
-                        android:textStyle="bold" />
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rewards" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Total Orders"
-                        android:textSize="16sp"
-                        android:textColor="@color/foreground" />
-                </LinearLayout>
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Available" />
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="110dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:background="@drawable/card_bg"
-                    android:layout_marginStart="10dp">
+            </com.google.android.material.tabs.TabLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Favorite"
-                        android:textSize="18sp"
-                        android:textColor="@color/primary"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Mario's Pizzeria"
-                        android:textSize="16sp"
-                        android:textColor="@color/foreground" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/background" />
 
-                <LinearLayout
-                    android:id="@+id/layout_order_history"
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/card_bg"
-                    android:layout_marginBottom="20dp"
-                    android:padding="16dp"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:src="@drawable/ic_history"
-                        android:tint="@color/primary"
-                        android:layout_marginEnd="16dp"
-                        tools:ignore="UseAppTint" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Order History"
-                            android:textSize="18sp"
-                            android:textColor="@color/foreground"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/arrow_forward"
-                        android:tint="@color/mutedForeground"
-                        tools:ignore="UseAppTint" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout_favorites"
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/card_bg"
-                    android:layout_marginBottom="20dp"
-                    android:padding="16dp"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:src="@drawable/ic_favorite"
-                        android:tint="@color/primary"
-                        android:layout_marginEnd="16dp"
-                        tools:ignore="UseAppTint" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Favorites"
-                        android:textSize="18sp"
-                        android:textColor="@color/foreground" />
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/arrow_forward"
-                        android:tint="@color/mutedForeground"
-                        tools:ignore="UseAppTint" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout_notifications"
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/card_bg"
-                    android:layout_marginBottom="20dp"
-                    android:padding="16dp">
-
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:src="@drawable/ic_notifications"
-                        android:tint="@color/primary"
-                        android:layout_marginEnd="16dp"
-                        tools:ignore="UseAppTint" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Notifications"
-                        android:textSize="18sp"
-                        android:textColor="@color/foreground" />
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/arrow_forward"
-                        android:tint="@color/mutedForeground"
-                        tools:ignore="UseAppTint" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout_settings"
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/card_bg"
-                    android:layout_marginBottom="20dp"
-                    android:padding="16dp"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:src="@drawable/ic_settings"
-                        android:tint="@color/primary"
-                        android:layout_marginEnd="16dp"
-                        tools:ignore="UseAppTint" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Settings"
-                        android:textSize="18sp"
-                        android:textColor="@color/foreground" />
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/arrow_forward"
-                        android:tint="@color/mutedForeground"
-                        tools:ignore="UseAppTint" />
-                </LinearLayout>
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
+        android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_nav_menu"
         android:background="@color/primary"
         app:itemIconTint="@color/primaryForeground"
-        app:itemTextColor="@color/primaryForeground" />
+        app:itemTextColor="@color/primaryForeground"
+        app:menu="@menu/bottom_nav_menu" />
 </RelativeLayout>

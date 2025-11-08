@@ -15,13 +15,13 @@ public class AdminProfilePagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         if (position == 0)
-            return new ProfileTabFragment();
+            return new AdminProfileTabFragment();
         else
             return new StatsTabFragment();
     }
 
     @Override
     public int getItemCount() {
-        return 2; // Profile + Stats
+        return 2;
     }
 }

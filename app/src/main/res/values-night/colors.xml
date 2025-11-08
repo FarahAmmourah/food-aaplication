@@ -1,6 +1,6 @@
 <resources>
-    <color name="primary">#E53935</color>
-    <color name="orange_app">#E53935</color>
+    <color name="primary">#9E090F</color>
+    <color name="orange_app">#9E090F</color>
     <color name="primaryForeground">#FFFFFF</color>
 
     <color name="secondary">#4E342E</color>

@@ -16,8 +16,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -46,18 +44,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (body == null) body = "No message body";
 
         showNotification(title, body);
-        saveNotificationToFirestore(title, body);
     }
 
     @Override
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
 
-        String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        FirebaseFirestore.getInstance()
-                .collection("users")
-                .document(userId)
-                .update("fcmToken", token);
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+            FirebaseFirestore.getInstance()
+                    .collection("users")
+                    .document(userId)
+                    .update("fcmToken", token);
+        }
     }
 
     private void showNotification(String title, String message) {
@@ -93,28 +92,4 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         notificationManager.notify((int) System.currentTimeMillis(), builder.build());
     }
-
-    private void saveNotificationToFirestore(String title, String message) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        String userId = null;
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        }
-
-        Map<String, Object> notification = new HashMap<>();
-        notification.put("title", title);
-        notification.put("message", message);
-        notification.put("timestamp", System.currentTimeMillis());
-        notification.put("userId", userId != null ? userId : "anonymous");
-
-        db.collection("notifications")
-                .add(notification)
-                .addOnSuccessListener(documentReference -> {
-                    android.util.Log.d("FCMService", "Notification saved to Firestore: " + documentReference.getId());
-                })
-                .addOnFailureListener(e -> {
-                    android.util.Log.e("FCMService", "Error saving notification", e);
-                });
-    }
-    }
+}

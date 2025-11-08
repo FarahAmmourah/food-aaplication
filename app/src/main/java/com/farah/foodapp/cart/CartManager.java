@@ -7,14 +7,17 @@ public class CartManager {
     private static final List<CartItem> cartItems = new ArrayList<>();
     private static final double DELIVERY_FEE = 3.0;
 
-    public static void addItem(String name, String restaurant, String size, double price, String imageUrl) {
+    public static void addItem(String name, String restaurant, String size, double price, String imageUrl, String restaurantId) {
         for (CartItem item : cartItems) {
-            if (item.getName().equals(name) && item.getSize().equals(size)) {
+            if (item.getName().equals(name) && item.getSize().equals(size) && item.getRestaurantId().equals(restaurantId)) {
                 item.increaseQuantity();
                 return;
             }
         }
-        cartItems.add(new CartItem(name, restaurant, size, price, imageUrl));
+
+        CartItem newItem = new CartItem(name, restaurant, size, price, imageUrl);
+        newItem.setRestaurantId(restaurantId);
+        cartItems.add(newItem);
     }
 
     public static List<CartItem> getCartItems() {

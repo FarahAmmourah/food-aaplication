@@ -1,42 +1,49 @@
 package com.farah.foodapp.profile;
 
-import static com.farah.foodapp.R.*;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.farah.foodapp.R;
 import com.farah.foodapp.cart.CartActivity;
 import com.farah.foodapp.menu.MenuActivity;
-import com.farah.foodapp.notifications.NotificationActivity;
 import com.farah.foodapp.reel.ReelsActivity;
-import com.farah.foodapp.orders.OrdersActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Objects;
+
 public class ProfileActivity extends AppCompatActivity {
 
-    BottomNavigationView bottomNavigationView;
-    LinearLayout layoutSettings, layoutOrderHistory;
-    TextView tvAvatar, tvUsername, tvEmail, tvPhone, tvTotalOrders;
+    private TextView tvAvatar, tvUsername, tvEmail, tvPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        tvAvatar = findViewById(R.id.tv_avatar);
+        tvUsername = findViewById(R.id.tv_username);
+        tvEmail = findViewById(R.id.tv_email);
+        tvPhone = findViewById(R.id.tv_phone);
+
+        setupBottomNav();
+        setupTabs();
+        loadUserProfile();
+    }
+
+    private void setupBottomNav() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.nav_profile);
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
-
             if (id == R.id.nav_reels) {
                 startActivity(new Intent(this, ReelsActivity.class));
                 overridePendingTransition(0, 0);
@@ -49,54 +56,35 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(new Intent(this, CartActivity.class));
                 overridePendingTransition(0, 0);
                 return true;
-            } else if (id == R.id.nav_profile) {
-                return true;
             }
-            return false;
+            return id == R.id.nav_profile;
         });
+    }
 
-        layoutSettings = findViewById(R.id.layout_settings);
-        if (layoutSettings != null) {
-            layoutSettings.setOnClickListener(v -> {
-                Intent intent = new Intent(ProfileActivity.this, ChangePasswordActivity.class);
-                startActivity(intent);
-            });
-        }
+    private void setupTabs() {
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
+        ViewPager2 viewPager = findViewById(R.id.viewPager);
 
-        layoutOrderHistory = findViewById(R.id.layout_order_history);
-        if (layoutOrderHistory != null) {
-            layoutOrderHistory.setOnClickListener(v -> {
-                Intent intent = new Intent(ProfileActivity.this, OrdersActivity.class);
-                startActivity(intent);
-            });
-        }
+        ProfilePagerAdapter adapter = new ProfilePagerAdapter(this);
+        viewPager.setAdapter(adapter);
 
-        View layoutFavorites = findViewById(R.id.layout_favorites);
-        if (layoutFavorites != null) {
-            layoutFavorites.setOnClickListener(v -> {
-                Intent intent = new Intent(ProfileActivity.this, FavoritesActivity.class);
-                startActivity(intent);
-            });
-        }
-
-        View layoutNotifications = findViewById(R.id.layout_notifications);
-        if (layoutNotifications != null) {
-            layoutNotifications.setOnClickListener(v -> {
-                Intent intent = new Intent(ProfileActivity.this, NotificationActivity.class);
-                startActivity(intent);
-            });
-        }
-        tvTotalOrders = findViewById(R.id.tv_total_orders);
-        tvAvatar = findViewById(R.id.tv_avatar);
-        tvUsername = findViewById(R.id.tv_username);
-        tvEmail = findViewById(R.id.tv_email);
-        tvPhone = findViewById(R.id.tv_phone);
-
-        loadUserProfile();
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            switch (position) {
+                case 0:
+                    tab.setText("Profile");
+                    break;
+                case 1:
+                    tab.setText("Rewards");
+                    break;
+                case 2:
+                    tab.setText("Available");
+                    break;
+            }
+        }).attach();
     }
 
     private void loadUserProfile() {
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection("users").document(uid).get()
@@ -113,23 +101,7 @@ public class ProfileActivity extends AppCompatActivity {
                         if (name != null && !name.isEmpty()) {
                             tvAvatar.setText(String.valueOf(name.charAt(0)).toUpperCase());
                         }
-
-                        loadTotalOrders(uid);
                     }
-                });
-    }
-
-    private void loadTotalOrders(String userId) {
-        FirebaseFirestore.getInstance()
-                .collection("orders")
-                .whereEqualTo("userId", userId)
-                .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    int totalOrders = querySnapshot.size();
-                    tvTotalOrders.setText(String.valueOf(totalOrders));
-                })
-                .addOnFailureListener(e -> {
-                    tvTotalOrders.setText("0");
                 });
     }
 }
