@@ -24,7 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.*;
 
-public class AvailableRewardsFragment extends Fragment {
+public class AvailableRewardsActivity extends Fragment {
 
     private FirebaseFirestore db;
     private String currentUserId;
@@ -38,7 +38,7 @@ public class AvailableRewardsFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_available_rewards, container, false);
+        View view = inflater.inflate(R.layout.activity_available_rewards, container, false);
 
         db = FirebaseFirestore.getInstance();
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -208,9 +208,8 @@ public class AvailableRewardsFragment extends Fragment {
         LinearLayout globalStarContainer = getView().findViewById(R.id.globalStarContainer);
 
         int levelIndex = 0;
-        if (uniqueRestaurants >= 3) {
-            levelIndex = totalOrders / 10;
-        }
+        levelIndex = totalOrders / 10;
+
 
         String[] levelNames = {"Bronze", "Silver", "Gold", "Platinum", "Diamond", "Legend"};
         levelIndex = Math.min(levelIndex, levelNames.length - 1);

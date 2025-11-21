@@ -76,9 +76,6 @@ public class ProfileActivity extends AppCompatActivity {
                 case 1:
                     tab.setText("Rewards");
                     break;
-                case 2:
-                    tab.setText("Available");
-                    break;
             }
         }).attach();
     }

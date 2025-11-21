@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:text="Order"
             android:textSize="13sp"
-            android:backgroundTint="@color/destructive"
+            android:backgroundTint="@color/orange_app"
             android:textColor="@color/white" />
     </LinearLayout>
 

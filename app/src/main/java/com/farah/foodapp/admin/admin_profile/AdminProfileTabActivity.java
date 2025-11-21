@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class AdminProfileTabFragment extends Fragment {
+public class AdminProfileTabActivity extends Fragment {
 
     private TextView tvTotalOrders;
     private LinearLayout layoutOrderHistory, layoutSpecials, layoutSettings;

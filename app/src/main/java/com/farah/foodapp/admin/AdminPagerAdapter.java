@@ -5,9 +5,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.farah.foodapp.admin.activeorders.ActiveOrdersFragment;
+import com.farah.foodapp.admin.activeorders.ActiveOrdersActivity;
 import com.farah.foodapp.admin.admin_reels.MyReelsFragment;
-import com.farah.foodapp.admin.managemenu.ManageMenuFragment;
+import com.farah.foodapp.admin.managemenu.ManageMenuActivity;
 
 public class AdminPagerAdapter extends FragmentStateAdapter {
 
@@ -19,10 +19,10 @@ public class AdminPagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         switch (position) {
-            case 1: return new ManageMenuFragment();
+            case 1: return new ManageMenuActivity();
             case 2: return new MyReelsFragment();
             case 0:
-            default: return new ActiveOrdersFragment();
+            default: return new ActiveOrdersActivity();
         }
     }
 

@@ -14,12 +14,13 @@ import androidx.fragment.app.Fragment;
 
 import com.farah.foodapp.R;
 import com.farah.foodapp.orders.OrdersActivity;
+import com.farah.foodapp.profile.favorites.FavoritesActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
-public class ProfileTabFragment extends Fragment {
+public class ProfileTabActivity extends Fragment {
 
     private TextView tvTotalOrders;
 

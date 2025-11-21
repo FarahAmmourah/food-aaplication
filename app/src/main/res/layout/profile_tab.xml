@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:fillViewport="true"
-    tools:context="profile.ProfileTabFragment">
+    tools:context=".profile.ProfileTabActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

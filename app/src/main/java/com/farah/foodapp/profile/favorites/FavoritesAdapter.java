@@ -1,4 +1,4 @@
-package com.farah.foodapp.profile;
+package com.farah.foodapp.profile.favorites;
 
 import android.content.Context;
 import android.content.Intent;

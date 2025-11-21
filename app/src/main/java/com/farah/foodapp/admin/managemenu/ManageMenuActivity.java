@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ManageMenuFragment extends Fragment {
+public class ManageMenuActivity extends Fragment {
 
     private MenuAdapterAdmin menuAdapter;
     private List<FoodItemAdmin> menuItemList = new ArrayList<>();
@@ -35,7 +35,7 @@ public class ManageMenuFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_manage_menu, container, false);
+        View view = inflater.inflate(R.layout.activity_manage_menu, container, false);
         firestore = FirebaseFirestore.getInstance();
 
         RecyclerView rvMenu = view.findViewById(R.id.recyclerViewMenu);

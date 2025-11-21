@@ -5,8 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.farah.foodapp.profile.rewards.AchievementsFragment;
-import com.farah.foodapp.profile.rewards.AvailableRewardsFragment;
+import com.farah.foodapp.profile.rewards.AvailableRewardsActivity;
 
 public class ProfilePagerAdapter extends FragmentStateAdapter {
 
@@ -17,18 +16,14 @@ public class ProfilePagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        switch (position) {
-            case 1:
-                return new AvailableRewardsFragment();
-            case 2:
-                return new AchievementsFragment();
-            default:
-                return new ProfileTabFragment();
+        if (position == 1) {
+            return new AvailableRewardsActivity();
         }
+        return new ProfileTabActivity();
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 2;
     }
 }

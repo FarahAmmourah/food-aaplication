@@ -1,5 +1,6 @@
 package com.farah.foodapp.admin.activeorders;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ActiveOrdersFragment extends Fragment {
+public class ActiveOrdersActivity extends Fragment {
 
     private RecyclerView recyclerView;
     private ActiveOrdersAdapter adapter;
@@ -40,7 +41,7 @@ public class ActiveOrdersFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_active_orders, container, false);
+        View view = inflater.inflate(R.layout.activity_active_orders, container, false);
 
         recyclerView = view.findViewById(R.id.recyclerViewActiveOrders);
         tvNoOrders = view.findViewById(R.id.tvNoOrders);
@@ -113,6 +114,7 @@ public class ActiveOrdersFragment extends Fragment {
                 });
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void fetchUserNames(List<OrderAdmin> tempOrders) {
         if (tempOrders.isEmpty()) {
             orders.clear();

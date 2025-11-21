@@ -1,4 +1,4 @@
-package com.farah.foodapp.profile;
+package com.farah.foodapp.profile.favorites;
 
 import android.os.Bundle;
 import android.util.Log;

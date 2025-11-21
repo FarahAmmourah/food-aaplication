@@ -53,7 +53,7 @@ public class MyReelsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_my_reels, container, false);
+        View view = inflater.inflate(R.layout.activity_my_reels, container, false);
 
         Button btnAddReel = view.findViewById(R.id.btnAddReel);
         recyclerReels = view.findViewById(R.id.recyclerViewReels);

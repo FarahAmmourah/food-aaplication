@@ -60,7 +60,7 @@
             android:name=".admin.admin_profile.orderhistory.OrderHistoryActivity"
             android:exported="true" />
         <activity
-            android:name=".profile.FavoritesActivity"
+            android:name=".profile.favorites.FavoritesActivity"
             android:exported="false" />
         <activity android:name=".admin.admin_profile.specials.SpecialsActivity" />
         <activity android:name=".menu.RatingsChartActivity" />
