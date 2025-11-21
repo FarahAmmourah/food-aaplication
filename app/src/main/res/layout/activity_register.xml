@@ -1,126 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="24dp"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     android:background="@color/background">
 
-    <ImageView
-        android:id="@+id/logo"
-        android:src="@drawable/logo_app"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginBottom="24dp"
-        android:contentDescription="App Logo" />
-
-    <TextView
-        android:text="Create Account"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="@color/foreground"
-        android:layout_marginBottom="4dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:text="Sign up to get started"
-        android:textSize="14sp"
-        android:textColor="@color/mutedForeground"
-        android:layout_marginBottom="24dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <EditText
-        android:id="@+id/etName"
-        android:hint="Enter your full name"
-        android:padding="12dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:background="@android:drawable/edit_text" />
-
-    <EditText
-        android:id="@+id/etPhone"
-        android:hint="Enter your phone number"
-        android:inputType="phone"
-        android:padding="12dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:background="@android:drawable/edit_text" />
-
-    <EditText
-        android:id="@+id/etEmail"
-        android:hint="Enter your email"
-        android:inputType="textEmailAddress"
-        android:padding="12dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:background="@android:drawable/edit_text" />
-
-    <EditText
-        android:id="@+id/etPassword"
-        android:hint="Enter your password"
-        android:inputType="textPassword"
-        android:padding="12dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:background="@android:drawable/edit_text" />
-
-    <EditText
-        android:id="@+id/etConfirmPassword"
-        android:hint="Confirm your password"
-        android:inputType="textPassword"
-        android:padding="12dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:background="@android:drawable/edit_text" />
-
-    <RadioGroup
-        android:id="@+id/rgRole"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+    <LinearLayout
+        android:orientation="vertical"
         android:gravity="center"
-        android:layout_marginBottom="16dp">
-
-        <RadioButton
-            android:id="@+id/rbCustomer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Customer"
-            android:checked="true"
-            android:buttonTint="@color/primary"
-            android:layout_marginEnd="24dp"/>
-
-        <RadioButton
-            android:id="@+id/rbAdmin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/primary"
-            android:text="Admin"/>
-    </RadioGroup>
-
-    <Button
-        android:id="@+id/btnRegister"
-        android:text="Register"
-        android:backgroundTint="@color/primary"
-        android:textColor="@color/primaryForeground"
+        android:padding="24dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tvAlreadyAccount"
-        android:text="Already have an account? Login"
-        android:textColor="@color/primary"
-        android:textSize="14sp"
-        android:layout_marginTop="12dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/logo"
+            android:src="@drawable/logo_app"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="24dp"
+            android:contentDescription="App Logo" />
 
-</LinearLayout>
+        <TextView
+            android:text="Create Account"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/foreground"
+            android:layout_marginBottom="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="Sign up to get started"
+            android:textSize="14sp"
+            android:textColor="@color/mutedForeground"
+            android:layout_marginBottom="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/etName"
+            android:hint="Enter your full name"
+            android:padding="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="@color/accent"
+            android:textColor="@color/foreground"/>
+
+        <EditText
+            android:id="@+id/etPhone"
+            android:hint="Enter your phone number"
+            android:inputType="phone"
+            android:padding="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="@color/accent"
+            android:textColor="@color/foreground"/>
+
+        <EditText
+            android:id="@+id/etEmail"
+            android:hint="Enter your email"
+            android:inputType="textEmailAddress"
+            android:padding="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="@color/accent"
+            android:textColor="@color/foreground" />
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:hint="Enter your password"
+            android:inputType="textPassword"
+            android:padding="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="@color/accent"
+            android:textColor="@color/foreground" />
+
+        <EditText
+            android:id="@+id/etConfirmPassword"
+            android:hint="Confirm your password"
+            android:inputType="textPassword"
+            android:padding="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/accent"
+            android:textColor="@color/foreground"/>
+
+        <RadioGroup
+            android:id="@+id/rgRole"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/rbCustomer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Customer"
+                android:checked="true"
+                android:buttonTint="@color/primary"
+                android:layout_marginEnd="24dp"/>
+
+            <RadioButton
+                android:id="@+id/rbAdmin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/primary"
+                android:text="Admin"/>
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:text="Register"
+            android:backgroundTint="@color/primary"
+            android:textColor="@color/primaryForeground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvAlreadyAccount"
+            android:text="Already have an account? Login"
+            android:textColor="@color/primary"
+            android:textSize="14sp"
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</ScrollView>
