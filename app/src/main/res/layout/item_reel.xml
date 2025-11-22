@@ -22,6 +22,26 @@
         android:src="@drawable/ic_play"
         android:alpha="0.8" />
 
+    <TextView
+        android:id="@+id/tvRestaurant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Restaurant Name"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:background="@drawable/restaurant_pill"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="36dp"
+        android:clickable="true"
+        android:focusable="true"
+        />
+
+
     <LinearLayout
         android:orientation="vertical"
         android:gravity="center"
@@ -76,7 +96,6 @@
             app:tint="@android:color/white" />
     </LinearLayout>
 
-    <!-- ====== الجزء السفلي (النصوص + الزر) ====== -->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -96,20 +115,6 @@
             android:textStyle="bold"
             android:maxLines="1"
             android:ellipsize="end"
-            android:shadowColor="#80000000"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="4" />
-
-        <TextView
-            android:id="@+id/tvRestaurant"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Restaurant Name"
-            android:textColor="#E0E0E0"
-            android:textSize="18sp"
-            android:textStyle="italic"
-            android:layout_marginTop="4dp"
             android:shadowColor="#80000000"
             android:shadowDx="2"
             android:shadowDy="2"

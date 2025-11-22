@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="8dp"
-    android:background="@android:color/white">
+    android:padding="10dp"
+    android:background="@android:color/white"
+    android:layout_marginVertical="4dp">
 
     <ImageView
         android:id="@+id/imgProfile"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginEnd="8dp"
         android:src="@drawable/ic_person_24"
         android:background="@drawable/circle_avatar"
         android:scaleType="centerCrop"
-        android:padding="6dp" />
+        android:padding="6dp"
+        android:layout_marginEnd="10dp" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -27,17 +27,22 @@
             android:id="@+id/tvUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="User"
+            android:text="username"
+            android:textSize="13sp"
             android:textStyle="bold"
-            android:textColor="@color/black" />
+            android:textColor="#444444" />
 
         <TextView
             android:id="@+id/tvComment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sample comment 😊"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:text="Sample comment"
+            android:textSize="15sp"
+            android:textColor="#222222"
+            android:padding="10dp"
+            android:background="@drawable/comment_bubble_bg"
+            android:layout_marginTop="4dp"
+            android:maxWidth="260dp" />
     </LinearLayout>
 
     <ImageView
@@ -45,7 +50,7 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:src="@drawable/ic_favorite"
-        android:tint="@color/black"
-        android:layout_gravity="center_vertical"
-        tools:ignore="UseAppTint" />
+        android:tint="#777777"
+        android:layout_gravity="top"
+        android:layout_marginTop="6dp" />
 </LinearLayout>
