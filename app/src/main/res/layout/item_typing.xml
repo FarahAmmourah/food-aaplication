@@ -1,0 +1,36 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/typingDotsContainer"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:layout_margin="8dp">
+
+    <TextView
+        android:id="@+id/dot1"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:text="●"
+        android:textSize="20sp"
+        android:textColor="@color/foreground"
+        android:layout_margin="2dp"/>
+
+    <TextView
+        android:id="@+id/dot2"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:text="●"
+        android:textSize="20sp"
+        android:textColor="@color/foreground"
+        android:layout_margin="2dp"/>
+
+    <TextView
+        android:id="@+id/dot3"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:text="●"
+        android:textSize="20sp"
+        android:textColor="@color/foreground"
+        android:layout_margin="2dp"/>
+</LinearLayout>

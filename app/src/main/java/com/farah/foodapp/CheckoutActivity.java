@@ -17,7 +17,6 @@ import com.farah.foodapp.cart.CartItem;
 import com.farah.foodapp.cart.CartManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,9 +27,9 @@ public class CheckoutActivity extends AppCompatActivity {
     private RadioGroup rgPaymentMethod;
     private TextView btnAddCard;
 
-    private static final double DELIVERY_FEE = 3.00;
-    private static final double SERVICE_FEE = 0.20;
-    private static final double DISCOUNT = 1.00;
+    public static final double DELIVERY_FEE = 3.00;
+    public static final double SERVICE_FEE = 0.20;
+    public static final double DISCOUNT = 1.00;
 
     private ActivityResultLauncher<Intent> addCardLauncher;
     private ActivityResultLauncher<Intent> pickLocationLauncher;
@@ -53,6 +52,18 @@ public class CheckoutActivity extends AppCompatActivity {
         rgPaymentMethod = findViewById(R.id.rgPaymentMethod);
         btnAddCard = findViewById(R.id.btnAddCard);
 
+        updateSummary();
+
+        boolean auto = getIntent().getBooleanExtra("autoPlaceOrder", false);
+
+        if (auto) {
+            placeOrder();
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("orderPlaced", true);
+            setResult(RESULT_OK, resultIntent);
+            finish();
+        }
+
         findViewById(R.id.btnPlaceOrder).setOnClickListener(v -> placeOrder());
         findViewById(R.id.btnCancelOrder).setOnClickListener(v -> finish());
 
@@ -63,17 +74,17 @@ public class CheckoutActivity extends AppCompatActivity {
 
         btnAddCard.setOnClickListener(v -> {
             AddCardDialog dialog = new AddCardDialog((last4, expiry, holderName) ->
-                    CardStorage.saveCard(this, last4, expiry, holderName, success ->
-                            runOnUiThread(() -> {
-                                if (success) {
-                                    newCardSaved = true;
-                                    loadCards();
-                                    Toast.makeText(this, "Card added successfully", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(this, "Failed to save card", Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                    )
+                    CardStorage.saveCard(this, last4, expiry, holderName, success -> {
+                        runOnUiThread(() -> {
+                            if (success) {
+                                newCardSaved = true;
+                                loadCards();
+                                Toast.makeText(this, "Card added successfully", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(this, "Failed to save card", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    })
             );
             dialog.show(getSupportFragmentManager(), "AddCardDialog");
         });
@@ -98,7 +109,6 @@ public class CheckoutActivity extends AppCompatActivity {
                 pickLocationLauncher.launch(new Intent(this, MapPickActivity.class))
         );
 
-        updateSummary();
         loadCards();
     }
 
@@ -111,6 +121,7 @@ public class CheckoutActivity extends AppCompatActivity {
         tvServiceFee.setText("Service fee: JOD " + String.format("%.2f", SERVICE_FEE));
         tvTotal.setText("Total: JOD " + String.format("%.2f", total));
     }
+
     @SuppressLint("SetTextI18n")
     private void loadCards() {
         rgPaymentMethod.removeAllViews();
@@ -183,15 +194,14 @@ public class CheckoutActivity extends AppCompatActivity {
         placeOrderWithStatus("cash", "pending");
         if (selectedRadio != null && !selectedRadio.getText().toString().equals("Cash")) {
             placeOrderWithStatus("stripe", "completed");
-
         }
     }
-    private void placeOrderWithStatus(String paymentMethodId, String paymentStatus) {
+
+    public void placeOrderWithStatus(String paymentMethodId, String paymentStatus) {
         if (CartManager.getCartItems().isEmpty()) {
             Toast.makeText(this, "Your cart is empty!", Toast.LENGTH_SHORT).show();
             return;
         }
-
         String userId = FirebaseAuth.getInstance().getCurrentUser() != null
                 ? FirebaseAuth.getInstance().getCurrentUser().getUid() : "guest";
 
@@ -241,5 +251,4 @@ public class CheckoutActivity extends AppCompatActivity {
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
-
 }

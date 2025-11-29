@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MyReelsFragment extends Fragment {
+public class MyReelsActivity extends Fragment {
 
     private Uri selectedVideoUri;
     private ActivityResultLauncher<Intent> pickVideoLauncher;

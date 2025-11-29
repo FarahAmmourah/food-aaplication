@@ -81,7 +81,7 @@ public class ManageMenuActivity extends Fragment {
         EditText etIngredients = dialogView.findViewById(R.id.inputIngredients);
         EditText etPrice = dialogView.findViewById(R.id.inputSmallPrice);
         EditText etDescription = dialogView.findViewById(R.id.inputDescription);
-        EditText etImageUrl = dialogView.findViewById(R.id.inputImageUrl); // optional
+        EditText etImageUrl = dialogView.findViewById(R.id.inputImageUrl);
         Button btnAdd = dialogView.findViewById(R.id.btnAdd);
         Button btnGenerateAI = dialogView.findViewById(R.id.btnGenerateAI);
 

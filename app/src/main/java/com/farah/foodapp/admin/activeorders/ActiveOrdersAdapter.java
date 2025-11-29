@@ -1,5 +1,6 @@
 package com.farah.foodapp.admin.activeorders;
 
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +47,7 @@ public class ActiveOrdersAdapter extends RecyclerView.Adapter<ActiveOrdersAdapte
         String status = order.getStatus();
         if ("completed".equalsIgnoreCase(status)) {
             holder.tvStatus.setText("Completed");
+            //setCompoundDrawablesWithIntrinsicBounds(left, top, right, bottom)
             holder.tvStatus.setCompoundDrawablesWithIntrinsicBounds(tick, null, null, null);
         } else if ("cancelled".equalsIgnoreCase(status)) {
             holder.tvStatus.setText("Cancelled");

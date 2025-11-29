@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CartManager {
-    private static final List<CartItem> cartItems = new ArrayList<>();
+    private static final ArrayList<CartItem> cartItems = new ArrayList<>();
     private static final double DELIVERY_FEE = 3.0;
 
     public static void addItem(String name, String restaurant, String size, double price, String imageUrl, String restaurantId) {
@@ -20,7 +20,7 @@ public class CartManager {
         cartItems.add(newItem);
     }
 
-    public static List<CartItem> getCartItems() {
+    public static ArrayList<CartItem> getCartItems() {
         return cartItems;
     }
 

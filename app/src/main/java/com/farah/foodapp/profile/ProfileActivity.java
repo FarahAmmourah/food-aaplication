@@ -9,6 +9,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.farah.foodapp.R;
 import com.farah.foodapp.cart.CartActivity;
+import com.farah.foodapp.chatbot.AIChatbotActivity;
 import com.farah.foodapp.menu.MenuActivity;
 import com.farah.foodapp.reel.ReelsActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;

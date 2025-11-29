@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.farah.foodapp.R;
+import com.farah.foodapp.chatbot.AIChatbotActivity;
 import com.farah.foodapp.orders.OrdersActivity;
 import com.farah.foodapp.profile.favorites.FavoritesActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,6 +37,12 @@ public class ProfileTabActivity extends Fragment {
         LinearLayout layoutSettings = view.findViewById(R.id.layout_settings);
         LinearLayout layoutOrderHistory = view.findViewById(R.id.layout_order_history);
         LinearLayout layoutFavorites = view.findViewById(R.id.layout_favorites);
+        LinearLayout layoutChatbot = view.findViewById(R.id.layout_chatbot);
+
+        layoutChatbot.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AIChatbotActivity.class);
+            startActivity(intent);
+        });
 
         layoutSettings.setOnClickListener(v ->
                 startActivity(new Intent(getActivity(), ChangePasswordActivity.class)));

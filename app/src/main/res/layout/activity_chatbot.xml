@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:gravity="center_vertical"
+        android:background="@color/primary">
+
+        <ImageButton
+            android:id="@+id/buttonBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/ic_arrow_back"
+            android:backgroundTint="@color/white"
+            android:padding="10dp"
+            app:tint="@color/white" />
+        <ImageButton
+            android:id="@+id/buttonClear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_deleted"
+            app:tint="@color/white"
+            android:backgroundTint="@color/primary"
+            android:contentDescription="Clear Chat"/>
+
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_chatbot"
+            app:tint="@color/primaryForeground" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AI Assistant"
+            android:textColor="@color/primaryForeground"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginStart="12dp"/>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewChat"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="12dp" />
+
+    <LinearLayout
+        android:id="@+id/typingDotsContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_margin="8dp"
+        android:visibility="visible"
+        android:background="@drawable/bot_bubble">
+
+        <TextView
+            android:id="@+id/dot1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:text="●"
+            android:textSize="16sp"
+            android:textColor="@color/muted"
+            android:layout_margin="2dp"/>
+
+        <TextView
+            android:id="@+id/dot2"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:text="●"
+            android:textSize="16sp"
+            android:textColor="@color/muted"
+            android:layout_margin="2dp"/>
+
+        <TextView
+            android:id="@+id/dot3"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:text="●"
+            android:textSize="16sp"
+            android:textColor="@color/muted"
+            android:layout_margin="2dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:gravity="center_vertical"
+        android:padding="10dp">
+
+        <EditText
+            android:id="@+id/editTextMessage"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@drawable/chat_input_bg"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textColor="@color/foreground"
+            android:textColorHint="@color/muted"
+            android:hint="Type your message..."
+            android:textSize="15sp"/>
+
+        <ImageButton
+            android:id="@+id/buttonSend"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_send"
+            android:padding="10dp"
+            app:tint="@color/white"/>
+    </LinearLayout>
+
+</LinearLayout>

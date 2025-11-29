@@ -17,7 +17,7 @@ public class AdminProfilePagerAdapter extends FragmentStateAdapter {
         if (position == 0)
             return new AdminProfileTabActivity();
         else
-            return new StatsTabFragment();
+            return new StatsTabActivity();
     }
 
     @Override

@@ -64,6 +64,9 @@
             android:exported="false" />
         <activity android:name=".admin.admin_profile.specials.SpecialsActivity" />
         <activity android:name=".menu.RatingsChartActivity" />
+        <activity android:name=".chatbot.AIChatbotActivity" />
+
+
 
         <service
             android:name=".notifications.MyFirebaseMessagingService"

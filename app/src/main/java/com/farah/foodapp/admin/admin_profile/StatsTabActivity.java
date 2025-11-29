@@ -31,7 +31,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.text.DateFormatSymbols;
 import java.util.*;
 
-public class StatsTabFragment extends Fragment {
+public class StatsTabActivity extends Fragment {
 
     private TextView tvRevenue, tvCustomers, tvRating, tvPrediction;
     private BarChart barChart;

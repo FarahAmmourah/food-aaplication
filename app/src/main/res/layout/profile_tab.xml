@@ -191,6 +191,43 @@
                     tools:ignore="UseAppTint" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/layout_chatbot"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/card_bg"
+                android:layout_marginBottom="20dp"
+                android:padding="16dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_chatbot"
+                    android:tint="@color/primary"
+                    tools:ignore="UseAppTint" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Chat with AI Assistant"
+                    android:textSize="18sp"
+                    android:textColor="@color/foreground" />
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/arrow_forward"
+                    android:tint="@color/mutedForeground"
+                    tools:ignore="UseAppTint" />
+            </LinearLayout>
+
+
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
