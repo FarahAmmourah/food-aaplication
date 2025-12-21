@@ -131,7 +131,13 @@ public class ReelsAdapter extends RecyclerView.Adapter<ReelsAdapter.ReelViewHold
         });
 
         holder.btnComment.setOnClickListener(v -> {
-            CommentsDialog dialog = new CommentsDialog(context, reel.getComments(), reel, (ReelsActivity) context);
+            CommentsDialog dialog = new CommentsDialog(
+                    context,
+                    (List<Object>) (List<?>) reel.getComments(),
+                    reel,
+                    (ReelsActivity) context
+            );
+
             dialog.show();
         });
 

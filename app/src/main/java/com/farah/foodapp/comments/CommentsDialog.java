@@ -1,5 +1,9 @@
 package com.farah.foodapp.comments;
 
+import com.farah.foodapp.sujoud.TextVectorizer;
+import com.farah.foodapp.sujoud.SentimentInterpreter;
+
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,18 +24,21 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.internal.LinkedTreeMap;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class CommentsDialog extends BottomSheetDialog {
 
-    private List<String> comments;
+    private List<Object> comments;
+
     private CommentAdapter adapter;
     private ReelItem reel;
     private FirebaseFirestore db;
     private FirebaseAuth auth;
 
-    public CommentsDialog(@NonNull Context context, List<String> comments, ReelItem reel, ReelsActivity reelsActivity) {
+    public CommentsDialog(@NonNull Context context, List<Object> comments, ReelItem reel, ReelsActivity reelsActivity) {
         super(context);
         this.comments = comments;
         this.reel = reel;
@@ -61,137 +68,139 @@ public class CommentsDialog extends BottomSheetDialog {
         recyclerComments.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerComments.setAdapter(adapter);
 
-        btnAnalyze.setOnClickListener(v -> {
-
-            int positive = 0;
-            int negative = 0;
-            int neutral = 0;
-
-            for (String comment : comments) {
-
-                String pureComment = comment.contains(":")
-                        ? comment.split(":", 2)[1].trim()
-                        : comment;
-
-                String result = detectSentiment(pureComment.toLowerCase());
-
-                switch (result) {
-                    case "Positive":
-                        positive++;
-                        break;
-                    case "Negative":
-                        negative++;
-                        break;
-                    default:
-                        neutral++;
-                        break;
-                }
-            }
-
-            int total = comments.size();
-            if (total == 0) {
-                BottomSheetDialog dialog = new BottomSheetDialog(getContext());
-                View v2 = LayoutInflater.from(getContext()).inflate(R.layout.dialog_sentiment_result, null);
-                dialog.setContentView(v2);
-
-                Button btnClose = v2.findViewById(R.id.btnClose);
-                btnClose.setOnClickListener(x -> dialog.dismiss());
-                dialog.show();
-                return;
-            }
-
-            showSentimentBottomSheet(positive, negative, neutral);
-        });
-
-        btnSend.setOnClickListener(v -> {
-            String newComment = etComment.getText().toString().trim();
-            if (!newComment.isEmpty()) {
-                FirebaseUser currentUser = auth.getCurrentUser();
-                String userName;
-
-                if (currentUser != null) {
-                    if (currentUser.getDisplayName() != null && !currentUser.getDisplayName().isEmpty()) {
-                        userName = currentUser.getDisplayName();
-                    } else if (currentUser.getEmail() != null) {
-                        userName = currentUser.getEmail();
-                    } else {
-                        userName = "Anonymous";
-                    }
-                } else {
-                    userName = "Anonymous";
-                }
-
-                String formattedComment = userName + ": " + newComment;
-
-                comments.add(formattedComment);
-                adapter.notifyItemInserted(comments.size() - 1);
-                recyclerComments.scrollToPosition(comments.size() - 1);
-                etComment.setText("");
-
-                if (reel != null && reel.getReelId() != null) {
-                    db.collection("reels")
-                            .document(reel.getReelId())
-                            .update("comments", FieldValue.arrayUnion(formattedComment))
-                            .addOnSuccessListener(a -> {
-                                db.collection("reels")
-                                        .document(reel.getReelId())
-                                        .update("commentsCount", comments.size());
-                            })
-                            .addOnFailureListener(e ->
-                                    Toast.makeText(getContext(), "Failed to save comment", Toast.LENGTH_SHORT).show());
-                }
-            } else {
-                Toast.makeText(getContext(), "Type a comment first", Toast.LENGTH_SHORT).show();
-            }
-        });
+        btnAnalyze.setOnClickListener(v -> analyzeComments());
+        btnSend.setOnClickListener(v -> addNewComment(etComment, recyclerComments));
     }
 
+
+    private void analyzeComments() {
+
+        if (comments.size() == 0) {
+            showSentimentBottomSheet(0, 0, 0);
+            return;
+        }
+
+        int positive = 0;
+        int negative = 0;
+        int neutral = 0;
+
+        for (Object c : comments) {
+
+            String pureComment = extractPureComment(c);
+
+            try {
+                float[] input = TextVectorizer.vectorize(pureComment);
+
+                float[] output = SentimentInterpreter.predict(input, getContext());
+
+                if (output[0] >= output[1] && output[0] >= output[2]) {
+                    positive++;
+                } else if (output[1] >= output[0] && output[1] >= output[2]) {
+                    negative++;
+                } else {
+                    neutral++;
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                neutral++;
+            }
+        }
+
+        showSentimentBottomSheet(positive, negative, neutral);
+    }
+
+
+    private String extractPureComment(Object c) {
+
+        if (c instanceof String) {
+            String s = (String) c;
+            return s.contains(":") ? s.split(":", 2)[1].trim() : s;
+        }
+
+        if (c instanceof HashMap) {
+            Object val = ((HashMap) c).get("text");
+            return val != null ? val.toString() : "";
+        }
+
+        if (c instanceof LinkedTreeMap) {
+            Object val = ((LinkedTreeMap) c).get("text");
+            return val != null ? val.toString() : "";
+        }
+
+        return "";
+    }
+
+
+    private void addNewComment(EditText etComment, RecyclerView recycler) {
+
+        String newComment = etComment.getText().toString().trim();
+        if (newComment.isEmpty()) {
+            Toast.makeText(getContext(), "Type a comment first", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        FirebaseUser user = auth.getCurrentUser();
+        String userName;
+
+        if (user != null) {
+            if (user.getDisplayName() != null && !user.getDisplayName().isEmpty()) {
+                userName = user.getDisplayName();
+            } else if (user.getEmail() != null) {
+                userName = user.getEmail();
+            } else {
+                userName = "Anonymous";
+            }
+        } else {
+            userName = "Anonymous";
+        }
+
+        String formattedComment = userName + ": " + newComment;
+
+        comments.add(formattedComment);
+        adapter.notifyItemInserted(comments.size() - 1);
+        recycler.scrollToPosition(comments.size() - 1);
+        etComment.setText("");
+
+        if (reel != null && reel.getReelId() != null) {
+            db.collection("reels")
+                    .document(reel.getReelId())
+                    .update("comments", FieldValue.arrayUnion(formattedComment))
+                    .addOnSuccessListener(a -> {
+                        db.collection("reels")
+                                .document(reel.getReelId())
+                                .update("commentsCount", comments.size());
+                    })
+                    .addOnFailureListener(e ->
+                            Toast.makeText(getContext(), "Failed to save comment", Toast.LENGTH_SHORT).show());
+        }
+    }
+
+
     private void showSentimentBottomSheet(int posCount, int negCount, int neutralCount) {
+
         BottomSheetDialog dialog = new BottomSheetDialog(getContext());
-        View v = LayoutInflater.from(getContext()).inflate(R.layout.dialog_sentiment_result, null);
+        View v = LayoutInflater.from(getContext())
+                .inflate(R.layout.dialog_sentiment_result, null);
         dialog.setContentView(v);
 
         int total = posCount + negCount + neutralCount;
+        if (total == 0) total = 1;
 
-        String posP = (int) ((posCount * 100.0f) / total) + "%";
-        String negP = (int) ((negCount * 100.0f) / total) + "%";
-        String neuP = (int) ((neutralCount * 100.0f) / total) + "%";
+        String posP = (int) ((posCount * 100.0 / total)) + "%";
+        String negP = (int) ((negCount * 100.0 / total)) + "%";
+        String neuP = (int) ((neutralCount * 100.0 / total)) + "%";
+
+        ((android.widget.TextView) v.findViewById(R.id.tvPositive))
+                .setText("Positive: " + posCount + " (" + posP + ")");
+        ((android.widget.TextView) v.findViewById(R.id.tvNegative))
+                .setText("Negative: " + negCount + " (" + negP + ")");
+        ((android.widget.TextView) v.findViewById(R.id.tvNeutral))
+                .setText("Neutral: " + neutralCount + " (" + neuP + ")");
 
         Button btnClose = v.findViewById(R.id.btnClose);
-        ((android.widget.TextView) v.findViewById(R.id.tvPositive)).setText("Positive: " + posCount + " (" + posP + ")");
-        ((android.widget.TextView) v.findViewById(R.id.tvNegative)).setText("Negative: " + negCount + " (" + negP + ")");
-        ((android.widget.TextView) v.findViewById(R.id.tvNeutral)).setText("Neutral: " + neutralCount + " (" + neuP + ")");
-
         btnClose.setOnClickListener(x -> dialog.dismiss());
 
         dialog.show();
-    }
-
-    private String detectSentiment(String text) {
-
-        String[] positive = {
-                "good", "great", "amazing", "tasty", "delicious",
-                "perfect", "nice", "fresh", "wonderful", "love", "fantastic", "fast"
-        };
-
-        String[] negative = {
-                "bad", "terrible", "cold", "slow", "awful",
-                "disappointed", "worse", "late", "dirty", "expensive"
-        };
-
-        int pos = 0;
-        int neg = 0;
-
-        for (String w : positive) {
-            if (text.contains(w)) pos++;
-        }
-
-        for (String w : negative) {
-            if (text.contains(w)) neg++;
-        }
-
-        if (pos > neg) return "Positive";
-        if (neg > pos) return "Negative";
-        return "Neutral";
     }
 }

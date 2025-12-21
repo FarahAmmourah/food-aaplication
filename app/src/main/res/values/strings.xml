@@ -17,6 +17,8 @@
     <string name="stripe_publishable_key">pk_test_51SEjk8AtRQUYdXhWjSg5BMTdsvRdH4jJcllY1aygfB36eQyTHwDbRUKMBQbroLBmUGK9gpHBFxCQwhqrXxONOTlX003ULuDrrI</string>
     <string name="backend_url">https://foodapp-backend-vcay.onrender.com</string>
     <string name="map_url">https://location-vkcz.onrender.com</string>
+    <string name="comment_count">Comments %1$d</string>
+
 
 
 </resources>

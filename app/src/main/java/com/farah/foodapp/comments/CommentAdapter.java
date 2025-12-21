@@ -11,14 +11,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.farah.foodapp.R;
+import com.google.gson.internal.LinkedTreeMap;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
-    private List<String> comments;
+    private List<Object> comments;
 
-    public CommentAdapter(List<String> comments) {
+    public CommentAdapter(List<Object> comments) {
         this.comments = comments;
     }
 
@@ -32,79 +34,53 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
     @Override
     public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
-        String commentText = comments.get(position);
 
-        String user;
-        String text;
+        Object obj = comments.get(position);
+        String user = "User";
+        String text = "";
 
-        if (commentText.contains(":")) {
-            String[] parts = commentText.split(":", 2);
-            user = parts[0].trim();
-            text = parts[1].trim();
-        } else {
-            user = "User";
-            text = commentText;
+        if (obj instanceof String) {
+            String commentStr = (String) obj;
+            if (commentStr.contains(":")) {
+                String[] parts = commentStr.split(":", 2);
+                user = parts[0].trim();
+                text = parts[1].trim();
+            } else {
+                text = commentStr;
+            }
+        }
+
+        else if (obj instanceof HashMap) {
+            Object u = ((HashMap) obj).get("user");
+            Object t = ((HashMap) obj).get("text");
+            if (u != null) user = u.toString();
+            if (t != null) text = t.toString();
+        }
+
+        else if (obj instanceof LinkedTreeMap) {
+            Object u = ((LinkedTreeMap) obj).get("user");
+            Object t = ((LinkedTreeMap) obj).get("text");
+            if (u != null) user = u.toString();
+            if (t != null) text = t.toString();
         }
 
         holder.tvUsername.setText(user);
         holder.tvComment.setText(text);
-
-        String sentiment = detectSentiment(text.toLowerCase());
-
-        switch (sentiment) {
-            case "Positive":
-                holder.tvComment.setTextColor(Color.parseColor("#2E7D32"));
-                break;
-            case "Negative":
-                holder.tvComment.setTextColor(Color.parseColor("#C62828"));
-                break;
-            default:
-                holder.tvComment.setTextColor(Color.parseColor("#555555"));
-                break;
-        }
+        holder.tvComment.setTextColor(Color.parseColor("#555555"));
 
         holder.imgLike.setOnClickListener(v -> {
-            if (holder.imgLike.getTag() == null || !(boolean) holder.imgLike.getTag()) {
-                holder.imgLike.setColorFilter(holder.itemView.getContext().getColor(R.color.red), android.graphics.PorterDuff.Mode.SRC_IN);
-                holder.imgLike.setTag(true);
-            } else {
-                holder.imgLike.setColorFilter(holder.itemView.getContext().getColor(android.R.color.black), android.graphics.PorterDuff.Mode.SRC_IN);
-                holder.imgLike.setTag(false);
-            }
+            boolean liked = holder.imgLike.getTag() != null && (boolean) holder.imgLike.getTag();
+            holder.imgLike.setColorFilter(
+                    holder.itemView.getContext().getColor(liked ? android.R.color.black : R.color.red),
+                    android.graphics.PorterDuff.Mode.SRC_IN
+            );
+            holder.imgLike.setTag(!liked);
         });
     }
 
     @Override
     public int getItemCount() {
         return comments.size();
-    }
-
-    private String detectSentiment(String text) {
-
-        String[] positive = {
-                "good", "great", "amazing", "tasty", "delicious",
-                "perfect", "nice", "fresh", "wonderful", "love", "fantastic"
-        };
-
-        String[] negative = {
-                "bad", "terrible", "cold", "slow", "awful",
-                "disappointed", "worse", "late", "dirty", "expensive"
-        };
-
-        int pos = 0;
-        int neg = 0;
-
-        for (String w : positive) {
-            if (text.contains(w)) pos++;
-        }
-
-        for (String w : negative) {
-            if (text.contains(w)) neg++;
-        }
-
-        if (pos > neg) return "Positive";
-        if (neg > pos) return "Negative";
-        return "Neutral";
     }
 
     public static class CommentViewHolder extends RecyclerView.ViewHolder {
