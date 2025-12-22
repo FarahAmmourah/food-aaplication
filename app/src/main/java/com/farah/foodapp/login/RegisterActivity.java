@@ -54,46 +54,52 @@ public class RegisterActivity extends AppCompatActivity {
             String password = etPassword.getText().toString().trim();
             String confirmPassword = etConfirmPassword.getText().toString().trim();
 
-            if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty()) {
+            if (name.isEmpty() || email.isEmpty() || phone.isEmpty()
+                    || password.isEmpty() || confirmPassword.isEmpty()) {
                 Toast.makeText(this, "Fill all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
+
             if (!password.equals(confirmPassword)) {
                 Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
                 return;
             }
+
 
             String role = rbRestaurant.isChecked() ? "restaurant" : "customer";
 
             auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
+
                             String uid = auth.getCurrentUser().getUid();
 
-                            FirebaseFirestore db = FirebaseFirestore.getInstance();
                             Map<String, Object> userData = new HashMap<>();
                             userData.put("name", name);
                             userData.put("email", email);
                             userData.put("phone", phone);
                             userData.put("role", role);
 
-                            String collection = role.equals("restaurant") ? "restaurants" : "users";
-
-                            db.collection(collection).document(uid).set(userData)
+                            FirebaseFirestore.getInstance()
+                                    .collection("users")
+                                    .document(uid)
+                                    .set(userData)
                                     .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(this, "Registered as " + role, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(this,
+                                                "Registered as " + role,
+                                                Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(this, LoginActivity.class));
                                         finish();
                                     })
-                                    .addOnFailureListener(e -> {
-                                        Toast.makeText(this, "Firestore Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                                    });
+                                    .addOnFailureListener(e ->
+                                            Toast.makeText(this,
+                                                    "Firestore Error: " + e.getMessage(),
+                                                    Toast.LENGTH_LONG).show());
 
                         } else {
-                            String errorMsg = task.getException() != null
-                                    ? task.getException().getMessage()
-                                    : "Unknown error";
-                            Toast.makeText(this, "Auth Error: " + errorMsg, Toast.LENGTH_LONG).show();
+                            Toast.makeText(this,
+                                    "Auth Error: " + task.getException().getMessage(),
+                                    Toast.LENGTH_LONG).show();
                         }
                     });
         });
