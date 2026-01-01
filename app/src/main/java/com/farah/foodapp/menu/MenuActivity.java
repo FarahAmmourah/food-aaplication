@@ -103,7 +103,13 @@ public class MenuActivity extends AppCompatActivity {
                         FoodItem item = doc.toObject(FoodItem.class);
                         foodList.add(item);
                     }
+
+                    adapter.setFoodListFull(foodList);
                     adapter.notifyDataSetChanged();
+
+                    // 🔥 هذا هو الحل: إعادة تطبيق السيرتش بعد تحميل البيانات
+                    adapter.getFilter().filter(etSearch.getText().toString());
+
                 })
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Failed to load all menu items: " + e.getMessage(), Toast.LENGTH_SHORT).show()

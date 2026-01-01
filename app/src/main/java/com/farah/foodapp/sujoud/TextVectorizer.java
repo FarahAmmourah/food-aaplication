@@ -47,18 +47,24 @@ public class TextVectorizer {
     }
 
     public static float[] vectorize(String text) {
-        float[] vector = new float[36];
+        float[] vector = new float[36];/* these are the number of vectors which
+                                       represent a vocab not num of words in sentence
+                                       The sentiment_model.tflite file is the trained machine learning model
+                                       used for inference on the mobile device.*/
 
         text = text.toLowerCase();
-        String[] words = text.split("\\s+");
+        String[] words = text.split("\\s+");  /*here split takes reg exp to remove
+                                                    space tabs even if they were a lot */
 
         for (String word : words) {
             if (vocab.containsKey(word)) {
-                int index = vocab.get(word);
+                int index = vocab.get(word);/*هاي بتشوف كل كلمه من اللغه يللي انا عرفتها كم مره تكررت و
+                                                      بتضيف عدد التكرار بالاندكس تبع الكلمه */
                 vector[index] += 1f;
             }
         }
 
-        return vector;
+        return vector;/*The returned vector always has a fixed length equal to the vocabulary size,
+        where each index stores the frequency of its corresponding word.*/
     }
 }

@@ -1,6 +1,6 @@
 package com.farah.foodapp.menu;
 
-public class FoodItem {
+public class FoodItem {// the info of the meal
     private String id;
     private String name;
     private String description;
@@ -28,7 +28,7 @@ public class FoodItem {
     public FoodItem() {}
 
     public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public void setName(String name) { this.name = name; }// the setter for the name is used in the cart to add the item and size to the
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }

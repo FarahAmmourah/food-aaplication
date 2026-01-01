@@ -38,7 +38,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
     public FoodAdapter(Context context, List<FoodItem> foodList) {
         this.context = context;
         this.foodList = foodList;
-        this.foodListFull = new ArrayList<>(foodList);
+        this.foodListFull = new ArrayList<>();
     }
 
     @NonNull
@@ -161,12 +161,11 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
 
             return updatedRating;
         }).addOnSuccessListener(updatedRating -> {
-            item.setRating((float) ((double) updatedRating));
+            item.setRating((float) updatedRating.doubleValue());
             holder.btnRate.setText("Rate ★ " + String.format(Locale.US, "%.1f", updatedRating));
-            Toast.makeText(context, "Rating updated successfully!", Toast.LENGTH_SHORT).show();
-        }).addOnFailureListener(e -> {
-            Toast.makeText(context, "Failed to update rating", Toast.LENGTH_SHORT).show();
-        });
+        }).addOnFailureListener(e ->
+                Toast.makeText(context, "Failed to update rating", Toast.LENGTH_SHORT).show()
+        );
     }
 
     @Override
@@ -183,9 +182,19 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
                 filteredList.addAll(foodListFull);
             } else {
                 String filterPattern = constraint.toString().toLowerCase(Locale.ROOT).trim();
+
                 for (FoodItem item : foodListFull) {
-                    if (item.getName().toLowerCase(Locale.ROOT).contains(filterPattern)
-                            || item.getRestaurantName().toLowerCase(Locale.ROOT).contains(filterPattern)) {
+
+                    // ⭐ FIX: Null-safe filtering
+                    String name = item.getName() != null
+                            ? item.getName().toLowerCase(Locale.ROOT)
+                            : "";
+
+                    String restaurant = item.getRestaurantName() != null
+                            ? item.getRestaurantName().toLowerCase(Locale.ROOT)
+                            : "";
+
+                    if (name.contains(filterPattern) || restaurant.contains(filterPattern)) {
                         filteredList.add(item);
                     }
                 }
@@ -199,10 +208,19 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             foodList.clear();
-            foodList.addAll((List<FoodItem>) results.values);
+
+            if (results.values != null) {
+                foodList.addAll((List<FoodItem>) results.values);
+            }
+
             notifyDataSetChanged();
         }
     };
+
+    public void setFoodListFull(List<FoodItem> list) {
+        foodListFull.clear();
+        foodListFull.addAll(list);
+    }
 
     public static class FoodViewHolder extends RecyclerView.ViewHolder {
         ImageView imgFood;

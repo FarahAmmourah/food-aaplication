@@ -26,16 +26,27 @@
         <EditText
             android:id="@+id/etSearch"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+
             android:hint="Search food or restaurant..."
-            android:padding="12dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="10dp"
+
             android:background="@android:drawable/edit_text"
+            android:backgroundTint="@color/muted"
+
             android:drawableStart="@android:drawable/ic_menu_search"
             android:drawablePadding="8dp"
+
             android:inputType="text"
-            android:backgroundTint="@color/muted"
-            android:textColor="@color/muted"
+            android:gravity="center_vertical"
+
+            android:textSize="16sp"
+            android:textColor="@color/mutedForeground"
             android:textColorHint="@color/gray" />
+
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerMenu"

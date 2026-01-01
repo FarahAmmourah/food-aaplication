@@ -15,28 +15,35 @@ import com.google.gson.internal.LinkedTreeMap;
 
 import java.util.HashMap;
 import java.util.List;
-
+/* here we extend recycle view because we want to fill the recycle with info
+* using this adapter*/
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
     private List<Object> comments;
 
+/* constructor has one att whic is list of objs becase of the firebase*/
     public CommentAdapter(List<Object> comments) {
         this.comments = comments;
     }
 
     @NonNull
     @Override
-    public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    /*
+    create the shape of a single element within a RecyclerView.*/
+    public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    {// prameters: ViewGroup parent == recycle view , viewType:nor /rep .... always nor
+
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_comment, parent, false);
-        return new CommentViewHolder(view);
+                .inflate(R.layout.item_comment, parent, false);// turn xml to real view
+        return new CommentViewHolder(view);// returns an Object  Type: CommentViewHolder
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
 
-        Object obj = comments.get(position);
-        String user = "User";
+    @Override // fill with data
+    public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {//par1: name ,comm, likebt
+        // par2: the num of the comm
+        Object obj = comments.get(position);// why ob ? because of the type
+        String user = "User"; //default vals
         String text = "";
 
         if (obj instanceof String) {
@@ -68,7 +75,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         holder.tvComment.setText(text);
         holder.tvComment.setTextColor(Color.parseColor("#555555"));
 
-        holder.imgLike.setOnClickListener(v -> {
+        holder.imgLike.setOnClickListener(v -> {//tag saves tem values
             boolean liked = holder.imgLike.getTag() != null && (boolean) holder.imgLike.getTag();
             holder.imgLike.setColorFilter(
                     holder.itemView.getContext().getColor(liked ? android.R.color.black : R.color.red),
@@ -87,7 +94,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         ImageView imgProfile, imgLike;
         TextView tvUsername, tvComment;
 
-        public CommentViewHolder(@NonNull View itemView) {
+        public CommentViewHolder(@NonNull View itemView) {// view that comes from oncreate
             super(itemView);
             imgProfile = itemView.findViewById(R.id.imgProfile);
             tvUsername = itemView.findViewById(R.id.tvUsername);

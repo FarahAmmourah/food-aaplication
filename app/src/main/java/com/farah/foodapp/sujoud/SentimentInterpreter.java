@@ -10,7 +10,7 @@ import java.nio.channels.FileChannel;
 
 public class SentimentInterpreter {
 
-    private static Interpreter interpreter = null;
+    private static Interpreter interpreter = null; // still the model is no loaded
 
     private static MappedByteBuffer loadModel(Context context) throws IOException {
         FileInputStream fis = new FileInputStream(context.getAssets().openFd("sentiment_model.tflite").getFileDescriptor());
@@ -22,24 +22,26 @@ public class SentimentInterpreter {
 
 
     private static void init(Context context) {
-        if (interpreter == null) {
+        if (interpreter == null) {// inter is used to read the tflite model
             try {
-                interpreter = new Interpreter(loadModel(context));
+                interpreter = new Interpreter(loadModel(context));// to make sure model is loaded
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-
+// this code is called in the comments dialog to reach model
 
     public static float[] predict(float[] inputVector, Context context) {
 
-        init(context);
+        init(context);// this is used to reach the pre-trained model in assets and load it
 
-        float[][] output = new float[1][3];
+        float[][] output = new float[1][3]; // one comment 3 feelings (p/neg/neu) batchs used by tnsflow
 
-        interpreter.run(inputVector, output);
+        interpreter.run(inputVector, output); /* take the given vec(comment)
+        decide how many each feeling represent */
 
-        return output[0];
+        return output[0]; // this is where the feelings are for each single comment
+        // the first element of the batch has the feelings
     }
 }

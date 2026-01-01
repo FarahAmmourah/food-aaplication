@@ -2,7 +2,8 @@ package com.farah.foodapp.reel;
 
 import java.util.List;
 
-public class ReelItem {
+public class ReelItem {/*represents a single reel
+stores information related to the video*/
     private String videoUrl;
     private String title;
     private String restaurant;
@@ -16,21 +17,21 @@ public class ReelItem {
     private String reelId;
     private String imageUrl;
 
-    public ReelItem() {}
+    public ReelItem() {}// used to convert document to object by firestore
 
     public ReelItem(String videoUrl, String title, String restaurant,
                     Integer likesCount, Integer commentsCount, List<String> comments,
                     Double price, String restaurantId, String reelId, String imageUrl) {
         this.videoUrl = videoUrl;
-        this.title = title;
-        this.restaurant = restaurant;
+        this.title = title;//Restaurant advertisement meal
+        this.restaurant = restaurant;// name
         this.likesCount = likesCount;
         this.commentsCount = commentsCount;
         this.comments = comments;
         this.price = price;
         this.restaurantId = restaurantId;
-        this.reelId = reelId;
-        this.imageUrl = imageUrl;
+        this.reelId = reelId;//db
+        this.imageUrl = imageUrl;// img of the  advertisement meal
     }
 
     public String getVideoUrl() { return videoUrl; }

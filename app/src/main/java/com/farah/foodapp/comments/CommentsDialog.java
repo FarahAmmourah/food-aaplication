@@ -37,20 +37,20 @@ public class CommentsDialog extends BottomSheetDialog {
     private ReelItem reel;
     private FirebaseFirestore db;
     private FirebaseAuth auth;
-
+// contex is the place that the comments dia will appear in
     public CommentsDialog(@NonNull Context context, List<Object> comments, ReelItem reel, ReelsActivity reelsActivity) {
         super(context);
         this.comments = comments;
         this.reel = reel;
     }
 
-    @Override
+    @Override /* inflate / connect ui into java */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+// turn xml in dia into view
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_comments, null);
         setContentView(view);
-
+        // turn the back into transparent
         View bottomSheet = findViewById(com.google.android.material.R.id.design_bottom_sheet);
         if (bottomSheet != null) {
             bottomSheet.setBackgroundColor(android.graphics.Color.TRANSPARENT);
@@ -63,7 +63,7 @@ public class CommentsDialog extends BottomSheetDialog {
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
-
+// create adapter object
         adapter = new CommentAdapter(comments);
         recyclerComments.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerComments.setAdapter(adapter);
@@ -79,7 +79,7 @@ public class CommentsDialog extends BottomSheetDialog {
             showSentimentBottomSheet(0, 0, 0);
             return;
         }
-
+//We maintain counters to track the overall sentiment distribution
         int positive = 0;
         int negative = 0;
         int neutral = 0;
@@ -89,9 +89,9 @@ public class CommentsDialog extends BottomSheetDialog {
             String pureComment = extractPureComment(c);
 
             try {
-                float[] input = TextVectorizer.vectorize(pureComment);
+                float[] input = TextVectorizer.vectorize(pureComment);// comment will change into vectors of nums
 
-                float[] output = SentimentInterpreter.predict(input, getContext());
+                float[] output = SentimentInterpreter.predict(input, getContext());// call ml model , par2 download the tensor flow model found in assets
 
                 if (output[0] >= output[1] && output[0] >= output[2]) {
                     positive++;
@@ -110,17 +110,18 @@ public class CommentsDialog extends BottomSheetDialog {
         showSentimentBottomSheet(positive, negative, neutral);
     }
 
-
+// this is used to remove the username and take only the comment on tits own
     private String extractPureComment(Object c) {
 
         if (c instanceof String) {
             String s = (String) c;
-            return s.contains(":") ? s.split(":", 2)[1].trim() : s;
+            return s.contains(":") ? s.split(":", 2)[1].trim() : s; // will cut the comment
+                                                                               // after the first : and takes the second part
         }
 
         if (c instanceof HashMap) {
-            Object val = ((HashMap) c).get("text");
-            return val != null ? val.toString() : "";
+            Object val = ((HashMap) c).get("text");       // firebase can give different type of
+            return val != null ? val.toString() : "";    //retrivals so i made sure to take only the comment part
         }
 
         if (c instanceof LinkedTreeMap) {
@@ -134,14 +135,14 @@ public class CommentsDialog extends BottomSheetDialog {
 
     private void addNewComment(EditText etComment, RecyclerView recycler) {
 
-        String newComment = etComment.getText().toString().trim();
+        String newComment = etComment.getText().toString().trim();// remove spa from begin and end
         if (newComment.isEmpty()) {
             Toast.makeText(getContext(), "Type a comment first", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        FirebaseUser user = auth.getCurrentUser();
-        String userName;
+        FirebaseUser user = auth.getCurrentUser();// get current user
+        String userName;// empty
 
         if (user != null) {
             if (user.getDisplayName() != null && !user.getDisplayName().isEmpty()) {
@@ -156,12 +157,13 @@ public class CommentsDialog extends BottomSheetDialog {
         }
 
         String formattedComment = userName + ": " + newComment;
-
+// only ui not database
         comments.add(formattedComment);
-        adapter.notifyItemInserted(comments.size() - 1);
-        recycler.scrollToPosition(comments.size() - 1);
-        etComment.setText("");
+        adapter.notifyItemInserted(comments.size() - 1);// notify adapter to read new comment given position
+        recycler.scrollToPosition(comments.size() - 1);// scroll to lastest comm
+        etComment.setText("");// comment section rest
 
+        // store new com to db
         if (reel != null && reel.getReelId() != null) {
             db.collection("reels")
                     .document(reel.getReelId())
@@ -179,13 +181,13 @@ public class CommentsDialog extends BottomSheetDialog {
 
     private void showSentimentBottomSheet(int posCount, int negCount, int neutralCount) {
 
-        BottomSheetDialog dialog = new BottomSheetDialog(getContext());
+        BottomSheetDialog dialog = new BottomSheetDialog(getContext());// get context is used to know where to open the bottom sheet
         View v = LayoutInflater.from(getContext())
                 .inflate(R.layout.dialog_sentiment_result, null);
         dialog.setContentView(v);
 
         int total = posCount + negCount + neutralCount;
-        if (total == 0) total = 1;
+        if (total == 0) total = 1;// prevent div over 0
 
         String posP = (int) ((posCount * 100.0 / total)) + "%";
         String negP = (int) ((negCount * 100.0 / total)) + "%";
