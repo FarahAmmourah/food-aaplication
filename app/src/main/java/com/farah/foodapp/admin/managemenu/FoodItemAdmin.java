@@ -1,8 +1,11 @@
 package com.farah.foodapp.admin.managemenu;
+
 public class FoodItemAdmin {
+
     private String name;
     private String description;
-    private String restaurant;
+    private String restaurantId;
+    private String restaurantName;
     private double smallPrice;
     private String ingredients;
     private float rating;
@@ -10,11 +13,19 @@ public class FoodItemAdmin {
 
     public FoodItemAdmin() {}
 
-    public FoodItemAdmin(String name, String description, String restaurant,
-                         double smallPrice, String ingredients, float rating, String imageUrl) {
+    public FoodItemAdmin(String name,
+                         String description,
+                         String restaurantId,
+                         String restaurantName,
+                         double smallPrice,
+                         String ingredients,
+                         float rating,
+                         String imageUrl) {
+
         this.name = name;
         this.description = description;
-        this.restaurant = restaurant;
+        this.restaurantId = restaurantId;
+        this.restaurantName = restaurantName;
         this.smallPrice = smallPrice;
         this.ingredients = ingredients;
         this.rating = rating;
@@ -23,7 +34,8 @@ public class FoodItemAdmin {
 
     public String getName() { return name; }
     public String getDescription() { return description; }
-    public String getRestaurant() { return restaurant; }
+    public String getRestaurantId() { return restaurantId; }
+    public String getRestaurantName() { return restaurantName; }
     public double getSmallPrice() { return smallPrice; }
     public float getRating() { return rating; }
     public String getImageUrl() { return imageUrl; }

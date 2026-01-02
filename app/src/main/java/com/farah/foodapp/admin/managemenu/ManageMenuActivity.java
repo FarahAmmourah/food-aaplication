@@ -116,29 +116,39 @@ public class ManageMenuActivity extends Fragment {
 
             String restaurantId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
-
-            FoodItemAdmin newItem = new FoodItemAdmin(
-                    name,
-                    description.isEmpty() ? "Delicious " + name + " prepared with care!" : description,
-                    restaurantId,
-                    smallPrice,
-                    ingredients,
-                    0f,
-                    imageUrl
-            );
-
             firestore.collection("restaurants")
                     .document(restaurantId)
-                    .collection("menu")
-                    .add(newItem)
-                    .addOnSuccessListener(docRef -> {
-                        menuItemList.add(newItem);
-                        menuAdapter.notifyItemInserted(menuItemList.size() - 1);
-                        Toast.makeText(getContext(), "Item added successfully", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
+                    .get()
+                    .addOnSuccessListener(doc -> {
+                        String restaurantName = doc.getString("name");
+
+                        FoodItemAdmin newItem = new FoodItemAdmin(
+                                name,
+                                description.isEmpty() ? "Delicious " + name + " prepared with care!" : description,
+                                restaurantId,
+                                restaurantName,
+                                smallPrice,
+                                ingredients,
+                                0f,
+                                imageUrl
+                        );
+
+                        firestore.collection("restaurants")
+                                .document(restaurantId)
+                                .collection("menu")
+                                .add(newItem)
+                                .addOnSuccessListener(ref -> {
+                                    menuItemList.add(newItem);
+                                    menuAdapter.notifyItemInserted(menuItemList.size() - 1);
+                                    Toast.makeText(getContext(), "Item added successfully", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                })
+                                .addOnFailureListener(e ->
+                                        Toast.makeText(getContext(), "Failed to add item: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                                );
                     })
                     .addOnFailureListener(e ->
-                            Toast.makeText(getContext(), "Failed to add item: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(getContext(), "Failed to get restaurant name: " + e.getMessage(), Toast.LENGTH_SHORT).show()
                     );
         });
     }

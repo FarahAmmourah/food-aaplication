@@ -197,20 +197,17 @@ public class CheckoutActivity extends AppCompatActivity {
         }
     }
 
-    public void placeOrderWithStatus(String paymentMethodId, String paymentStatus) {
+    private void placeOrderWithStatus(String paymentMethodId, String paymentStatus) {
         if (CartManager.getCartItems().isEmpty()) {
             Toast.makeText(this, "Your cart is empty!", Toast.LENGTH_SHORT).show();
             return;
         }
-        String userId = FirebaseAuth.getInstance().getCurrentUser() != null
-                ? FirebaseAuth.getInstance().getCurrentUser().getUid() : "guest";
 
-        double subtotal = CartManager.getSubtotal();
-        double total = subtotal - DISCOUNT + DELIVERY_FEE + SERVICE_FEE;
-
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         CartItem firstItem = CartManager.getCartItems().get(0);
-        String restaurantName = firstItem.getRestaurant();
+
         String restaurantId = firstItem.getRestaurantId();
+        String restaurantName = firstItem.getRestaurantName();
 
         ArrayList<String> itemsList = new ArrayList<>();
         for (CartItem item : CartManager.getCartItems()) {
@@ -226,7 +223,7 @@ public class CheckoutActivity extends AppCompatActivity {
         orderData.put("restaurantName", restaurantName);
         orderData.put("paymentMethod", paymentMethodId);
         orderData.put("paymentStatus", paymentStatus);
-        orderData.put("total", total);
+        orderData.put("total", CartManager.getSubtotal() + CheckoutActivity.DELIVERY_FEE + CheckoutActivity.SERVICE_FEE - CheckoutActivity.DISCOUNT);
         orderData.put("status", "Preparing");
         orderData.put("address", tvAddress.getText().toString());
         orderData.put("lat", selectedLat);
