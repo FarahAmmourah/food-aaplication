@@ -33,16 +33,19 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
 
     private Context context;
     private List<FoodItem> foodList;
-    private List<FoodItem> foodListFull;
+    private List<FoodItem> foodListFull;// used for search , so we dont mess with original data
+    private boolean enableRating;// to remove rating from public menu
 
-    public FoodAdapter(Context context, List<FoodItem> foodList) {
+    public FoodAdapter(Context context, List<FoodItem> foodList, boolean enableRating) {
         this.context = context;
         this.foodList = foodList;
+        this.enableRating = enableRating;
         this.foodListFull = new ArrayList<>();
     }
 
+
     @NonNull
-    @Override
+    @Override// connects java with xml
     public FoodViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_food, parent, false);
         return new FoodViewHolder(view);
@@ -62,6 +65,11 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
                 .placeholder(R.drawable.ic_food_placeholder)
                 .error(R.drawable.ic_food_placeholder)
                 .into(holder.imgFood);
+
+        if (!enableRating) {
+            holder.btnRate.setVisibility(View.GONE);
+        }
+
 
         holder.btnRate.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -168,16 +176,17 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         );
     }
 
-    @Override
+    @Override// run when menu calls get filter in menu activity
     public Filter getFilter() {
         return foodFilter;
     }
 
+
     private final Filter foodFilter = new Filter() {
-        @Override
+        @Override// constraint is the word the user typed in the search
         protected FilterResults performFiltering(CharSequence constraint) {
             List<FoodItem> filteredList = new ArrayList<>();
-
+// if user does not write anything bring all meals
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(foodListFull);
             } else {
@@ -185,27 +194,29 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
 
                 for (FoodItem item : foodListFull) {
 
-                    // ⭐ FIX: Null-safe filtering
+                    // brings the name of the meal and checks its not null
                     String name = item.getName() != null
                             ? item.getName().toLowerCase(Locale.ROOT)
                             : "";
 
+                    // brings the name of the resturant and checks its not null
                     String restaurant = item.getRestaurantName() != null
                             ? item.getRestaurantName().toLowerCase(Locale.ROOT)
                             : "";
 
+                    // if the name of the meal or rest is like the user enterd add it to the filtered list
                     if (name.contains(filterPattern) || restaurant.contains(filterPattern)) {
                         filteredList.add(item);
                     }
                 }
             }
-
+// this function must return  FilterResults object
             FilterResults results = new FilterResults();
             results.values = filteredList;
-            return results;
+            return results;// go to publishResults and show new results
         }
 
-        @Override
+        @Override//removes old vals from foodlist and put new ones
         protected void publishResults(CharSequence constraint, FilterResults results) {
             foodList.clear();
 

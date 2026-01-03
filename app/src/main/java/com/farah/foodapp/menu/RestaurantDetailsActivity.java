@@ -45,7 +45,8 @@ public class RestaurantDetailsActivity extends AppCompatActivity {
 
         recyclerViewMenu.setLayoutManager(new LinearLayoutManager(this));
         menuList = new ArrayList<>();
-        adapter = new FoodAdapter(this, menuList);
+        adapter = new FoodAdapter(this, menuList, true);
+
         recyclerViewMenu.setAdapter(adapter);
 
         db = FirebaseFirestore.getInstance();

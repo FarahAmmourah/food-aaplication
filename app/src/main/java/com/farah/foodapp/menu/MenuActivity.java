@@ -39,39 +39,47 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
+        setContentView(R.layout.activity_menu);// connect to xml
 
-        recyclerMenu = findViewById(R.id.recyclerMenu);
-        recyclerMenu.setLayoutManager(new LinearLayoutManager(this));
+        recyclerMenu = findViewById(R.id.recyclerMenu);// connect to recycle in xml
+        recyclerMenu.setLayoutManager(new LinearLayoutManager(this));// vertical view
 
         etSearch = findViewById(R.id.etSearch);
+//Adapter creation
+        foodList = new ArrayList<>();//empty list
+        adapter = new FoodAdapter(this, foodList, false);// give list to adapter
+        recyclerMenu.setAdapter(adapter);// connect adapter to recycle view
 
-        foodList = new ArrayList<>();
-        adapter = new FoodAdapter(this, foodList);
-        recyclerMenu.setAdapter(adapter);
-
-        firestore = FirebaseFirestore.getInstance();
+// load info
+        firestore = FirebaseFirestore.getInstance();// connect to firestore
         restaurantId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
-        loadMenuFromFirestore();
+        loadMenuFromFirestore();/*this function brings data from menu
+        make it into food item put it in lit gives it to adapter*/
 
-        etSearch.addTextChangedListener(new TextWatcher() {
+
+        //how search works?
+        etSearch.addTextChangedListener(new TextWatcher() {/*when user adds letters to search
+        textwatcher implements 3 func*/
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            // not used ,compile error if removed
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 adapter.getFilter().filter(s);
+                //calls the filter in adapter when user enter letter
             }
 
             @Override
             public void afterTextChanged(Editable s) { }
+            // not used ,compile error if removed
         });
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.nav_menu);
 
-        updateCartBadge();
+        updateCartBadge();// called when we open this activity to refresh counter
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
@@ -107,7 +115,7 @@ public class MenuActivity extends AppCompatActivity {
                     adapter.setFoodListFull(foodList);
                     adapter.notifyDataSetChanged();
 
-                    // 🔥 هذا هو الحل: إعادة تطبيق السيرتش بعد تحميل البيانات
+                 // tells to research again after the meals are loaded
                     adapter.getFilter().filter(etSearch.getText().toString());
 
                 })
@@ -115,7 +123,7 @@ public class MenuActivity extends AppCompatActivity {
                         Toast.makeText(this, "Failed to load all menu items: " + e.getMessage(), Toast.LENGTH_SHORT).show()
                 );
     }
-
+// change the number on the nav bar when new added
     public void updateCartBadge() {
         int count = CartManager.getTotalQuantity();
         if (count > 0) {

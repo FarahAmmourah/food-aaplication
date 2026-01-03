@@ -11,7 +11,7 @@ public class FoodItem {// the info of the meal
     private double largePrice;
     private String restaurantId;
 
-
+    public FoodItem() {}// empty cons to turn doc from fire store to object
     public FoodItem(String name, String description, String imageUrl, float rating,
                     String restaurantName, double smallPrice, double largePrice) {
         this.name = name;
@@ -25,7 +25,7 @@ public class FoodItem {// the info of the meal
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
-    public FoodItem() {}
+
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }// the setter for the name is used in the cart to add the item and size to the
